@@ -8,8 +8,10 @@ import { ContractTransaction } from "@ethersproject/contracts";
 import { Provider } from '@ethersproject/providers';
 import { Signer } from '@ethersproject/abstract-signer';
 import  invariant  from 'tiny-invariant';
-// Import types from contracts repo here
 
+import { TD606 } from '@catalogworks/catalog-contracts/dist/types/typechain';
+import { TD606__factory } from '@catalogworks/catalog-contracts/dist/types/typechain/factories/TD606Factory';
+import { addresses } from "./addresses";
 import { chainIdToNetwork, constructTokenData, validateAndParseAddress, validateBytes32, validateBytes32Array, validateURI } from "./utils";
 import { BytesLike } from "ethers";
 
@@ -21,7 +23,7 @@ export class Catalog {
     public contractAddress: string;
     public signerOrProvider: Signer | Provider;
     // public cnft: CNFT
-
+    public contract: TD606;
     public readOnly: boolean;
 
 
@@ -50,13 +52,13 @@ export class Catalog {
             this.contractAddress = parsedContractAddress;
         } else {
             const network = chainIdToNetwork(chainId);
+            this.contractAddress = addresses[network].catalog;
             // get contract address based on chainId/network
             
         }
 
+        this.contract = TD606__factory.connect(this.contractAddress, this.signerOrProvider);
 
-        // this.media = MediaFactory.connect(this.mediaAddress, signerOrProvider)
-        // this.market = MarketFactory.connect(this.marketAddress, signerOrProvider)
     }
 
 

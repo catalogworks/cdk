@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@catalogworks/catalog-contracts@0.0.3":
+  version "0.0.3"
+  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.0.3/30998de082dd189a214b956d1b8862b28a4b52096543571c738f57f8b32cacde#e9a4a88f281e6e7a5ff2d7c1fc45523113804975"
+  integrity sha512-xlk6RRB1R8Us0s2gGBk2iCAE8IO1C/rv4LMcC2n2bTWU43bHusHCyb168NAtO73RcVHnY0sPfFHmqNUSILjguA==
+  dependencies:
+    ethers "^5.4.7"
+
 "@cspotcode/source-map-consumer@0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-consumer/-/source-map-consumer-0.8.0.tgz#33bf4b7b39c178821606f669bbc447a6a629786b"
@@ -374,6 +381,13 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.2.tgz#423c77877d0569db20e1fc80885ac4118314010e"
   integrity sha512-eZxlbI8GZscaGS7kkc/trHTT5xgrjH3/1n2JDwusC9iahPKWMRvRjJSAN5mCXviuTGQ/lHnhvv8Q1YTpnfz9gA==
 
+"@zoralabs/core@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@zoralabs/core/-/core-1.0.7.tgz#c426b5d85cf1cb0c57d7e9dc0a3fd8519c78566d"
+  integrity sha512-BZ6/n/2YIOAXWU+VtxNo+O/1wy9mFb7Grfdg2EkJoaq/2UJjf7cpMZfdQHp2CRa+m3XYb1uVG3q6236i+Uz1MQ==
+  dependencies:
+    ethers "^5.0.19"
+
 acorn-walk@^8.1.1:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.2.0.tgz#741210f2e2426454508853a2f44d0ab83b7f69c1"
@@ -432,7 +446,7 @@ elliptic@6.5.4:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
-ethers@^5.5.2:
+ethers@^5.0.19, ethers@^5.4.7, ethers@^5.5.2:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.2.tgz#cd2e508c7342c44fa70392f722e8de8f2416489f"
   integrity sha512-EF5W+6Wwcu6BqVwpgmyR5U2+L4c1FQzlM/02dkZOugN3KF0cG9bzHZP+TDJglmPm2/IzCEJDT7KBxzayk7SAHw==

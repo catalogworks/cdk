@@ -10,11 +10,7 @@
   "author": "@catalogworks",
   "license": "MIT",
   "private": true,
-  "scripts": {
-    "clean": "rmdir dist",
-    "build": "yarn clean && tsc",
-    "prepublish": "yarn build"
-  },
+  "scripts": {},
   "engines": {
     "node": ">=10"
   },
@@ -31,6 +27,8 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
+    "@catalogworks/catalog-contracts": "0.0.3",
+    "@zoralabs/core": "^1.0.7",
     "ethers": "^5.5.2",
     "tiny-invariant": "^1.2.0",
     "tiny-warning": "^1.0.3",
