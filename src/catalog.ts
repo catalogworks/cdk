@@ -10,8 +10,7 @@ import { Signer } from '@ethersproject/abstract-signer';
 import  invariant  from 'tiny-invariant';
 // Import types from contracts repo here
 
-
-import { chainIdToNetwork, constructTokenData, validateAndParseAddress, validateBytes32, validateURI } from "./utils";
+import { chainIdToNetwork, constructTokenData, validateAndParseAddress, validateBytes32, validateBytes32Array, validateURI } from "./utils";
 import { BytesLike } from "ethers";
 
 
@@ -37,7 +36,6 @@ export class Catalog {
             invariant(false, 'Catalog Constructor: contractAddress cannot be null');
         }
 
-        // gross
         if (Signer.isSigner(signerOrProvider)) {
             this.readOnly = false;
         } else {
@@ -52,6 +50,7 @@ export class Catalog {
             this.contractAddress = parsedContractAddress;
         } else {
             const network = chainIdToNetwork(chainId);
+            // get contract address based on chainId/network
             
         }
 
@@ -171,7 +170,8 @@ export class Catalog {
             this.ensureNotReadOnly();
             validateURI(tokenData.metadataURI);
             validateURI(tokenData.contentURI);
-            // validateBytes32Array(proof);
+            // validate the proof as a valid Bytes32 array
+            validateBytes32Array(proof.proof);
         } catch (err) {
             return Promise.reject(err);
         }

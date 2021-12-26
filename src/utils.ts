@@ -11,15 +11,15 @@ import { ContractTransaction } from "@ethersproject/contracts";
 
 
 
-// Type Constructors
 
-// Regex to validate URI
+// Regex to validate URI of IPFS hash
 export function validateURI(uri: string) {
     if (!uri.match(/^(https)|(ipfs):\/\/(.*)/)) {
         invariant(false, `${uri} must begin with \`https://\` or \`ipfs://\``);
     }
 }
 
+// Validates the input address is a valid Ethereum address
 export function validateAndParseAddress(address: string): string {
 
     try {
@@ -31,7 +31,7 @@ export function validateAndParseAddress(address: string): string {
     }
 }
 
-
+// Returns string network name corresponding to Chain ID
 export function chainIdToNetwork(chainId: number): string {
     switch (chainId) {
         case 1: {
@@ -45,7 +45,7 @@ export function chainIdToNetwork(chainId: number): string {
     invariant(false, `chainId: ${chainId} is not currently supported`);
 }
 
-
+// Validates BytesLike input as valid Bytes32 Data
 export function validateBytes32(value: BytesLike) {
 
     if (typeof value == 'string') {
@@ -59,6 +59,11 @@ export function validateBytes32(value: BytesLike) {
         }
         invariant(false, `${value} is not of length 32 byte array`);
     }
+}
+
+// does this shit work
+export function validateBytes32Array(value: BytesLike[]) {
+    value.forEach(validateBytes32);
 }
 
 

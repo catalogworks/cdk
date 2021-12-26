@@ -11,7 +11,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rmdir dist",
     "build": "yarn clean && tsc",
     "prepublish": "yarn build"
   },
