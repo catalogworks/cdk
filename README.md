@@ -28,9 +28,16 @@ yarn add @catalogworks/cdk
 
 
 
-## Testing
+### Testing
 
-TODO
+Tests are written in [Jest](https://jestjs.io/). using ts-jest.
+Unit tests are located in the [tests](./tests) folder.
+
+To run the tests:
+
+```bash
+yarn test
+```
 
 ## Development
 

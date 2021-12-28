@@ -11,7 +11,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "clean": "rm -rf dist",
+    "build": "yarn clean && tsc",
+    "prepublish": "yarn build"
   },
   "engines": {
     "node": ">=10"
@@ -47,5 +50,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/catalogworks/cdk.git"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
   }
 }

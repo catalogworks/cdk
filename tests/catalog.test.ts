@@ -18,21 +18,10 @@ jest.setTimeout(30000);
 
 describe('Catalog', () => {
 
-    describe('#constructor', () => {
+    describe('constructor', () => {
+
 
         // 01
-        it('throws an error if contract address is null', () => {
-            const wallet = Wallet.createRandom();
-
-            expect(() => {
-                new Catalog(wallet, 4, '');
-            }).toThrow(
-                'Catalog Constructor: contractAddress cannot be null'
-            )
-
-        });
-
-        // 02
         it('throws an error if no contract address is provided with an invalid chain', () => {
             const wallet = Wallet.createRandom();
 
@@ -44,7 +33,7 @@ describe('Catalog', () => {
 
         });
 
-        // 03
+        // 02
         it('throws an error if the chainId does not map to a deployed instance of the catalog contract', () => {
             const wallet = Wallet.createRandom();
 
@@ -56,7 +45,7 @@ describe('Catalog', () => {
 
         });
 
-        // 04
+        // 03
         it('throws an error if the contract address is not a valid ethereum address', () => {
             const wallet = Wallet.createRandom();
 
@@ -68,9 +57,47 @@ describe('Catalog', () => {
 
         });
 
+        // 04
+        it('sets the Catalog instance to readOnly=false if signer is specified', () => {
+            const wallet = Wallet.createRandom();
+            const catalog = new Catalog(wallet, 4);
+
+            expect(catalog.readOnly).toBe(false);
+        });
+
+        // 05 
+        it('sets the Catalog instane of readOnly=true is a Provider is specified', () => {
+            const provider = new JsonRpcProvider();
+            const catalog = new Catalog(provider, 4, CatalogAddresses.rinkeby.Catalog);
+
+            expect(catalog.readOnly).toBe(true);
+        });
+
+        // 06
+        it('initializes a Catalog instance with the checksummed contract address for the specific chainId', () => {
+            const wallet = Wallet.createRandom();
+            const rinkebyAddress = CatalogAddresses['rinkeby'].catalog;
+            const catalog = new Catalog(wallet, 4);
+
+            expect(catalog.contractAddress).toBe(rinkebyAddress);
+        });
 
 
 
-    })
+
+    });
+
+    // CONTRACT FUNCTIONS
+
+    describe('contract functions', () => {
+
+        // let catalogConfig: CatalogConfiguredAddresses;
+        let provider = new JsonRpcProvider();
+
+    });
+
+
+
+
 
 });
