@@ -1,4 +1,4 @@
-// Addresses.ts
+// addresses.ts
 // Utility File to store deployed addresses relative to SDK
 
 

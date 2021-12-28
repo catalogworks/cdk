@@ -24,6 +24,11 @@
     "@ethersproject/providers": "^5.0.5",
     "@ethersproject/solidity": "^5.0.5",
     "@ethersproject/transactions": "^5.0.5",
+    "@types/jest": "^27.0.3",
+    "jest": "^27.4.5",
+    "jest-serial-runner": "^1.2.0",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.2",
     "typescript": "^4.0.5"
   },
   "dependencies": {

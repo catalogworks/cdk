@@ -1,5 +1,6 @@
 // catalog.ts
-// Class for Catalog Contract
+// Class for Catalog Shared Creator Contract
+// Currenly based on TD606 Catalog Shared Creator Contract 
 
 import { TokenData, Proof, RoyaltyInfo } from "./types";
 

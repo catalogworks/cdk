@@ -1,4 +1,4 @@
-// Types.ts
+// types.ts
 // Data types to suppot Catalog Contracts
 
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
