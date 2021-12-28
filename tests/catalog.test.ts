@@ -8,7 +8,7 @@ import { addresses as CatalogAddresses } from '../src/addresses';
 import { BigNumber, Bytes } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { AddressZero } from '@ethersproject/constants';
-import { Catalog__Factory } from '@catalogworks/catalog-contracts/dist/types/typechain';
+import { TD606__factory as Catalog__factory } from '@catalogworks/catalog-contracts/dist/types/typechain';
 
 let provider = new JsonRpcProvider();
 // let blockchain = new Blockchain(provider)

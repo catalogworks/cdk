@@ -11,7 +11,7 @@ import { Signer } from '@ethersproject/abstract-signer';
 import  invariant  from 'tiny-invariant';
 
 import { TD606 } from '@catalogworks/catalog-contracts/dist/types/typechain';
-import { TD606__factory } from '@catalogworks/catalog-contracts/dist/types/typechain/factories/TD606Factory';
+import { TD606__factory } from '@catalogworks/catalog-contracts/dist/types/typechain';
 import { addresses } from "./addresses";
 import { chainIdToNetwork, constructTokenData, validateAndParseAddress, validateBytes32, validateBytes32Array, validateURI } from "./utils";
 import { BytesLike } from "ethers";
@@ -68,13 +68,14 @@ export class Catalog {
     // Content URI
     // @param tokenId uint256 ID of token to fetch content URI of
     public async fetchContentURI(tokenId: BigNumberish): Promise<string> {
-        return this.contract.contentURI(tokenId);
+        return this.contract.tokenContentURI(tokenId);
     }
 
     // Metadata URI
     // @param tokenId uint256 ID of token to fetch metadata URI of
+    // @note This is the same as fetchTokenURI
     public async fetchMetdataURI(tokenId: BigNumberish): Promise<string> {
-        return this.contract.metadataURI(tokenId);
+        return this.contract.tokenURI(tokenId);
     }
 
     // Creator
@@ -180,10 +181,10 @@ export class Catalog {
         }
 
 
-        const gasEstimate = await this.contract.estimateGas.mint(tokenData, proof);
+        const gasEstimate = await this.contract.estimateGas.mint(tokenData, proof.proof);
         const paddedEstimate = gasEstimate.mul(110).div(100);
 
-        return this.contract.mint(tokenData, proof, { gasLimit: paddedEstimate.toString() });
+        return this.contract.mint(tokenData, proof.proof, { gasLimit: paddedEstimate.toString() });
     }
 
     // Burn
@@ -207,20 +208,13 @@ export class Catalog {
     // Balance of
     // @param owner address The address to query the balance of
     public async fetchBalanceOf(owner: string): Promise<BigNumber> {
-        return this.contract.balanceof(owner);
+        return this.contract.balanceOf(owner);
     }
 
     // Owner of
     // @param tokenId uint256 ID of token to check
     public async fetchOwnerOf(tokenId: BigNumberish): Promise<string> {
         return this.contract.ownerOf(tokenId);
-    }
-
-    // Token of Owner By Index
-    // @param owner address The address owning the token
-    // @param index uint256 The index of the token in the collection owned by the address
-    public async fetchTokenOfOwnerByIndex(owner: string, index: BigNumberish): Promise<BigNumber> {
-        return this.contract.tokenOfOwnerByIndex(owner, index);
     }
 
     // Approved
@@ -298,8 +292,8 @@ export class Catalog {
         } catch (err) {
             return Promise.reject(err);
         }
-
-        return this.contract.safeTransferFrom(from, to, tokenId);
+        // unsure why this is exported like this
+        return this.contract["safeTransferFrom(address,address,uint256)"](from, to, tokenId);
     }
 
 

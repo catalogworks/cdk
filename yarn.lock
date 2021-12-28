@@ -286,10 +286,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@catalogworks/catalog-contracts@0.0.3":
-  version "0.0.3"
-  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.0.3/30998de082dd189a214b956d1b8862b28a4b52096543571c738f57f8b32cacde#e9a4a88f281e6e7a5ff2d7c1fc45523113804975"
-  integrity sha512-xlk6RRB1R8Us0s2gGBk2iCAE8IO1C/rv4LMcC2n2bTWU43bHusHCyb168NAtO73RcVHnY0sPfFHmqNUSILjguA==
+"@catalogworks/catalog-contracts@0.0.6":
+  version "0.0.6"
+  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.0.6/132e13b8f28feee253bd26e653a4f9d3a32e5d2651a80e8221a3b451c398da0a#3f4d397d4e5176d74d38a620871d9bfb375f0f6f"
+  integrity sha512-/egxSUj0ALfeCUheh6soqlK2vODAds2V0zzrjijc7xezMD2qfsIynYyr8lafwBdKma9FCTftxjdHyrzYqFgZxQ==
   dependencies:
     ethers "^5.4.7"
 
@@ -998,15 +998,10 @@ acorn@^7.1.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-acorn@^8.2.4:
+acorn@^8.2.4, acorn@^8.4.1:
   version "8.7.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.7.0.tgz#90951fde0f8f09df93549481e5fc141445b791cf"
   integrity sha512-V/LGr1APy+PXIwKebEWrkZPwoeoF+w1jiOBUmuxuiUIaOHtob8Qc9BTrYo7VuI5fR8tqsy+buA2WFooR5olqvQ==
-
-acorn@^8.4.1:
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.6.0.tgz#e3692ba0eb1a0c83eaa4f37f5fa7368dd7142895"
-  integrity sha512-U1riIR+lBSNi3IbxtaHOIKdH8sLFv3NYfNv8sg7ZsNhcfl4HF2++BfqqrNAxoCLQW1iiylOj76ecnaUxz+z9yw==
 
 aes-js@3.0.0:
   version "3.0.0"
