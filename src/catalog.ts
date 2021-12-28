@@ -35,9 +35,10 @@ export class Catalog {
         contractAddress?: string,
     ) {
 
-        if (!contractAddress) {
+        if (!contractAddress && !chainId) {
             invariant(false, 'Catalog Constructor: contractAddress cannot be null');
         }
+
 
         if (Signer.isSigner(signerOrProvider)) {
             this.readOnly = false;
@@ -52,6 +53,8 @@ export class Catalog {
             const parsedContractAddress = validateAndParseAddress(contractAddress);
             this.contractAddress = parsedContractAddress;
         } else {
+
+            
             const network = chainIdToNetwork(chainId);
             this.contractAddress = addresses[network].catalog;
             // get contract address based on chainId/network

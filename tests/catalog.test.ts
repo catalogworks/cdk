@@ -33,16 +33,40 @@ describe('Catalog', () => {
         });
 
         // 02
+        it('throws an error if no contract address is provided with an invalid chain', () => {
+            const wallet = Wallet.createRandom();
+
+            expect(() => {
+                new Catalog(wallet, 420);
+            }).toThrow(
+                'Invariant failed: chainId: 420 is not currently supported'
+            )
+
+        });
+
+        // 03
         it('throws an error if the chainId does not map to a deployed instance of the catalog contract', () => {
             const wallet = Wallet.createRandom();
 
             expect(() => {
-                new Catalog(wallet, 69);
+                new Catalog(wallet, 69, );
             }).toThrow(
-                'Invariant failed: chainId 69 not officially supported by the Catalog Protocol'
+                'Invariant failed: chainId: 69 is not currently supported'
             )
 
-        })
+        });
+
+        // 04
+        it('throws an error if the contract address is not a valid ethereum address', () => {
+            const wallet = Wallet.createRandom();
+
+            expect(() => {
+                new Catalog(wallet, 4, 'pee in me pants');
+            }).toThrow(
+                'Invariant failed: pee in me pants is not a valid address'
+            )
+
+        });
 
 
 
