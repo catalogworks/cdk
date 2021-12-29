@@ -31,6 +31,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - name: Create NPMRC
+        run: |
+            echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGES_TOKEN }}" >> ~/.npmrc
+            echo "@catalogworks:registry=https://npm.pkg.github.com" >> ~/.npmrc
+            echo 'registry "https://registry.yarnpkg.com"' >> ~/.yarnrc
+
       - name: Installing dependencies
         run: yarn install --frozen-lockfile
 
