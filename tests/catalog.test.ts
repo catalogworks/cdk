@@ -9,9 +9,11 @@ import { BigNumber, Bytes } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { AddressZero } from '@ethersproject/constants';
 import { TD606__factory as Catalog__factory } from '@catalogworks/catalog-contracts/dist/types/typechain';
+import { Blockchain } from './utils/blockchain';
+import { generatedWallets}  from './utils/wallets';
 
 let provider = new JsonRpcProvider();
-// let blockchain = new Blockchain(provider)
+let blockchain = new Blockchain(provider)
 
 jest.setTimeout(30000);
 
@@ -93,6 +95,14 @@ describe('Catalog', () => {
 
         // let catalogConfig: CatalogConfiguredAddresses;
         let provider = new JsonRpcProvider();
+        let [mainWallet, otherWallet] = generatedWallets(provider);
+
+        beforeEach(async () => {
+            await blockchain.resetAsync();
+        });
+
+        
+
 
     });
 

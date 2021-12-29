@@ -11,6 +11,8 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { ethers, Wallet } from 'ethers';
 import { ContractTransaction } from "@ethersproject/contracts";
 import  sjcl  from 'sjcl';
+import keccak256 from "keccak256";
+import MerkleTree from "merkletreejs";
 
 
 
@@ -69,7 +71,6 @@ export function validateBytes32Array(value: BytesLike[]) {
 }
 
 
-
 // Constructs a TokenData type.
 export function constructTokenData(
     metadataURI: string,
@@ -108,6 +109,7 @@ export function sha256FromBuffer(buffer: Buffer): string {
     return '0x'.concat(sjcl.codec.hex.fromBits(hashArray));
 }
 
+
 // generates sha256 hash from a 0x hex string and returns hash hex encoded
 export function sha256FromHexString(data: string): string {
     if (!isHexString(data)) {
@@ -121,4 +123,42 @@ export function sha256FromHexString(data: string): string {
 }
 
 
+
+// MERKLE TREE UTILITIES
+// prob can refactor
+
+// Generates Merkle Tree from an input array of strings
+// @note this operation does not provide any checks on validity of the input data
+// @param data - array of strings
+// @returns Merkle Tree arb object of type MerkleTree
+export function generateMerkleTree(data: string[]): MerkleTree {
+    const leaves = data.map((x) => keccak256(x));
+    const tree = new MerkleTree(leaves, keccak256, {sortPairs: true});
+    return tree;
+}
+
+// Gets the merkle root from an input MerkleTree
+// @param inputTree - MerkleTree the pre-generated merkle tree
+// @returns string merkle root hex encoded
+export function generateMerkleRootFromTree(inputTree: MerkleTree): string {
+    return inputTree.getHexRoot();
+}
+
+// Generates Merkle Proof from an input MerkleTree and single address
+// @param inputTree - MerkleTree the pre-generated merkle tree
+// @param address - string address to generate proof for
+// @returns Proof contains proof bytesLike array
+export function generateMerkleProof(inputTree: MerkleTree, address: string): Proof {
+    const leaf = keccak256(address);
+    const proof = inputTree.getHexProof(leaf);
+    return { proof };
+}
+
+/// Generates Merkle Proof from an input MerkleTree and array of addresses (strings)
+/// @param inputTree - MerkleTree the pre-generated merkle tree
+/// @param addresses - array of string addresses to generate proofs for
+/// @returns Proof - array of Proof objects
+export function generateMerkleProofs(inputTree: MerkleTree, addresses: string[]): Proof[] {
+    return addresses.map((address) => generateMerkleProof(inputTree, address));
+}
 

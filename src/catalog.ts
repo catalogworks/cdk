@@ -106,6 +106,13 @@ export class Catalog {
         return this.contract.royaltyInfo(tokenId, salePrice);
     }
 
+    // Merkle Root
+    // @note view only for Merkle Root
+    public async fetchMerkleRoot(): Promise<string> {
+        return this.contract.merkleRoot();
+
+    }
+
 
 
     // Write Methods [Transactions]

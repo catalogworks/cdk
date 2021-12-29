@@ -14,7 +14,8 @@
     "test": "jest",
     "clean": "rm -rf dist",
     "build": "yarn clean && tsc",
-    "prepublish": "yarn build"
+    "prepublish": "yarn build",
+    "coverage": "jest --coverage"
   },
   "engines": {
     "node": ">=10"
@@ -40,6 +41,8 @@
   "dependencies": {
     "@catalogworks/catalog-contracts": "0.0.6",
     "ethers": "^5.5.2",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.27",
     "sjcl": "^1.0.8",
     "tiny-invariant": "^1.2.0",
     "tiny-warning": "^1.0.3",
