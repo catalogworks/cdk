@@ -18,6 +18,8 @@ The CDK has 4 primary exports plus some types:
 
 ### Installation
 
+(Not packaged yet!)
+
 ```bash
 yarn add @catalogworks/cdk
 ```

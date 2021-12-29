@@ -30,6 +30,7 @@
     "@ethersproject/solidity": "^5.0.5",
     "@ethersproject/transactions": "^5.0.5",
     "@types/jest": "^27.0.3",
+    "@types/sjcl": "^1.0.30",
     "jest": "^27.4.5",
     "jest-serial-runner": "^1.2.0",
     "prettier": "^2.5.1",
@@ -38,8 +39,8 @@
   },
   "dependencies": {
     "@catalogworks/catalog-contracts": "0.0.6",
-    "@zoralabs/core": "^1.0.7",
     "ethers": "^5.5.2",
+    "sjcl": "^1.0.8",
     "tiny-invariant": "^1.2.0",
     "tiny-warning": "^1.0.3",
     "ts-node": "^10.4.0"
@@ -52,6 +53,6 @@
     "url": "git+https://github.com/catalogworks/cdk.git"
   },
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }

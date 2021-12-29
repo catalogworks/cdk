@@ -10,7 +10,7 @@ import { arrayify, BytesLike, hexDataLength, hexlify, isHexString } from "@ether
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { ethers, Wallet } from 'ethers';
 import { ContractTransaction } from "@ethersproject/contracts";
-
+import  sjcl  from 'sjcl';
 
 
 
@@ -99,6 +99,26 @@ export function stripHexPrefix(hex: string) {
 }
 
 
+// Hash utils
+
+// Generates SHA256 hash from a buffer and returns hash hex encoded
+export function sha256FromBuffer(buffer: Buffer): string {
+    const bitArray = sjcl.codec.hex.toBits(buffer.toString('hex'));
+    const hashArray = sjcl.hash.sha256.hash(bitArray);
+    return '0x'.concat(sjcl.codec.hex.fromBits(hashArray));
+}
+
+// generates sha256 hash from a 0x hex string and returns hash hex encoded
+export function sha256FromHexString(data: string): string {
+    if (!isHexString(data)) {
+        // invariant(false, `${data} is not a valid hex string`);
+        throw new Error(`${data} is not a valid hex string`);
+    }
+
+    const bitArray = sjcl.codec.hex.toBits(stripHexPrefix(data));
+    const hashArray = sjcl.hash.sha256.hash(bitArray);
+    return '0x'.concat(sjcl.codec.hex.fromBits(hashArray));
+}
 
 
 
