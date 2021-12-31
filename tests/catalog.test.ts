@@ -376,22 +376,62 @@ describe('Catalog', () => {
                     expect(revoked).toBe(false);
                 });
 
+            });
+
+            describe('transferFrom', () => {
+                
+                it('throws an error if called on a readOnly instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.transferFrom(mainWallet.address, otherWallet.address, 1)).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('transfers the token to another address', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    const tokenOwner = await catalog.fetchOwnerOf(1);
+                    expect(tokenOwner.toLowerCase()).toBe(mainWallet.address.toLowerCase());
+
+                    await catalog.transferFrom(mainWallet.address, otherWallet.address, 1);
+                    const newOwner = await catalog.fetchOwnerOf(1);
+                    expect(newOwner.toLowerCase()).toBe(otherWallet.address.toLowerCase());
+                });
+            });
+
+
+            describe('safe transfer from', () => {
+
+                it('throws an erorr if called on readOnly instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.safeTransferFrom(mainWallet.address, otherWallet.address, 1)).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('transfers the token to another address', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    const tokenOwner = await catalog.fetchOwnerOf(1);
+                    expect(tokenOwner.toLowerCase()).toBe(mainWallet.address.toLowerCase());
+
+                    await catalog.safeTransferFrom(mainWallet.address, otherWallet.address, 1);
+                    const newOwner = await catalog.fetchOwnerOf(1);
+                    expect(newOwner.toLowerCase()).toBe(otherWallet.address.toLowerCase());
+                });
 
             });
-            // it('can set the root', async () => {
-            //     const catalog =  new Catalog(mainWallet, 1337, catalogConfig.cnft);
-            //     const setRoot = await catalog.updateRoot(defaultRoot);
 
-            //     expect(await catalog.fetchMerkleRoot()).toBe(defaultRoot);
-            // });
 
-            // it('mints', async () => {
-            //     const catalog = new Catalog(mainWallet, 1337, catalogConfig.cnft);
-            //     const mint = await catalog.mint(defaultTokendata, defaultProof);
 
-            //     await expect(catalog.fetchMetdataURI(1)).resolves.toEqual(metadata);
- 
-            // });
         });
 
         

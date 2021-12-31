@@ -68,7 +68,15 @@ ____
 Tests are written in [Jest](https://jestjs.io/). using ts-jest.
 Unit tests are located in the [tests](./tests) folder.
 
-To run the tests:
+To run the tests locally:
+
+in a seperate terminal:
+
+```bash
+yarn chain
+```
+
+then:
 
 ```bash
 yarn test
