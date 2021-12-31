@@ -1,7 +1,7 @@
 // catalog.test.ts
 // Jest test suite for Catalog class
 
-import { Catalog, TokenData, Proof, } from '../src';
+import { Catalog, TokenData, Proof, generateMerkleTree, generateMerkleProofs, generateMerkleRootFromTree, generateMerkleProof, } from '../src';
 import { Wallet } from '@ethersproject/wallet';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { addresses as CatalogAddresses } from '../src/addresses';
@@ -11,6 +11,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { TD606__factory as Catalog__factory } from '@catalogworks/catalog-contracts/dist/types/typechain';
 import { Blockchain } from './utils/blockchain';
 import { generatedWallets}  from './utils/wallets';
+import { setupCatalog, CatalogConfiguredAddresses } from './helpers';
 
 let provider = new JsonRpcProvider();
 let blockchain = new Blockchain(provider)
@@ -93,12 +94,68 @@ describe('Catalog', () => {
 
     describe('contract functions', () => {
 
-        // let catalogConfig: CatalogConfiguredAddresses;
+        let catalogConfig: CatalogConfiguredAddresses;
         let provider = new JsonRpcProvider();
         let [mainWallet, otherWallet] = generatedWallets(provider);
 
         beforeEach(async () => {
             await blockchain.resetAsync();
+            catalogConfig = await setupCatalog(mainWallet);
+        });
+
+        // 01
+        describe('write functions', () => {
+            let defaultTokendata: TokenData;
+            let defaultProof: Proof;
+            let metadata: string;
+            let content: string;
+            let defaultRoot: string;
+
+            beforeEach(() => {
+                metadata = 'https://catalog.com/metadata';
+                content = 'https://catalog.com/content';
+                defaultTokendata = {
+                    metadataURI: metadata,
+                    contentURI: content,
+                    creator: mainWallet.address,
+                    royaltyPayout: mainWallet.address,
+                    royaltyBPS: 1000,
+                };
+                // generate proof/tree/root
+                const tree = generateMerkleTree([mainWallet.address, otherWallet.address]);
+                
+                const mainProof = generateMerkleProof(tree, mainWallet.address);
+                defaultRoot = generateMerkleRootFromTree(tree);
+                defaultProof = mainProof;
+            });
+
+            // 02 Update Content URI
+            describe('update content URI', () => {
+                it('throws error on read only instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    expect(() => {
+                        catalog.updateContentURI(0, content);
+                    }).toThrow('Invariant failed: instance is read only');
+                });
+            });
+
+            // it('can set the root', async () => {
+            //     const catalog =  new Catalog(mainWallet, 1337, catalogConfig.cnft);
+            //     const setRoot = await catalog.updateRoot(defaultRoot);
+
+            //     expect(await catalog.fetchMerkleRoot()).toBe(defaultRoot);
+            // });
+
+            // it('mints', async () => {
+            //     const catalog = new Catalog(mainWallet, 1337, catalogConfig.cnft);
+            //     const mint = await catalog.mint(defaultTokendata, defaultProof);
+
+            //     await expect(catalog.fetchMetdataURI(1)).resolves.toEqual(metadata);
+ 
+            // });
         });
 
         
