@@ -206,6 +206,177 @@ describe('Catalog', () => {
                     const newMetadataURI = await catalog.fetchMetadataURI(1);
                     expect(newMetadataURI).toEqual('https://catalog.com/new-metadata');
                 });
+
+            });
+
+            describe('mint', () => {
+                
+                it('throws an error if called on read only instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.mint(defaultTokendata, defaultProof)
+                    ).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('throws an erorr if the metadataURIs are invalid', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+
+                    const invalidTokenData: TokenData = {
+                        metadataURI: 'http://pee.com',
+                        contentURI: 'https://pee.com',
+                        creator: mainWallet.address,
+                        royaltyPayout: mainWallet.address,
+                        royaltyBPS: 1000,
+                    };
+                    expect(catalog.readOnly).toBe(false);
+
+                    await expect(catalog.mint(invalidTokenData, defaultProof)).rejects
+                    .toThrowError('Invariant failed: http://pee.com must begin with `https://` or `ipfs://`');
+                });
+
+                it('throws an error if the contentURIs are invalid', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+
+                    const invalidTokenData: TokenData = {
+                        metadataURI: 'https://pee.com',
+                        contentURI: 'http://pee.com',
+                        creator: mainWallet.address,
+                        royaltyPayout: mainWallet.address,
+                        royaltyBPS: 1000,
+                    };
+                    expect(catalog.readOnly).toBe(false);
+
+                    await expect(catalog.mint(invalidTokenData, defaultProof)).rejects
+                    .toThrowError('Invariant failed: http://pee.com must begin with `https://` or `ipfs://`');
+                });
+
+                it('throws an error if the proof is invalid', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+
+                    const invalidProof: Proof = {
+                        proof: ['0x0']
+                    };
+                    expect(catalog.readOnly).toBe(false);
+
+                    await expect(catalog.mint(defaultTokendata, invalidProof)).rejects
+                    .toThrowError('Invariant failed: 0x0 is not a valid Bytes32 hex string');
+                });
+
+                it('sucessfully mints a token', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+
+                    expect(catalog.readOnly).toBe(false);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    const tokenOwner = await catalog.fetchOwnerOf(1);
+                    const creator = await catalog.fetchCreator(1);
+                    const onChainContentURI = await catalog.fetchContentURI(1);
+                    const onChainMetadataURI = await catalog.fetchMetadataURI(1);
+
+                    expect(tokenOwner.toLowerCase()).toBe(mainWallet.address.toLowerCase());
+                    expect(creator.toLowerCase()).toBe(mainWallet.address.toLowerCase());
+                    expect(onChainContentURI).toEqual(defaultTokendata.contentURI);
+                    expect(onChainMetadataURI).toEqual(defaultTokendata.metadataURI);
+                });
+
+
+            });
+
+            describe('burn', () => {
+
+                it('throws an error on readOnly instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.burn(1)).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('burns a token', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    const tokenOwner = await catalog.fetchOwnerOf(1);
+                    expect(tokenOwner.toLowerCase()).toBe(mainWallet.address.toLowerCase());
+
+                    const tx = await catalog.burn(1);
+                    const test = await tx.wait();
+
+                    // super janky way of checking this lol
+                    const event = (test).events?.find(e => e.event === 'Transfer');
+                    expect(event?.event?.toLowerCase()).toBe('transfer');
+                    // expect(event).toEqual('Transfer');           
+                });
+            });
+
+
+            describe('approve', () => {
+                
+                it('throws an error if called on readOnly instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.approve(otherWallet.address, 1)).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('grants approval for another address', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    const nullApproved = await catalog.fetchApproved(1);
+                    expect(nullApproved).toBe(AddressZero);
+
+                    await catalog.approve(otherWallet.address, 1);
+                    const approved = await catalog.fetchApproved(1);
+                    expect(approved.toLowerCase()).toBe(otherWallet.address.toLowerCase());
+                });
+
+            });
+
+            describe('set Approval for all', () => {
+
+                it('throws an error if called on a readOnly instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.setApprovalForAll(otherWallet.address, true)).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('sets approval for another address for all tokens owned by signer', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    const notApproved = await catalog.fetchIsApprovedForAll(mainWallet.address, otherWallet.address);
+                    expect(notApproved).toBe(false);
+
+                    await catalog.setApprovalForAll(otherWallet.address, true);
+                    const approved = await catalog.fetchIsApprovedForAll(mainWallet.address, otherWallet.address);
+                    expect(approved).toBe(true);
+
+                    await catalog.setApprovalForAll(otherWallet.address, false);
+                    const revoked = await catalog.fetchIsApprovedForAll(mainWallet.address, otherWallet.address);
+                    expect(revoked).toBe(false);
+                });
+
+
             });
             // it('can set the root', async () => {
             //     const catalog =  new Catalog(mainWallet, 1337, catalogConfig.cnft);
