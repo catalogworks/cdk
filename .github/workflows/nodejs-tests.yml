@@ -42,6 +42,7 @@ jobs:
 
       - name: start blockchain
         run: yarn chain
+        background: true
 
       # - run: 
       #     shell: /bin/sh
