@@ -107,6 +107,7 @@ describe('Catalog', () => {
         describe('write functions', () => {
             let defaultTokendata: TokenData;
             let defaultProof: Proof;
+            let otherProof: Proof;
             let metadata: string;
             let content: string;
             let defaultRoot: string;
@@ -125,6 +126,7 @@ describe('Catalog', () => {
                 const tree = generateMerkleTree([mainWallet.address, otherWallet.address]);
                 
                 const mainProof = generateMerkleProof(tree, mainWallet.address);
+                otherProof = generateMerkleProof(tree, otherWallet.address);
                 defaultRoot = generateMerkleRootFromTree(tree);
                 defaultProof = mainProof;
             });
@@ -136,9 +138,18 @@ describe('Catalog', () => {
                     const catalog = new Catalog(provider, 50, catalogConfig.cnft);
                     expect(catalog.readOnly).toBe(true);
 
-                    expect(() => {
-                        catalog.updateContentURI(0, content);
-                    }).toThrow('Invariant failed: instance is read only');
+                    await expect(catalog.updateContentURI(0, content)
+                    ).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('throws an error if the input URI is not valid', async() => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    console.log(await catalog.fetchOwner());
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+                    await expect(catalog.updateContentURI(0, 'http://pee.com')).rejects
+                    .toThrowError('Invariant failed: http://pee.com must begin with `https://` or `ipfs://`');
                 });
             });
 

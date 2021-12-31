@@ -210,6 +210,19 @@ export class Catalog {
         return this.contract.burn(tokenId);
     }
 
+    // Initialize
+    // Replacement for constructor, needed for tests
+    // @note Do not use this function on deployed contracts, it's for testing purposes only.
+    public async initialize(name: string, symbol: string): Promise<ContractTransaction> {
+        try {
+            this.ensureNotReadOnly();
+        } catch (err) {
+            return Promise.reject(err);
+        }
+
+        return this.contract.initialize(name, symbol);
+    }
+
 
 
 
@@ -238,6 +251,12 @@ export class Catalog {
     // @param operator address The operator to check for
     public async fetchIsApprovedForAll(owner: string, operator: string): Promise<boolean> {
         return this.contract.isApprovedForAll(owner, operator);
+    }
+
+    // Contract Owner
+    // @note view only for contract owner
+    public async fetchOwner(): Promise<string> {
+        return this.contract.owner();
     }
 
 
@@ -311,9 +330,9 @@ export class Catalog {
     // Private methods
 
     // Thorws an error if called on read-only instance
-    private ensureNotReadOnly(): void {
+    private ensureNotReadOnly() {
         if (this.readOnly) {
-            throw new Error('Cannot modify read-only instance');
+            throw new Error('ensureReadOnly: Cannot modify read-only instance');
         }
     }
 
