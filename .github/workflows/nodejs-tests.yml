@@ -43,14 +43,13 @@ jobs:
       - name: start blockchain
         run: yarn chain
 
-      - run: 
-          shell: /bin/sh
-          command: |
-                wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 10 http://localhost:8545
-                :
-          name: wait for chain and override shell
+      # - run: 
+      #     shell: /bin/sh
+      #     command: |
+      #           wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 10 http://localhost:8545
+      #           :
+      #     name: wait for chain and override shell
 
-          
 
       - name: Running tests
         run: yarn test
