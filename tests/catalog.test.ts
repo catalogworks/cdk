@@ -145,14 +145,68 @@ describe('Catalog', () => {
                 it('throws an error if the input URI is not valid', async() => {
                     const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
                     await catalog.initialize('catalog', 'CTST');
-                    console.log(await catalog.fetchOwner());
                     await catalog.updateRoot(defaultRoot);
                     await catalog.mint(defaultTokendata, defaultProof);
                     await expect(catalog.updateContentURI(0, 'http://pee.com')).rejects
                     .toThrowError('Invariant failed: http://pee.com must begin with `https://` or `ipfs://`');
                 });
+
+                it('succesfully updates the contentURI for a token', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    // assertion check
+                    const contentURI = await catalog.fetchContentURI(1);
+                    expect(contentURI).toEqual(defaultTokendata.contentURI);
+
+                    // update contentURI
+                    await catalog.updateContentURI(1, 'https://catalog.com/new-content'); 
+
+                    const newContentURI = await catalog.fetchContentURI(1);
+                    expect(newContentURI).toEqual('https://catalog.com/new-content');
+                });
+
             });
 
+            describe('updateMetadataURI', () => {
+
+                it('throws an eror if called on readOnly instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.updateMetadataURI(0, metadata)
+                    ).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('throws an error if metadataURI is invalid', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+                    await expect(catalog.updateMetadataURI(0, 'http://pee.com')).rejects
+                    .toThrowError('Invariant failed: http://pee.com must begin with `https://` or `ipfs://`');
+                });
+
+                it('succesfully updates the metadataURI for a token', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    // assertion check
+                    const metadataURI = await catalog.fetchMetadataURI(1);
+                    expect(metadataURI).toEqual(defaultTokendata.metadataURI);
+
+                    // update metadataURI
+                    await catalog.updateMetadataURI(1, 'https://catalog.com/new-metadata'); 
+
+                    const newMetadataURI = await catalog.fetchMetadataURI(1);
+                    expect(newMetadataURI).toEqual('https://catalog.com/new-metadata');
+                });
+            });
             // it('can set the root', async () => {
             //     const catalog =  new Catalog(mainWallet, 1337, catalogConfig.cnft);
             //     const setRoot = await catalog.updateRoot(defaultRoot);

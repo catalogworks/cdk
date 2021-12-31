@@ -77,7 +77,7 @@ export class Catalog {
     // Metadata URI
     // @param tokenId uint256 ID of token to fetch metadata URI of
     // @note This is the same as fetchTokenURI
-    public async fetchMetdataURI(tokenId: BigNumberish): Promise<string> {
+    public async fetchMetadataURI(tokenId: BigNumberish): Promise<string> {
         return this.contract.tokenURI(tokenId);
     }
 
