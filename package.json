@@ -9,7 +9,6 @@
   ],
   "author": "@catalogworks",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "test": "jest",
     "clean": "rm -rf dist",
