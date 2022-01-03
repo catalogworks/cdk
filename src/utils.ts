@@ -16,7 +16,9 @@ import MerkleTree from "merkletreejs";
 
 
 
-// Regex to validate URI of IPFS hash
+// Function to validate URI of IPFS hash
+// @param {string} uri - URI of IPFS hash
+// @returns {boolean} - true if valid, false if invalid
 export function validateURI(uri: string) {
     if (!uri.match(/^(https)|(ipfs):\/\/(.*)/)) {
         invariant(false, `${uri} must begin with \`https://\` or \`ipfs://\``);
@@ -24,6 +26,8 @@ export function validateURI(uri: string) {
 }
 
 // Validates the input address is a valid Ethereum address
+// @param {string} address - Ethereum address
+// @returns {string} - validated and parsed address
 export function validateAndParseAddress(address: string): string {
 
     try {
@@ -36,6 +40,8 @@ export function validateAndParseAddress(address: string): string {
 }
 
 // Returns string network name corresponding to Chain ID
+// @param {number} chainId - Chain ID
+// @returns {string} - network name
 export function chainIdToNetwork(chainId: number): string {
     switch (chainId) {
         case 1: {
@@ -50,6 +56,8 @@ export function chainIdToNetwork(chainId: number): string {
 }
 
 // Validates BytesLike input as valid Bytes32 Data
+// @param {BytesLike} value - BytesLike input
+// @returns {Bytes32} - validated and parsed Bytes32 Data
 export function validateBytes32(value: BytesLike) {
 
     if (typeof value == 'string') {
@@ -66,12 +74,20 @@ export function validateBytes32(value: BytesLike) {
 }
 
 // does this shit work
+// @param {string} value - BytesLike[] array input
+// @returns {Bytes32[]} - validated and parsed Bytes32[] Data
 export function validateBytes32Array(value: BytesLike[]) {
     value.forEach(validateBytes32);
 }
 
 
 // Constructs a TokenData type.
+// @param {string} metadataURI - URI of IPFS hash of metadata
+// @param {string} contentURI - URI of IPFS hash of content
+// @param {string} creator - Ethereum address of creator
+// @param {string} royaltyPayout - Ethereum address of royalty payout
+// @param {BigNumberish} royaltyBPS - BigNumber of royalty BPS
+// @returns {TokenData} - TokenData type
 export function constructTokenData(
     metadataURI: string,
     contentURI: string,
@@ -93,8 +109,9 @@ export function constructTokenData(
     };
 }
 
-
-// CLEAN
+// Utility function to strip 0x from hex strings
+// @param {string} hex - hex string
+// @returns {string} - hex string without 0x
 export function stripHexPrefix(hex: string) {
     return hex.slice(0, 2) == '0x' ? hex.slice(2) : hex;
 }
@@ -103,6 +120,8 @@ export function stripHexPrefix(hex: string) {
 // Hash utils
 
 // Generates SHA256 hash from a buffer and returns hash hex encoded
+// @param {Buffer} buffer - Buffer to hash
+// @returns {string} - hex encoded hash
 export function sha256FromBuffer(buffer: Buffer): string {
     const bitArray = sjcl.codec.hex.toBits(buffer.toString('hex'));
     const hashArray = sjcl.hash.sha256.hash(bitArray);
@@ -111,6 +130,8 @@ export function sha256FromBuffer(buffer: Buffer): string {
 
 
 // generates sha256 hash from a 0x hex string and returns hash hex encoded
+// @param {string} data - hex string to hash
+// @returns {string} - SHA256 encoded hash string
 export function sha256FromHexString(data: string): string {
     if (!isHexString(data)) {
         // invariant(false, `${data} is not a valid hex string`);
@@ -128,9 +149,9 @@ export function sha256FromHexString(data: string): string {
 // prob can refactor
 
 // Generates Merkle Tree from an input array of strings
+// @param {string[]} data - array of strings
+// @returns {MerkleTree} arb object of type MerkleTree
 // @note this operation does not provide any checks on validity of the input data
-// @param data - array of strings
-// @returns Merkle Tree arb object of type MerkleTree
 export function generateMerkleTree(data: string[]): MerkleTree {
     const leaves = data.map((x) => keccak256(x));
     const tree = new MerkleTree(leaves, keccak256, {sortPairs: true});
@@ -138,16 +159,16 @@ export function generateMerkleTree(data: string[]): MerkleTree {
 }
 
 // Gets the merkle root from an input MerkleTree
-// @param inputTree - MerkleTree the pre-generated merkle tree
-// @returns string merkle root hex encoded
+// @param {MerkleTree} inputTree - MerkleTree the pre-generated merkle tree
+// @returns {string} merkle root hex encoded
 export function generateMerkleRootFromTree(inputTree: MerkleTree): string {
     return inputTree.getHexRoot();
 }
 
 // Generates Merkle Proof from an input MerkleTree and single address
-// @param inputTree - MerkleTree the pre-generated merkle tree
-// @param address - string address to generate proof for
-// @returns Proof contains proof bytesLike array
+// @param {MerkleTree} inputTree - MerkleTree the pre-generated merkle tree
+// @param {string} address - string address to generate proof for
+// @returns {Proof} contains proof bytesLike array
 export function generateMerkleProof(inputTree: MerkleTree, address: string): Proof {
     const leaf = keccak256(address);
     const proof = inputTree.getHexProof(leaf);
@@ -155,9 +176,9 @@ export function generateMerkleProof(inputTree: MerkleTree, address: string): Pro
 }
 
 /// Generates Merkle Proof from an input MerkleTree and array of addresses (strings)
-/// @param inputTree - MerkleTree the pre-generated merkle tree
-/// @param addresses - array of string addresses to generate proofs for
-/// @returns Proof - array of Proof objects
+/// @param {MerkleTree} inputTree - MerkleTree the pre-generated merkle tree
+/// @param {string[]} addresses - array of string addresses to generate proofs for
+/// @returns {Proof[]} Proof - array of Proof objects
 export function generateMerkleProofs(inputTree: MerkleTree, addresses: string[]): Proof[] {
     return addresses.map((address) => generateMerkleProof(inputTree, address));
 }
