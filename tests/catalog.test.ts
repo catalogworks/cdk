@@ -85,10 +85,8 @@ describe('Catalog', () => {
             expect(catalog.contractAddress).toBe(rinkebyAddress);
         });
 
-
-
-
     });
+    
 
     // CONTRACT FUNCTIONS
 
@@ -205,6 +203,76 @@ describe('Catalog', () => {
 
                     const newMetadataURI = await catalog.fetchMetadataURI(1);
                     expect(newMetadataURI).toEqual('https://catalog.com/new-metadata');
+                });
+
+            });
+
+            describe('update royalty info', () => {
+
+                it('throws an erorr if called on read only instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.updateRoyaltyInfo(0, mainWallet.address)
+                    ).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it('throws an error if the input address is not valid', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+                    const invalidAddress = 'pooppee';
+
+                    expect (catalog.readOnly).toBe(false);
+
+                    await expect(catalog.updateRoyaltyInfo(1, invalidAddress)).rejects
+                    .toThrowError('Invariant failed: pooppee is not a valid address');
+                });
+
+                it('succesffuly updates the royalty information', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    await catalog.updateRoot(defaultRoot);
+                    await catalog.mint(defaultTokendata, defaultProof);
+
+                    expect (catalog.readOnly).toBe(false);
+
+                    await catalog.updateRoyaltyInfo(1, otherWallet.address);
+
+                    await expect(catalog.fetchRoyaltyPayoutAddress(1)).resolves.toEqual(otherWallet.address);
+                });
+
+            });
+
+
+            describe('update merkle root', () => {
+
+                it('throws an error if called on a read only insance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.updateRoot(defaultRoot)).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
+
+                it ('throws an error if the input root is not valid', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    const invalidRoot = 'poopee';
+                    expect (catalog.readOnly).toBe(false);
+
+                    await expect(catalog.updateRoot(invalidRoot)).rejects.toThrowError('Invariant failed: poopee is not a valid Bytes32 hex string');
+                });
+
+                it('succesfully updates the merkle root', async () => {
+                    const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+                    await catalog.initialize('catalog', 'CTST');
+                    expect (catalog.readOnly).toBe(false);
+                    await catalog.updateRoot(defaultRoot);
+
+                    await expect(catalog.fetchMerkleRoot()).resolves.toEqual(defaultRoot);
                 });
 
             });
@@ -428,6 +496,16 @@ describe('Catalog', () => {
                     expect(newOwner.toLowerCase()).toBe(otherWallet.address.toLowerCase());
                 });
 
+            });
+
+            describe('initializer', () => {
+                it('throws an error if called on readOnly instance', async () => {
+                    const provider = new JsonRpcProvider();
+                    const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+                    expect(catalog.readOnly).toBe(true);
+
+                    await expect(catalog.initialize('catalog', 'CTST')).rejects.toThrowError('ensureReadOnly: Cannot modify read-only instance');
+                });
             });
 
 

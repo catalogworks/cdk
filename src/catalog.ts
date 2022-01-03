@@ -37,11 +37,10 @@ export class Catalog {
         chainId: number,
         contractAddress?: string,
     ) {
-
-        if (!contractAddress && !chainId) {
-            invariant(false, 'Catalog Constructor: contractAddress cannot be null');
-        }
-
+        // unecessary
+        // if (!contractAddress && !chainId) {
+        //     invariant(false, 'Catalog Constructor: contractAddress cannot be null');
+        // }
 
         if (Signer.isSigner(signerOrProvider)) {
             this.readOnly = false;
