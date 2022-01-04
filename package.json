@@ -32,7 +32,10 @@
     "@ethersproject/solidity": "^5.0.5",
     "@ethersproject/transactions": "^5.0.5",
     "@types/jest": "^27.0.3",
+    "@types/node": "^17.0.8",
     "@types/sjcl": "^1.0.30",
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
     "ganache-cli": "^6.12.2",
     "jest": "^27.4.5",
     "jest-serial-runner": "^1.2.0",
@@ -43,7 +46,6 @@
   },
   "dependencies": {
     "@catalogworks/catalog-contracts": "0.0.6",
-    "@types/jsonschema": "^1.1.1",
     "ethers": "^5.5.2",
     "jsonschema": "^1.4.0",
     "keccak256": "^1.0.6",
