@@ -22,7 +22,7 @@ export class Validator {
     // @param {object} json - json object to validate
     public validate(json: { [key: string]: any }): boolean {
         const jsonValidator = new JsonValidator();
-        const schema = require(`../schemas/${this.name}/${this.calVer}/schema.json`);
+        const schema = require(`./schemas/${this.name}/${this.calVer}.json`);
         return jsonValidator.validate(json, schema).valid;
     }
 

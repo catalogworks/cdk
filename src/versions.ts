@@ -5,7 +5,7 @@
 
 export const supportedVersions: { [key: string]: Array<string> } = {
     // Schema versions for Catalog Contracts
-    catalog: ['20210202'],
+    catalog: ['20210202', '20220000'],
 };
 
 export const supportedVersionsTypeMapping: {
@@ -13,7 +13,8 @@ export const supportedVersionsTypeMapping: {
 } = {
     // Schema versions for Catalog Contracts (mapping)
     catalog: {
-        '20210202': 'Catalog20210202'
+        '20210202': 'Catalog20210202',
+        '20220000': 'Catalog20220000',
     },
 };
 

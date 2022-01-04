@@ -4,6 +4,7 @@
 import { BigNumberish } from '@ethersproject/bignumber';
 import { BytesLike } from '@ethersproject/bytes';
 import { Catalog20210202 } from './schemas/types/catalog/20210202';
+import { Catalog20220000 } from './schemas/types/catalog/20220000';
 
 
 // Catalog cNFT Data Type
@@ -34,7 +35,8 @@ export type RoyaltyInfo = {
 
 
 // Metadata
-export type MetadataLike = Catalog20210202;
+export type MetadataLike = Catalog20210202 | Catalog20220000;
 
 // Export schema typing
 export { Catalog20210202 };
+export { Catalog20220000 };
