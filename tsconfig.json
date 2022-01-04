@@ -1,5 +1,5 @@
 {
-    "include": ["src", "tests"],
+    "include": ["src", "tests", "tests/fixtures/*.json", "src/schemas/**/*.json"],
     "exclude": ["node_modules", "tests/utils.test.ts", "tests/catalog.test.ts"],
     "compilerOptions": {
       "outDir": "./dist",
