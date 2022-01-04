@@ -27,6 +27,7 @@ The CDK has 4 primary exports plus some types:
 - [Catalog](docs/catalog.md)
 - [Utils]
 - [Addresses]
+- [Metadata]
 
 ____
 

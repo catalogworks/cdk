@@ -9,8 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.2] - 2021-01-01
 ### Added
 
+- Added Metadata utils to the cdk. Includes utilities for generating, parsing and validating Catalog metadata.
 - Added additional test coverage for Catalog class.
 - Improved JSDoc documentation comments for Catalog, Utilities, Addresses classes.
+- Added documentation for Catalog class under [docs/catalog.md](docs/catalog.md)
+- This changelog
 
 
 ## [0.0.1] - 2020-12-31
