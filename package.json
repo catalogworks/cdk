@@ -15,7 +15,8 @@
     "build": "yarn clean && tsc",
     "prepublish": "yarn build",
     "coverage": "jest --coverage",
-    "chain": "ganache-cli --networkId 50 --accounts 20 -e 100 -l 10000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'"
+    "chain": "ganache-cli --networkId 50 --accounts 20 -e 100 -l 10000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'",
+    "gen:schema": "json2ts -i src/schemas/ -o src/schemas/types/"
   },
   "engines": {
     "node": ">=10"
@@ -35,13 +36,16 @@
     "ganache-cli": "^6.12.2",
     "jest": "^27.4.5",
     "jest-serial-runner": "^1.2.0",
+    "json-schema-to-typescript": "^10.1.5",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
   },
   "dependencies": {
     "@catalogworks/catalog-contracts": "0.0.6",
+    "@types/jsonschema": "^1.1.1",
     "ethers": "^5.5.2",
+    "jsonschema": "^1.4.0",
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.2.27",
     "sjcl": "^1.0.8",

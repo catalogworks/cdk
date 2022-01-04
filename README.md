@@ -24,7 +24,7 @@ This repository is based on the [Zora ZDK](https://github.com/ourzora/zdk).
 
 The CDK has 4 primary exports plus some types:
 
-- [Catalog]
+- [Catalog](docs/catalog.md)
 - [Utils]
 - [Addresses]
 

@@ -1,8 +1,9 @@
 // types.ts
 // Data types to suppot Catalog Contracts
 
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from '@ethersproject/bignumber';
 import { BytesLike } from '@ethersproject/bytes';
+import { Catalog20210202 } from './schemas/types/catalog/20210202';
 
 
 // Catalog cNFT Data Type
@@ -30,3 +31,10 @@ export type RoyaltyInfo = {
     receiver: string;
     royaltyAmount: BigNumberish;
 }
+
+
+// Metadata
+export type MetadataLike = Catalog20210202;
+
+// Export schema typing
+export { Catalog20210202 };
