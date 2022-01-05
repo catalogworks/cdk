@@ -33,6 +33,7 @@
     "@ethersproject/transactions": "^5.0.5",
     "@gnosis.pm/safe-core-sdk": "^1.2.0",
     "@gnosis.pm/safe-core-sdk-types": "^0.1.1",
+    "@gnosis.pm/safe-ethers-adapters": "^0.1.0-alpha.6",
     "@gnosis.pm/safe-service-client": "^1.0.1",
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.8",
