@@ -2,6 +2,7 @@
 // Example usage of generating Merkle proofs from input data pulled from Hasura
 // This is a ts-node script
 // Execute with `$ ts-node examples/scripts/treeproofdb.ts`
+// @note This is not included in the SDK, requires Environment Variables.
 
 import axios, { AxiosRequestConfig } from 'axios';
 import { generateMerkleTree, generateMerkleProofs, generateMerkleProof, generateMerkleRootFromTree} from '../../src/utils';
@@ -11,16 +12,20 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
+// Fetches GraphQL data from Hasura
+// @param {string} operationsDoc - GraphQL query string
+// @param {string} operationName - GraphQL operation name
+// @param {Record<string, any>} variables - GraphQL variables
+// @returns {Promise<any>} result of the GraphQL query
+// @note This is a demo function, it is not part of the SDK
 const fetchGraphQL = async (
     operationsDoc: string,
     operationName: string,
     variables: Record<string, any>
 ) => {    
-
     if (process.env.HASURA_ENDPOINT) {
         console.log('\x1b[37m','USING HASURA_ENDPOINT: ', process.env.HASURA_ENDPOINT, '\x1b[0m');
     }
-
     const config: AxiosRequestConfig = {
         url: process.env.HASURA_ENDPOINT || 'https://catalog.hasura.app/v1/graphql',
         method: 'POST',
@@ -34,7 +39,6 @@ const fetchGraphQL = async (
             operationName,
         },
     };
-
     const result = await axios(config).then(res => {
         return res.data;
     }).catch(e => {
@@ -42,7 +46,6 @@ const fetchGraphQL = async (
     });
     return result;
 };
-
 
 // GQL query to fetch all valid artists
 const operation = `
@@ -54,7 +57,9 @@ const operation = `
   `;
 
 
-// fetch all artists
+// Fetches Input GQL Query
+// @returns {Promise<string[]>} array of strings, 'addresses'=
+// @note This is a demo function, it is not part of the SDK
 const fetchMyQuery = async (): Promise<string[]> => {
     const result = await fetchGraphQL(operation, 'MyQuery', {});
     // format
@@ -62,7 +67,9 @@ const fetchMyQuery = async (): Promise<string[]> => {
     return formatted;
 };
 
-
+// Fetches GQL Query, displays information to console and generates Merkle Tree, Merkle Proofs and Merkle Root.
+// @returns {Promise<{string, <T>}} - merkleRoot and map of proofs
+// @note This is a demo function, it is not part of the SDK
 const main = async (_inputAddress?: string) => {
 
         console.group(
