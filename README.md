@@ -41,6 +41,15 @@ yarn add @catalogworks/cdk@0.0.2
 
 ____
 
+### Examples
+
+Example usage of the CDK in a NodeJS environment can be found in the [examples](./examples) directory.
+
+- [tree+proofs+root](./examples/scripts/treeproofdb.ts)
+- [gnosissafe](./examples/scripts/connectsafe.ts)
+
+____
+
 ### Development
 
 ```bash

@@ -27,6 +27,6 @@
       "baseUrl": "./",
       "esModuleInterop": true,
       "resolveJsonModule": true,
-      "skipLibCheck": true
-    }
+      "skipLibCheck": true,
+     }
   }
