@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - [./examples](./examples) new `ts-node` example scripts for using the CDK in production settings.
+- (DEV) added code formatting and linting to repository 
 
 ## [0.0.2] - 2021-01-01
 ### Added
