@@ -1,5 +1,5 @@
 // index.ts
-// exporter 
+// exporter
 //@ts-ignore-next
 export * from './catalog';
 export * from './types';
