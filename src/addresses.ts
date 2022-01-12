@@ -5,13 +5,12 @@ import rinkebyAddresses from '@catalogworks/catalog-contracts/dist/addresses/4.j
 
 // AddressBook Interface for Catalog Contracts
 interface AddressBook {
-    [key: string]: {
-        [key: string]: string;
-    }
+  [key: string]: {
+    [key: string]: string;
+  };
 }
-
 
 // Mapping of network names to addresses
 export const addresses: AddressBook = {
-    rinkeby: rinkebyAddresses
-}
+  rinkeby: rinkebyAddresses,
+};
