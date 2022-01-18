@@ -1,6 +1,6 @@
 // catalog.ts
 // Class for Catalog Shared Creator Contract
-// Currenly based on TD606 Catalog Shared Creator Contract
+// Currenly based on CFR Catalog Shared Creator Contract
 
 import {TokenData, Proof, RoyaltyInfo} from './types';
 
@@ -10,8 +10,8 @@ import {Provider} from '@ethersproject/providers';
 import {Signer} from '@ethersproject/abstract-signer';
 import invariant from 'tiny-invariant';
 
-import {TD606} from '@catalogworks/catalog-contracts/dist/types/typechain';
-import {TD606__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
+import {CFR} from '@catalogworks/catalog-contracts/dist/types/typechain';
+import {CFR__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {addresses} from './addresses';
 import {
   chainIdToNetwork,
@@ -28,7 +28,7 @@ export class Catalog {
   public contractAddress: string;
   public signerOrProvider: Signer | Provider;
   // public cnft: CNFT
-  public contract: TD606;
+  public contract: CFR;
   public readOnly: boolean;
 
   // Constructor
@@ -64,7 +64,7 @@ export class Catalog {
       this.contractAddress = addresses[network].catalog;
     }
 
-    this.contract = TD606__factory.connect(
+    this.contract = CFR__factory.connect(
       this.contractAddress,
       this.signerOrProvider
     );
@@ -129,6 +129,24 @@ export class Catalog {
   }
 
   // Write Methods [Transactions]
+
+  // Update Creator Address
+  // @param {BigNumberish} tokenId uint256 ID of token to update
+  // @param {string} creatorAddress string The new creator address
+  // @returns {Promise<ContractTransaction>} The transaction object
+  public async updateCreator(
+    tokenId: BigNumberish,
+    creatorAddress: string
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+      validateAndParseAddress(creatorAddress);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+
+    return this.contract.updateCreator(tokenId, creatorAddress);
+  }
 
   // Update Content URI
   // @param {BigNumberish} tokenId uint256 ID of token to update

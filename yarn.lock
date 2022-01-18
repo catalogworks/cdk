@@ -296,10 +296,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@catalogworks/catalog-contracts@0.0.6":
-  version "0.0.6"
-  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.0.6/132e13b8f28feee253bd26e653a4f9d3a32e5d2651a80e8221a3b451c398da0a#3f4d397d4e5176d74d38a620871d9bfb375f0f6f"
-  integrity sha512-/egxSUj0ALfeCUheh6soqlK2vODAds2V0zzrjijc7xezMD2qfsIynYyr8lafwBdKma9FCTftxjdHyrzYqFgZxQ==
+"@catalogworks/catalog-contracts@0.0.8":
+  version "0.0.8"
+  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.0.8/337eeac8663e39e11ed1450f406bda3f34ca0199599d556b1aad2964dd2eb47a#d0700581d9dfb2248274c96011cabaf3ebe9bc3c"
+  integrity sha512-rYHJFapBCFLxPqW4tbKHuRk9xsQDL1FuLHQ7J7qcIAUcQOOVWIW6mJINjEqydYv3sT8aAPsBMYhUsdujLvcBSA==
   dependencies:
     ethers "^5.4.7"
 
