@@ -12,8 +12,8 @@
 ```
 
 WIP Repo
-____
 
+---
 
 ## Info
 
@@ -29,17 +29,17 @@ The CDK has 4 primary exports plus some types:
 - [Addresses]
 - [Metadata]
 
-____
+---
 
 ### Installation
 
 [Package](https://github.com/catalogworks/cdk/packages/1173720)
 
 ```bash
-yarn add @catalogworks/cdk@0.0.2
+yarn add @catalogworks/cdk@0.0.3
 ```
 
-____
+---
 
 ### Examples
 
@@ -48,7 +48,7 @@ Example usage of the CDK in a NodeJS environment can be found in the [examples](
 - [tree+proofs+root](./examples/scripts/treeproofdb.ts)
 - [gnosissafe](./examples/scripts/connectsafe.ts)
 
-____
+---
 
 ### Development
 
@@ -68,10 +68,7 @@ yarn build
 
 Build output is located in the generated `./dist` directory.
 
-
-
-____
-
+---
 
 ### Testing
 
@@ -92,8 +89,7 @@ then:
 yarn test
 ```
 
-____
-
+---
 
 ### Code Coverage
 
@@ -105,21 +101,19 @@ yarn coverage
 
 Reports are located in the `./coverage` directory.
 
-____
-
+---
 
 ### License
 
 View: [LICENSE](./LICENSE)
 
-____
-
+---
 
 ### Changelog
 
 Not setup yet.
 
-____
+---
 
 ### Dependencies
 
