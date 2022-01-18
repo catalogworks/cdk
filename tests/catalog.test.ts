@@ -21,8 +21,8 @@ import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupCatalog, CatalogConfiguredAddresses} from './helpers';
 
-let provider = new JsonRpcProvider();
-let blockchain = new Blockchain(provider);
+const provider = new JsonRpcProvider();
+const blockchain = new Blockchain(provider);
 
 jest.setTimeout(30000);
 
@@ -89,8 +89,8 @@ describe('Catalog', () => {
 
   describe('contract functions', () => {
     let catalogConfig: CatalogConfiguredAddresses;
-    let provider = new JsonRpcProvider();
-    let [mainWallet, otherWallet] = generatedWallets(provider);
+    const provider = new JsonRpcProvider();
+    const [mainWallet, otherWallet] = generatedWallets(provider);
 
     beforeEach(async () => {
       await blockchain.resetAsync();

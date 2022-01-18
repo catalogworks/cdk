@@ -9,6 +9,7 @@ import {
 import {Catalog20210202} from '../src';
 
 describe('Metadata tests', () => {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   function isCatalogSchema(json: Object): json is Catalog20210202 {
     // nasty
     return (

@@ -19,7 +19,7 @@ export class Generator {
   // generate valid json schema
   // @param {object} json - json object to validate
   // @returns {string} - valid json schema minified
-  public generateJSON(unorderedJSON: {[key: string]: any}): string {
+  public generateJSON(unorderedJSON: {[key: string]: unknown}): string {
     // validate the input schema
     const version = this.name.concat('-').concat(this.calVer);
     const validator = new Validator(version);
@@ -30,7 +30,7 @@ export class Generator {
     }
 
     // sort the json object
-    const orderedJSON: {[key: string]: {}} = {};
+    const orderedJSON: {[key: string]: unknown} = {};
     Object.keys(unorderedJSON)
       .sort()
       .forEach((key) => {
