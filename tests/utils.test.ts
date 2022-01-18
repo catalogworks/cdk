@@ -29,7 +29,7 @@ describe('Utils', () => {
   let defaultContentURI: string;
   let defaultMetadataURI: string;
 
-  let provider = new JsonRpcProvider();
+  const provider = new JsonRpcProvider();
   // let blockchain = new Blockchain(provider)
 
   beforeAll(() => {

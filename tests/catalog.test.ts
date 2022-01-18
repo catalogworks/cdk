@@ -16,13 +16,13 @@ import {addresses as CatalogAddresses} from '../src/addresses';
 import {BigNumber, Bytes} from 'ethers';
 import {formatUnits} from 'ethers/lib/utils';
 import {AddressZero} from '@ethersproject/constants';
-import {TD606__factory as Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
+import {CFR__factory as Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupCatalog, CatalogConfiguredAddresses} from './helpers';
 
-let provider = new JsonRpcProvider();
-let blockchain = new Blockchain(provider);
+const provider = new JsonRpcProvider();
+const blockchain = new Blockchain(provider);
 
 jest.setTimeout(30000);
 
@@ -89,8 +89,8 @@ describe('Catalog', () => {
 
   describe('contract functions', () => {
     let catalogConfig: CatalogConfiguredAddresses;
-    let provider = new JsonRpcProvider();
-    let [mainWallet, otherWallet] = generatedWallets(provider);
+    const provider = new JsonRpcProvider();
+    const [mainWallet, otherWallet] = generatedWallets(provider);
 
     beforeEach(async () => {
       await blockchain.resetAsync();
@@ -292,6 +292,52 @@ describe('Catalog', () => {
           await catalog.updateRoot(defaultRoot);
 
           await expect(catalog.fetchMerkleRoot()).resolves.toEqual(defaultRoot);
+        });
+      });
+
+      describe('updateCreator', () => {
+        it('throws an error if called on read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const catalog = new Catalog(provider, 50, catalogConfig.cnft);
+          expect(catalog.readOnly).toBe(true);
+
+          await expect(
+            catalog.updateCreator(1, mainWallet.address)
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        it('throws an error if the address is invalid', async () => {
+          const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+          await catalog.initialize('catalog', 'CTST');
+          await catalog.updateRoot(defaultRoot);
+
+          await catalog.mint(defaultTokendata, defaultProof);
+
+          expect(catalog.readOnly).toBe(false);
+
+          await expect(
+            catalog.updateCreator(1, 'pooppee')
+          ).rejects.toThrowError(
+            'Invariant failed: pooppee is not a valid address'
+          );
+        });
+
+        it('succesfully updates the creator from admin account', async () => {
+          const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
+          await catalog.initialize('catalog', 'CTST');
+          await catalog.updateRoot(defaultRoot);
+
+          await catalog.mint(defaultTokendata, defaultProof);
+
+          expect(catalog.readOnly).toBe(false);
+
+          await catalog.updateCreator(1, otherWallet.address);
+
+          await expect(catalog.fetchCreator(1)).resolves.toEqual(
+            otherWallet.address
+          );
         });
       });
 
