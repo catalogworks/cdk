@@ -3,6 +3,7 @@
 
 import {
   constructTokenData,
+  constructContentData,
   chainIdToNetwork,
   validateBytes32,
   validateBytes32Array,
@@ -19,7 +20,7 @@ import {
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {BigNumber} from '@ethersproject/bignumber';
 import {MaxUint256} from '@ethersproject/constants';
-import {ethers} from 'ethers';
+import {BytesLike, ethers} from 'ethers';
 import MerkleTree from 'merkletreejs';
 
 jest.setTimeout(1000000);
@@ -28,6 +29,7 @@ describe('Utils', () => {
   let hash: string;
   let defaultContentURI: string;
   let defaultMetadataURI: string;
+  let defaultContentHash: BytesLike;
 
   const provider = new JsonRpcProvider();
   // let blockchain = new Blockchain(provider)
@@ -36,6 +38,8 @@ describe('Utils', () => {
     hash = '0xe5dc4ed07fa1a3464d618a5d52a983880bb908b99ffff479eb7ebb7f7b11dabb';
     defaultContentURI = 'https://poop.com';
     defaultMetadataURI = 'https://metapoop.com';
+    defaultContentHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001';
   });
 
   beforeEach(async () => {
@@ -67,19 +71,27 @@ describe('Utils', () => {
       it('succesfully creates valid tokenData', () => {
         const data = constructTokenData(
           defaultMetadataURI,
-          defaultContentURI,
           '0x0000000000000000000000000000000000000000',
           '0x0000000000000000000000000000000000000000',
           '5000'
         );
 
         expect(data.metadataURI).toBe(defaultMetadataURI);
-        expect(data.contentURI).toBe(defaultContentURI);
         expect(data.creator).toBe('0x0000000000000000000000000000000000000000');
         expect(data.royaltyPayout).toBe(
           '0x0000000000000000000000000000000000000000'
         );
         expect(data.royaltyBPS).toBe('5000');
+      });
+    });
+
+    // 02
+    describe('#constructContentData', () => {
+      it('succesfully creates valid contentData', () => {
+        const data = constructContentData(defaultContentURI, contentHash);
+
+        expect(data.contentURI).toBe(defaultContentURI);
+        expect(data.contentHash).toBe(contentHash);
       });
     });
   });

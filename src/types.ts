@@ -14,10 +14,17 @@ import {Catalog20220000} from './schemas/types/catalog/20220000';
 // @param {BigNumberish} royaltyBPS - BigNumber of royalty BPS
 export type TokenData = {
   metadataURI: string;
-  contentURI: string;
   creator: string;
   royaltyPayout: string;
   royaltyBPS: BigNumberish;
+};
+
+// Catalog cNFT Calldata Data Type
+// @param {string} contentURI - URI of IPFS hash
+// @param {BytesLike} contentHash - SHA256 hash of content
+export type ContentData = {
+  contentURI: string;
+  contentHash: BytesLike;
 };
 
 // Catalog cNFT Input Proof Type

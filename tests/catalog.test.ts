@@ -9,22 +9,25 @@ import {
   generateMerkleProofs,
   generateMerkleRootFromTree,
   generateMerkleProof,
+  ContentData,
+  sha256FromHexString,
 } from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {addresses as CatalogAddresses} from '../src/addresses';
 import {BigNumber, Bytes} from 'ethers';
-import {formatUnits} from 'ethers/lib/utils';
+import {BytesLike, formatUnits} from 'ethers/lib/utils';
 import {AddressZero} from '@ethersproject/constants';
-import {CFR__factory as Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
+import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupCatalog, CatalogConfiguredAddresses} from './helpers';
-
+import {waffleJest} from '@ethereum-waffle/jest';
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
 
 jest.setTimeout(30000);
+expect.extend(waffleJest);
 
 describe('Catalog', () => {
   describe('constructor', () => {
@@ -64,7 +67,7 @@ describe('Catalog', () => {
     });
 
     // 05
-    it('sets the Catalog instane of readOnly=true is a Provider is specified', () => {
+    it('sets the Catalog instance of readOnly=true is a Provider is specified', () => {
       const provider = new JsonRpcProvider();
       const catalog = new Catalog(
         provider,
@@ -100,22 +103,33 @@ describe('Catalog', () => {
     // 01
     describe('write functions', () => {
       let defaultTokendata: TokenData;
+      let defaultContentData: ContentData;
       let defaultProof: Proof;
       let otherProof: Proof;
       let metadata: string;
       let content: string;
+      let contentHash: BytesLike;
       let defaultRoot: string;
 
       beforeEach(() => {
         metadata = 'https://catalog.com/metadata';
         content = 'https://catalog.com/content';
+        contentHash = sha256FromHexString(
+          '0xE1447C16F5DA1173C488CD2D3450415E7677D1E65D28CFA957E96A660FFDEA97'
+        );
+
         defaultTokendata = {
           metadataURI: metadata,
-          contentURI: content,
           creator: mainWallet.address,
           royaltyPayout: mainWallet.address,
           royaltyBPS: 1000,
         };
+
+        defaultContentData = {
+          contentURI: content,
+          contentHash: contentHash,
+        };
+
         // generate proof/tree/root
         const tree = generateMerkleTree([
           mainWallet.address,
@@ -136,7 +150,7 @@ describe('Catalog', () => {
           expect(catalog.readOnly).toBe(true);
 
           await expect(
-            catalog.updateContentURI(0, content)
+            catalog.updateContentURI(1, defaultContentData)
           ).rejects.toThrowError(
             'ensureReadOnly: Cannot modify read-only instance'
           );
@@ -146,29 +160,41 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
+          const tempContentData = {
+            contentURI: 'http://pee.com',
+            contentHash: contentHash,
+          };
           await expect(
-            catalog.updateContentURI(0, 'http://pee.com')
+            catalog.updateContentURI(1, tempContentData)
           ).rejects.toThrowError(
             'Invariant failed: http://pee.com must begin with `https://` or `ipfs://`'
           );
         });
 
+        // TODO: write a better test for this, capture event
         it('succesfully updates the contentURI for a token', async () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
-
-          // assertion check
-          const contentURI = await catalog.fetchContentURI(1);
-          expect(contentURI).toEqual(defaultTokendata.contentURI);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           // update contentURI
-          await catalog.updateContentURI(1, 'https://catalog.com/new-content');
+          const updateTx = await catalog.updateContentURI(
+            1,
+            defaultContentData
+          );
+          const receipt = await updateTx.wait();
 
-          const newContentURI = await catalog.fetchContentURI(1);
-          expect(newContentURI).toEqual('https://catalog.com/new-content');
+          // capture event (not sure how in jest here rn)
         });
       });
 
@@ -189,7 +215,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
           await expect(
             catalog.updateMetadataURI(0, 'http://pee.com')
           ).rejects.toThrowError(
@@ -201,7 +231,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           // assertion check
           const metadataURI = await catalog.fetchMetadataURI(1);
@@ -235,7 +269,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
           const invalidAddress = 'pooppee';
 
           expect(catalog.readOnly).toBe(false);
@@ -251,7 +289,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           expect(catalog.readOnly).toBe(false);
 
@@ -313,7 +355,11 @@ describe('Catalog', () => {
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
 
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           expect(catalog.readOnly).toBe(false);
 
@@ -329,7 +375,11 @@ describe('Catalog', () => {
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
 
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           expect(catalog.readOnly).toBe(false);
 
@@ -348,7 +398,7 @@ describe('Catalog', () => {
           expect(catalog.readOnly).toBe(true);
 
           await expect(
-            catalog.mint(defaultTokendata, defaultProof)
+            catalog.mint(defaultTokendata, defaultContentData, defaultProof)
           ).rejects.toThrowError(
             'ensureReadOnly: Cannot modify read-only instance'
           );
@@ -361,7 +411,6 @@ describe('Catalog', () => {
 
           const invalidTokenData: TokenData = {
             metadataURI: 'http://pee.com',
-            contentURI: 'https://pee.com',
             creator: mainWallet.address,
             royaltyPayout: mainWallet.address,
             royaltyBPS: 1000,
@@ -369,7 +418,7 @@ describe('Catalog', () => {
           expect(catalog.readOnly).toBe(false);
 
           await expect(
-            catalog.mint(invalidTokenData, defaultProof)
+            catalog.mint(invalidTokenData, defaultContentData, defaultProof)
           ).rejects.toThrowError(
             'Invariant failed: http://pee.com must begin with `https://` or `ipfs://`'
           );
@@ -382,15 +431,19 @@ describe('Catalog', () => {
 
           const invalidTokenData: TokenData = {
             metadataURI: 'https://pee.com',
-            contentURI: 'http://pee.com',
             creator: mainWallet.address,
             royaltyPayout: mainWallet.address,
             royaltyBPS: 1000,
           };
+
+          const invalidContentData: ContentData = {
+            contentURI: 'http://pee.com',
+            contentHash: '0x0',
+          };
           expect(catalog.readOnly).toBe(false);
 
           await expect(
-            catalog.mint(invalidTokenData, defaultProof)
+            catalog.mint(invalidTokenData, invalidContentData, defaultProof)
           ).rejects.toThrowError(
             'Invariant failed: http://pee.com must begin with `https://` or `ipfs://`'
           );
@@ -407,7 +460,7 @@ describe('Catalog', () => {
           expect(catalog.readOnly).toBe(false);
 
           await expect(
-            catalog.mint(defaultTokendata, invalidProof)
+            catalog.mint(defaultTokendata, defaultContentData, invalidProof)
           ).rejects.toThrowError(
             'Invariant failed: 0x0 is not a valid Bytes32 hex string'
           );
@@ -419,18 +472,20 @@ describe('Catalog', () => {
           await catalog.updateRoot(defaultRoot);
 
           expect(catalog.readOnly).toBe(false);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           const tokenOwner = await catalog.fetchOwnerOf(1);
           const creator = await catalog.fetchCreator(1);
-          const onChainContentURI = await catalog.fetchContentURI(1);
           const onChainMetadataURI = await catalog.fetchMetadataURI(1);
-
+          // TODO: check for contentURI validity (event)
           expect(tokenOwner.toLowerCase()).toBe(
             mainWallet.address.toLowerCase()
           );
           expect(creator.toLowerCase()).toBe(mainWallet.address.toLowerCase());
-          expect(onChainContentURI).toEqual(defaultTokendata.contentURI);
           expect(onChainMetadataURI).toEqual(defaultTokendata.metadataURI);
         });
       });
@@ -450,7 +505,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           const tokenOwner = await catalog.fetchOwnerOf(1);
           expect(tokenOwner.toLowerCase()).toBe(
@@ -484,7 +543,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           const nullApproved = await catalog.fetchApproved(1);
           expect(nullApproved).toBe(AddressZero);
@@ -514,7 +577,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           const notApproved = await catalog.fetchIsApprovedForAll(
             mainWallet.address,
@@ -555,7 +622,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           const tokenOwner = await catalog.fetchOwnerOf(1);
           expect(tokenOwner.toLowerCase()).toBe(
@@ -591,7 +662,11 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(defaultTokendata, defaultProof);
+          await catalog.mint(
+            defaultTokendata,
+            defaultContentData,
+            defaultProof
+          );
 
           const tokenOwner = await catalog.fetchOwnerOf(1);
           expect(tokenOwner.toLowerCase()).toBe(

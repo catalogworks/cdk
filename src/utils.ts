@@ -3,7 +3,7 @@
 import {getAddress} from '@ethersproject/address';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
-import {TokenData, Proof} from './types';
+import {TokenData, Proof, ContentData} from './types';
 
 import {
   arrayify,
@@ -81,16 +81,14 @@ export function validateBytes32Array(value: BytesLike[]) {
   value.forEach(validateBytes32);
 }
 
-// Constructs a TokenData type.
+// Constructs an object of TokenData type.
 // @param {string} metadataURI - URI of IPFS hash of metadata
-// @param {string} contentURI - URI of IPFS hash of content
 // @param {string} creator - Ethereum address of creator
 // @param {string} royaltyPayout - Ethereum address of royalty payout
 // @param {BigNumberish} royaltyBPS - BigNumber of royalty BPS
 // @returns {TokenData} - TokenData type
 export function constructTokenData(
   metadataURI: string,
-  contentURI: string,
   creator: string,
   royaltyPayout: string,
   royaltyBPS: BigNumberish
@@ -98,13 +96,27 @@ export function constructTokenData(
   // Validate Inputs
   // validateURI
   validateURI(metadataURI);
-  validateURI(contentURI);
   return {
     metadataURI,
-    contentURI,
     creator,
     royaltyPayout,
     royaltyBPS,
+  };
+}
+
+// Constructs an object of ContentData type.
+// @param {string} contentURI - URI of IPFS hash of content
+// @param {BytesLike} contentHash - SHA256 hash of content
+// @returns {ContentData} - ContentData type
+export function constructContentData(
+  contentURI: string,
+  contentHash: BytesLike
+): ContentData {
+  // Validate Inputs
+  validateURI(contentURI);
+  return {
+    contentURI,
+    contentHash,
   };
 }
 

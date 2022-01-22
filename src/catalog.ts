@@ -1,8 +1,8 @@
 // catalog.ts
 // Class for Catalog Shared Creator Contract
-// Currenly based on CFR Catalog Shared Creator Contract
+// Currenly based on  Catalog Shared Creator Contract
 
-import {TokenData, Proof, RoyaltyInfo} from './types';
+import {TokenData, ContentData, Proof, RoyaltyInfo} from './types';
 
 import {BigNumber, BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
@@ -10,8 +10,8 @@ import {Provider} from '@ethersproject/providers';
 import {Signer} from '@ethersproject/abstract-signer';
 import invariant from 'tiny-invariant';
 
-import {CFR} from '@catalogworks/catalog-contracts/dist/types/typechain';
-import {CFR__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
+import {Catalog as CatalogType} from '@catalogworks/catalog-contracts/dist/types/typechain';
+import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {addresses} from './addresses';
 import {
   chainIdToNetwork,
@@ -28,7 +28,7 @@ export class Catalog {
   public contractAddress: string;
   public signerOrProvider: Signer | Provider;
   // public cnft: CNFT
-  public contract: CFR;
+  public contract: CatalogType;
   public readOnly: boolean;
 
   // Constructor
@@ -64,20 +64,13 @@ export class Catalog {
       this.contractAddress = addresses[network].catalog;
     }
 
-    this.contract = CFR__factory.connect(
+    this.contract = Catalog__factory.connect(
       this.contractAddress,
       this.signerOrProvider
     );
   }
 
   // View Methods [Getters]
-
-  // Content URI
-  // @param {BigNumberish} tokenId uint256 ID of token to fetch content URI of
-  // @returns {Promise<string>} The content URI of the token
-  public async fetchContentURI(tokenId: BigNumberish): Promise<string> {
-    return this.contract.tokenContentURI(tokenId);
-  }
 
   // Metadata URI
   // @param {BigNumberish} tokenId uint256 ID of token to fetch metadata URI of
@@ -154,16 +147,16 @@ export class Catalog {
   // @returns {Promise<ContractTransaction>} The transaction object
   public async updateContentURI(
     tokenId: BigNumberish,
-    contentURI: string
+    contentData: ContentData
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
-      validateURI(contentURI);
+      validateURI(contentData.contentURI);
     } catch (err) {
       return Promise.reject(err);
     }
 
-    return this.contract.updateContentURI(tokenId, contentURI);
+    return this.contract.updateContentURI(tokenId, contentData);
   }
 
   // Update Metadata URI
@@ -222,12 +215,13 @@ export class Catalog {
   // @returns {Promise<ContractTransaction>} The transaction object
   public async mint(
     tokenData: TokenData,
+    contentData: ContentData,
     proof: Proof
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
       validateURI(tokenData.metadataURI);
-      validateURI(tokenData.contentURI);
+      validateURI(contentData.contentURI);
       // validate the proof as a valid Bytes32 array
       validateBytes32Array(proof.proof);
     } catch (err) {
@@ -236,11 +230,12 @@ export class Catalog {
 
     const gasEstimate = await this.contract.estimateGas.mint(
       tokenData,
+      contentData,
       proof.proof
     );
     const paddedEstimate = gasEstimate.mul(110).div(100);
 
-    return this.contract.mint(tokenData, proof.proof, {
+    return this.contract.mint(tokenData, contentData, proof.proof, {
       gasLimit: paddedEstimate.toString(),
     });
   }

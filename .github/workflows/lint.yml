@@ -14,6 +14,12 @@ jobs:
         with:
           node-version: 14.17.6
 
+      - name: Create NPMRC
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGES_TOKEN }}" >> ~/.npmrc
+          echo "@catalogworks:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          echo 'registry "https://registry.yarnpkg.com"' >> ~/.yarnrc
+
       - name: code checkout
         uses: actions/checkout@v2
 
