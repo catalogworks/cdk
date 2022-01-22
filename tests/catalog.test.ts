@@ -15,7 +15,7 @@ import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {addresses as CatalogAddresses} from '../src/addresses';
 import {BigNumber, Bytes} from 'ethers';
-import {formatUnits} from 'ethers/lib/utils';
+import {BytesLike, formatUnits} from 'ethers/lib/utils';
 import {AddressZero} from '@ethersproject/constants';
 import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Blockchain} from './utils/blockchain';
@@ -167,7 +167,7 @@ describe('Catalog', () => {
             contentHash: contentHash,
           };
           await expect(
-            catalog.updateContentURI(0, tempContentData)
+            await catalog.updateContentURI(0, tempContentData)
           ).rejects.toThrowError(
             'Invariant failed: http://pee.com must begin with `https://` or `ipfs://`'
           );
