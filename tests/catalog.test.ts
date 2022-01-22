@@ -10,6 +10,7 @@ import {
   generateMerkleRootFromTree,
   generateMerkleProof,
   ContentData,
+  sha256FromHexString,
 } from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
@@ -21,11 +22,12 @@ import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typec
 import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupCatalog, CatalogConfiguredAddresses} from './helpers';
-
+import {waffleJest} from '@ethereum-waffle/jest';
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
 
 jest.setTimeout(30000);
+expect.extend(waffleJest);
 
 describe('Catalog', () => {
   describe('constructor', () => {
@@ -112,8 +114,9 @@ describe('Catalog', () => {
       beforeEach(() => {
         metadata = 'https://catalog.com/metadata';
         content = 'https://catalog.com/content';
-        contentHash =
-          '0x0000000000000000000000000000000000000000000000000000000000000001';
+        contentHash = sha256FromHexString(
+          '0xE1447C16F5DA1173C488CD2D3450415E7677D1E65D28CFA957E96A660FFDEA97'
+        );
 
         defaultTokendata = {
           metadataURI: metadata,
@@ -147,7 +150,7 @@ describe('Catalog', () => {
           expect(catalog.readOnly).toBe(true);
 
           await expect(
-            catalog.updateContentURI(0, defaultContentData)
+            catalog.updateContentURI(1, defaultContentData)
           ).rejects.toThrowError(
             'ensureReadOnly: Cannot modify read-only instance'
           );
@@ -167,7 +170,7 @@ describe('Catalog', () => {
             contentHash: contentHash,
           };
           await expect(
-            await catalog.updateContentURI(0, tempContentData)
+            catalog.updateContentURI(1, tempContentData)
           ).rejects.toThrowError(
             'Invariant failed: http://pee.com must begin with `https://` or `ipfs://`'
           );
@@ -185,9 +188,12 @@ describe('Catalog', () => {
           );
 
           // update contentURI
-          await expect(
-            catalog.updateContentURI(1, defaultContentData)
-          ).toHaveBeenCalled();
+          const updateTx = await catalog.updateContentURI(
+            1,
+            defaultContentData
+          );
+          const receipt = await updateTx.wait();
+
           // capture event (not sure how in jest here rn)
         });
       });

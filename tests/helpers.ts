@@ -1,7 +1,7 @@
 // test helpers
 // helpers.ts
 
-import {CFR__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
+import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Wallet} from '@ethersproject/wallet';
 import {BigNumber} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
@@ -17,7 +17,7 @@ export async function setupCatalog(
 ): Promise<CatalogConfiguredAddresses> {
   // setup the catalog shared creator contract (cnft)
   const cnft = await (
-    await (await new CFR__factory(wallet)).deploy()
+    await (await new Catalog__factory(wallet)).deploy()
   )._deployed();
   // console.log('cnft: ', cnft.deployTransaction);
   console.log('wallet:', wallet.address);
