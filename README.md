@@ -36,7 +36,7 @@ The CDK has 4 primary exports plus some types:
 [Package](https://github.com/catalogworks/cdk/packages/1173720)
 
 ```bash
-yarn add @catalogworks/cdk@0.0.3
+yarn add @catalogworks/cdk@0.0.4
 ```
 
 ---
@@ -117,7 +117,7 @@ Not setup yet.
 
 ### Dependencies
 
-- [@catalogworks/catalog-contracts@0.0.6](https://github.com/catalogworks/catalog-contracts/packages/1165811)
+- [@catalogworks/catalog-contracts@0.0.9](https://github.com/catalogworks/catalog-contracts/packages/1165811)
 - Ethers
 - sjcl
 - tiny-invariant
