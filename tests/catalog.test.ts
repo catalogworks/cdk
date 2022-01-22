@@ -67,7 +67,7 @@ describe('Catalog', () => {
     });
 
     // 05
-    it('sets the Catalog instane of readOnly=true is a Provider is specified', () => {
+    it('sets the Catalog instance of readOnly=true is a Provider is specified', () => {
       const provider = new JsonRpcProvider();
       const catalog = new Catalog(
         provider,
