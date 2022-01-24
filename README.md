@@ -57,8 +57,17 @@ git clone https://github.com/catalogworks/cdk.git
 ```
 
 ```bash
-cd cdk && yarn install
+cd cdk
 ```
+*Note: you may need to do the following before being able to install packages*
+- In GitHub, go to settings > developer settings > personal access tokens 
+- Generate new access token with permission ```read:packages```
+- Add the following line to bottom of .npmrc ```//npm.pkg.github.com/:_authToken=<Your Access Token>```
+
+```bash
+yarn
+```
+
 
 To build: (for publishing/local testing and use)
 
