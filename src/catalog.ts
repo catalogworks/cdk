@@ -272,6 +272,35 @@ export class Catalog {
     return this.contract.initialize(name, symbol);
   }
 
+  // Update Owner
+  // Transfers proxy contract ownership from signer to input address
+  // @param {string} newOwner address The new owner of the proxy contract
+  // @returns {Promise<ContractTransaction>} The transaction object
+  // @note using this for testing
+  public async updateOwner(newOwner: string): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    return this.contract.transferOwnership(newOwner);
+  }
+
+  // Upgrade Contract
+  // Upgrades proxy instance to new implementation version
+  // @param {string} newImplementation The new implementation address
+  // @returns {Promise<ContractTransaction>} The transaction object
+  public async upgradeContract(
+    newImplementation: string
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    return this.contract.upgradeTo(newImplementation);
+  }
+
   // ERC721 View Methods
 
   // Balance of
