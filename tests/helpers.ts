@@ -16,11 +16,12 @@ export async function setupCatalog(
   wallet: Wallet
 ): Promise<CatalogConfiguredAddresses> {
   // setup the catalog shared creator contract (cnft)
-  const cnft = await (
-    await (await new Catalog__factory(wallet)).deploy()
-  )._deployed();
+  const cnft = await (await new Catalog__factory(wallet).deploy())._deployed();
+
   // console.log('cnft: ', cnft.deployTransaction);
-  console.log('wallet:', wallet.address);
+  // console.log('wallet:', wallet.address);
+  await cnft.deployTransaction.wait();
+
   const cnftAddress = cnft.address;
 
   return {

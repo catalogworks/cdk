@@ -36,7 +36,7 @@ The CDK has 4 primary exports plus some types:
 [Package](https://github.com/catalogworks/cdk/packages/1173720)
 
 ```bash
-yarn add @catalogworks/cdk@0.0.5
+yarn add @catalogworks/cdk@0.0.6
 ```
 
 ---
@@ -59,15 +59,16 @@ git clone https://github.com/catalogworks/cdk.git
 ```bash
 cd cdk
 ```
-*Note: you may need to do the following before being able to install packages*
-- In GitHub, go to settings > developer settings > personal access tokens 
-- Generate new access token with permission ```read:packages```
-- Add the following line to bottom of .npmrc ```//npm.pkg.github.com/:_authToken=<Your Access Token>```
+
+_Note: you may need to do the following before being able to install packages_
+
+- In GitHub, go to settings > developer settings > personal access tokens
+- Generate new access token with permission `read:packages`
+- Add the following line to bottom of .npmrc `//npm.pkg.github.com/:_authToken=<Your Access Token>`
 
 ```bash
 yarn
 ```
-
 
 To build: (for publishing/local testing and use)
 
@@ -120,13 +121,13 @@ View: [LICENSE](./LICENSE)
 
 ### Changelog
 
-Not setup yet.
+[CHANGELOG.md](./CHANGELOG.md)
 
 ---
 
 ### Dependencies
 
-- [@catalogworks/catalog-contracts@0.0.9](https://github.com/catalogworks/catalog-contracts/packages/1165811)
+- [@catalogworks/catalog-contracts@0.1.2](https://github.com/catalogworks/catalog-contracts/packages/1165811)
 - Ethers
 - sjcl
 - tiny-invariant
