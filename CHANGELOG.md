@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.7] - 2022-02-10
+
+### Added
+
+- Updated dependency `catalog-contracts` to version `0.1.3` (see `catalog-contracts` repo)
+- Minor cleanup
+
 ## [0.0.6] - 2022-01-25
 
 ### Added
@@ -50,5 +57,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial pubish of cdk package
 
+[0.0.7]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.7
+[0.0.6]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.6
+[0.0.5]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.5
+[0.0.4]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.4
+[0.0.3]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.3
 [0.0.2]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.2
 [0.0.1]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.1
