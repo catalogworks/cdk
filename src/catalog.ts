@@ -8,14 +8,12 @@ import {BigNumber, BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
 import {Signer} from '@ethersproject/abstract-signer';
-import invariant from 'tiny-invariant';
 
 import {Catalog as CatalogType} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {addresses} from './addresses';
 import {
   chainIdToNetwork,
-  constructTokenData,
   validateAndParseAddress,
   validateBytes32,
   validateBytes32Array,
@@ -41,11 +39,6 @@ export class Catalog {
     chainId: number,
     contractAddress?: string
   ) {
-    // unecessary
-    // if (!contractAddress && !chainId) {
-    //     invariant(false, 'Catalog Constructor: contractAddress cannot be null');
-    // }
-
     if (Signer.isSigner(signerOrProvider)) {
       this.readOnly = false;
     } else {
