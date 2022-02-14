@@ -1,7 +1,7 @@
 // asksv11.test.ts
 // Jest test suite for AsksV11 class
 
-import {AsksV11, ZoraModuleManager} from '../src';
+import {ZoraModuleManager} from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {zoraAddresses} from '../src/addresses';
@@ -19,13 +19,13 @@ const blockchain = new Blockchain(provider);
 jest.setTimeout(30000);
 expect.extend(waffleJest);
 
-describe('Zora V3 Asks', () => {
+describe('Zora V3 Module Manager', () => {
   describe('constructor', () => {
     it('throws an error if no contract address is provided with an invalid chain', () => {
       const wallet = Wallet.createRandom();
 
       expect(() => {
-        new AsksV11(wallet, 420);
+        new ZoraModuleManager(wallet, 420);
       }).toThrow('Invariant failed: chainId: 420 is not currently supported');
     });
 
@@ -33,7 +33,7 @@ describe('Zora V3 Asks', () => {
       const wallet = Wallet.createRandom();
 
       expect(() => {
-        new AsksV11(wallet, 69);
+        new ZoraModuleManager(wallet, 69);
       }).toThrow('Invariant failed: chainId: 69 is not currently supported');
     });
 
@@ -41,30 +41,34 @@ describe('Zora V3 Asks', () => {
       const wallet = Wallet.createRandom();
 
       expect(() => {
-        new AsksV11(wallet, 4, 'pee pee poo poo');
+        new ZoraModuleManager(wallet, 4, 'pee pee poo poo');
       }).toThrow('Invariant failed: pee pee poo poo is not a valid address');
     });
 
     it('sets the instance to readOnly=false if signer is specified', () => {
       const wallet = Wallet.createRandom();
-      const asks = new AsksV11(wallet, 4);
+      const moduleManager = new ZoraModuleManager(wallet, 4);
 
-      expect(asks.readOnly).toBe(false);
+      expect(moduleManager.readOnly).toBe(false);
     });
 
     it('sets the instance to readOnly if a provider is specified', () => {
       const provider = new JsonRpcProvider();
-      const asks = new AsksV11(provider, 4, zoraAddresses.rinkeby.asks);
+      const moduleManager = new ZoraModuleManager(
+        provider,
+        4,
+        zoraAddresses.rinkeby.asks
+      );
 
-      expect(asks.readOnly).toBe(true);
+      expect(moduleManager.readOnly).toBe(true);
     });
 
     it('initializes an instance with the checksum address for specific chainId', () => {
       const wallet = Wallet.createRandom();
-      const rinkebyAddress = zoraAddresses.rinkeby.asks;
-      const asks = new AsksV11(wallet, 4);
+      const rinkebyAddress = zoraAddresses.rinkeby.moduleManager;
+      const moduleManager = new ZoraModuleManager(wallet, 4);
 
-      expect(asks.contractAddress).toEqual(rinkebyAddress);
+      expect(moduleManager.contractAddress).toEqual(rinkebyAddress);
     });
   });
 
