@@ -5,3 +5,5 @@ export * from './catalog';
 export * from './types';
 export * from './utils';
 export * from './metadata';
+export * from './asksv11';
+export * from './zoramodulemanager';
