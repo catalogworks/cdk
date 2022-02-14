@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial pubish of cdk package
 
+[0.0.8]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.8
 [0.0.7]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.7
 [0.0.6]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.6
 [0.0.5]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.5
