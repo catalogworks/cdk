@@ -1,10 +1,9 @@
-//aksv1.1.ts
+//aksv11.ts
 // Class for Zora Asks V1.1 Module
-import {BigNumber, BigNumberish} from 'ethers';
+import {BigNumberish} from 'ethers';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
 import {Signer} from '@ethersproject/abstract-signer';
-import {BytesLike} from 'ethers';
 
 import {
   AsksV11 as AsksV11Type,
@@ -12,14 +11,7 @@ import {
 } from '@zoralabs/v3/dist/typechain';
 import {zoraAddresses} from './addresses';
 
-import {
-  chainIdToNetwork,
-  validateAndParseAddress,
-  validateAndParseAddresses,
-  validateBytes32,
-  validateBytes32Array,
-  validateURI,
-} from './utils';
+import {chainIdToNetwork, validateAndParseAddress} from './utils';
 
 import type {AskStruct} from '@zoralabs/v3/dist/typechain/AsksV11';
 export class AsksV11 {
@@ -59,17 +51,36 @@ export class AsksV11 {
     );
   }
 
-  // View/Read Function
+  // View Methods [Getters]
+
+  // askForNFT
+  // @param {string} inputAddress - Address of the token contract
+  // @param {BigNumberish} inputTokenId - Token ID
+  // @returns {Promise<AskStruct>} - Ask data for the NFT
   public async fetchAskForNFT(
     inputAddress: string,
-    tokenId: string
+    tokenId: BigNumberish
   ): Promise<AskStruct> {
     return this.contract.askForNFT(inputAddress, tokenId);
   }
 
-  // Write Functions
+  // erc721TransferHelper
+  // @returns {string} - Contract address of deployer erc721 transfer helper
+  // @note This is here as a helper
+  public async fetchERC721TransferHelper(): Promise<string> {
+    return this.contract.erc721TransferHelper();
+  }
+
+  // Write Methods [Transactions]
 
   // Create Ask
+  // @param {string} inputAddress - Address of the token contract
+  // @param {BigNumberish} inputTokenId - Token ID
+  // @param {BigNumberish} askPrice - Ask price
+  // @param {string} askCurrency - Ask currency contract address
+  // @param {string} sellerFundsRecipient - Address of the funds recipient
+  // @param {BigNumberish} findersFeeBPS - Finders fee BPS
+  // @returns {Promise<ContractTransaction>} - Transaction object
   public async createAsk(
     tokenContractAddress: string,
     tokenId: BigNumberish,
@@ -97,6 +108,12 @@ export class AsksV11 {
     );
   }
 
+  // setAskPrice
+  // @param {string} inputAddress - Address of the token contract
+  // @param {BigNumberish} inputTokenId - Token ID
+  // @param {BigNumberish} askPrice - Ask price
+  // @param {string} askCurrency - Ask currency contract address
+  // @returns {Promise<ContractTransaction>} - Transaction object
   public async setAskPrice(
     tokenContractAddress: string,
     tokenId: BigNumberish,
@@ -119,6 +136,10 @@ export class AsksV11 {
     );
   }
 
+  // cancelAsk
+  // @param {string} inputAddress - Address of the token contract
+  // @param {BigNumberish} inputTokenId - Token ID
+  // @returns {Promise<ContractTransaction>} - Transaction object
   public async cancelAsk(
     tokenContractAddress: string,
     tokenId: BigNumberish
@@ -133,6 +154,13 @@ export class AsksV11 {
     return this.contract.cancelAsk(tokenContractAddress, tokenId);
   }
 
+  // fillAsk
+  // @param {string} inputAddress - Address of the token contract
+  // @param {BigNumberish} inputTokenId - Token ID
+  // @param {string} fillCurrency - Fill currency contract address
+  // @param {BigNumberish} fillAmount - Fill amount
+  // @param {string} finder - Address of the finder
+  // @returns {Promise<ContractTransaction>} - Transaction object
   public async fillAsk(
     tokenContractAddress: string,
     tokenId: BigNumberish,

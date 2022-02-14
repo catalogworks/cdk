@@ -1,7 +1,7 @@
 // zoramodule.ts
 // Class for Zora V3 Module Manager
 
-import {BigNumber, BigNumberish} from 'ethers';
+import {BigNumberish} from 'ethers';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
 import {Signer} from '@ethersproject/abstract-signer';
@@ -16,8 +16,6 @@ import {
   validateAndParseAddress,
   validateAndParseAddresses,
   validateBytes32,
-  validateBytes32Array,
-  validateURI,
 } from './utils';
 
 export class ZoraModuleManager {
@@ -28,6 +26,10 @@ export class ZoraModuleManager {
   public readOnly: boolean;
 
   // Constructor
+  // @param {Signer | Provider} signerOrProvider Signer or Provider to use for contract calls
+  // @param {number} chainId Chain ID of the network to use
+  // @param {string} contractAddress deployed Address of the Zora Module Manager
+  // @returns {Promise<ZoraModuleManager>} A new ZoraModuleManager instance
   constructor(
     signerOrProvider: Signer | Provider,
     chainid: number,
@@ -57,19 +59,35 @@ export class ZoraModuleManager {
     );
   }
 
-  // View/Read Function
+  // View Methods [Getters]
 
   // IsModuleApproved
+  // @param {string} userAddress Address of the user
+  // @param {string} moduleAddress Address of the module
+  // @returns {Promise<boolean>} True if the user has approved the module
   public async fetchIsModuleApproved(
     userAddress: string,
     moduleAddress: string
   ): Promise<boolean> {
     return this.contract.isModuleApproved(userAddress, moduleAddress);
   }
+  // userApproval
+  // @param {string} userAddress Address of the user
+  // @param {string} moduleAddress Address of the module
+  // @returns {Promise<boolean>} True if the user has approved the module
+  public async fetchUserApproval(
+    userAddress: string,
+    moduleAddress: string
+  ): Promise<boolean> {
+    return this.contract.userApprovals(userAddress, moduleAddress);
+  }
 
-  // Write Functions
+  // Write Methods [Transactions]
 
-  // set module approval
+  // setApprovalForModule
+  // @param {string} moduleAddress Address of the module to approve
+  // @param {boolean} approved True if the user should be approved
+  // @returns {Promise<ContractTransaction>} Transaction object
   public async setApprovalForModule(
     moduleAddress: string,
     approved: boolean
@@ -84,7 +102,10 @@ export class ZoraModuleManager {
     return this.contract.setApprovalForModule(moduleAddress, approved);
   }
 
-  // set batch approval
+  // setBatchApprovalForModules
+  // @param {string[]} moduleAddresses Array of module addresses to approve
+  // @param {boolean} approved True if the user should be approved
+  // @returns {Promise<ContractTransaction>} Transaction object
   public async setBatchApprovalForModules(
     moduleAddresses: string[],
     approved: boolean
@@ -99,7 +120,15 @@ export class ZoraModuleManager {
     return this.contract.setBatchApprovalForModules(moduleAddresses, approved);
   }
 
-  // set approval via EIP-712 signature
+  // setApprovalForModuleBySig
+  // @param {string} moduleAddress Address of the module to approve
+  // @param {string} userAddress Address of the user
+  // @param {boolean} approved True if the user should be approved
+  // @param {BigNumberish} deadline Time in seconds before the transaction is invalid
+  // @param {BigNumberish} v EC signature parameter
+  // @param {BytesLike} r EC signature parameter
+  // @param {BytesLike} s EC signature parameter
+  // @returns {Promise<ContractTransaction>} Transaction object
   public async setApprovalForModuleBySig(
     moduleAddress: string,
     userAddress: string,
