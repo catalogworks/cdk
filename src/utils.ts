@@ -41,6 +41,14 @@ export function validateAndParseAddress(address: string): string {
   }
 }
 
+// Validates the input address is a valid Ethereum address
+// @param {string} address - Ethereum address
+// @returns {string} - validated and parsed address
+export function validateAndParseAddresses(address: string[]): string[] {
+  address.forEach((addr) => validateAndParseAddress(addr));
+  return address;
+}
+
 // Returns string network name corresponding to Chain ID
 // @param {number} chainId - Chain ID
 // @returns {string} - network name

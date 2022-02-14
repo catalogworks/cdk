@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@catalogworks/catalog-contracts": "0.1.3",
+    "@zoralabs/v3": "^1.0.1",
     "ethers": "^5.5.2",
     "jsonschema": "^1.4.0",
     "keccak256": "^1.0.6",

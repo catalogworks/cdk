@@ -3,6 +3,9 @@
 
 import rinkebyAddresses from '@catalogworks/catalog-contracts/dist/addresses/4.json';
 
+import ZoraRinkebyAddresses from '@zoralabs/v3/dist/addresses/4.json';
+import ZoraMainnetAddresses from '@zoralabs/v3/dist/addresses/1.json';
+
 // AddressBook Interface for Catalog Contracts
 interface AddressBook {
   [key: string]: {
@@ -13,4 +16,13 @@ interface AddressBook {
 // Mapping of network names to addresses
 export const addresses: AddressBook = {
   rinkeby: rinkebyAddresses,
+};
+
+export const zoraAddresses: AddressBook = {
+  rinkeby: {
+    moduleManager: ZoraRinkebyAddresses.ZoraModuleManager,
+  },
+  mainnet: {
+    moduleManager: ZoraMainnetAddresses.ZoraModuleManager,
+  },
 };
