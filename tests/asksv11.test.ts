@@ -42,9 +42,7 @@ describe('Zora V3', () => {
 
       expect(() => {
         new AsksV11(wallet, 4, 'pee pee poo poo');
-      }).toThrow(
-        'Invariant failed: contractAddress: pee pee poo poo is not a valid address'
-      );
+      }).toThrow('Invariant failed: pee pee poo poo is not a valid address');
     });
 
     it('sets the instance to readOnly=false if signer is specified', () => {

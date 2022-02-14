@@ -42,7 +42,7 @@ export class AsksV11 {
     } else {
       // Get contract address from chainId
       const network = chainIdToNetwork(this.chainId);
-      this.contractAddress = zoraAddresses[network].asksV11;
+      this.contractAddress = zoraAddresses[network].asks;
     }
 
     this.contract = AsksV11__factory.connect(
