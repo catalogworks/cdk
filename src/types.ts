@@ -45,3 +45,12 @@ export type MetadataLike = Catalog20210202 | Catalog20220000;
 // Export schema typing
 export {Catalog20210202};
 export {Catalog20220000};
+
+// Zora V3 Ask Type
+export type Ask = {
+  sellerAddress: string;
+  sellerFundsRecipient: string;
+  askCurrency: string;
+  findersFeeBPS: BigNumberish;
+  askPrice: BigNumberish;
+};

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.8] - 2022-02-14
+
+### Added
+
+- Implemented ZoraV3 Module classes, `AsksV11` and `ZoraModuleManager`
+- Added basic tests for both asks/module manager
+
 ## [0.0.7] - 2022-02-10
 
 ### Added
@@ -57,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial pubish of cdk package
 
+[0.0.8]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.8
 [0.0.7]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.7
 [0.0.6]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.6
 [0.0.5]: https://github.com/catalogworks/cdk/packages/1173720?version=0.0.5
