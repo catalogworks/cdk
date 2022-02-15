@@ -23,10 +23,12 @@ export const zoraAddresses: AddressBook = {
     moduleManager: ZoraRinkebyAddresses.ZoraModuleManager,
     asks: ZoraRinkebyAddresses.AsksV1_1,
     erc721TransferHelper: ZoraRinkebyAddresses.ERC721TransferHelper,
+    erc20TransferHelper: ZoraRinkebyAddresses.ERC20TransferHelper,
   },
   mainnet: {
     moduleManager: ZoraMainnetAddresses.ZoraModuleManager,
     asks: ZoraMainnetAddresses.AsksV1_1,
     erc721TransferHelper: ZoraMainnetAddresses.ERC721TransferHelper,
+    erc20TransferHelper: ZoraMainnetAddresses.ERC20TransferHelper,
   },
 };
