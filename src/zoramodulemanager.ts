@@ -155,6 +155,23 @@ export class ZoraModuleManager {
     );
   }
 
+  // registerModule
+  // @note used for testing purposes only
+  // @param {string} moduleAddress Address of the module to register
+  // @returns {Promise<ContractTransaction>} Transaction object
+  public async registerModule(
+    moduleAddress: string
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+      validateAndParseAddress(moduleAddress);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+
+    return this.contract.registerModule(moduleAddress);
+  }
+
   // Private methods
   // Throws an error if called on read-only instance
   // @returns {void}
