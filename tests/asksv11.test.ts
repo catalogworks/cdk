@@ -166,10 +166,10 @@ describe('Zora V3 Asks', () => {
           asksConfig.moduleManagerTest.interface,
           mainWallet
         );
-        // const registerModuleTx = await moduleManager.registerModule(
-        //   asksConfig.asksV11
-        // );
-        // await registerModuleTx.wait();
+        const registerModuleTx = await moduleManager.registerModule(
+          asksConfig.asksV11
+        );
+        await registerModuleTx.wait();
 
         const approveModuleManagerTx = await moduleManager.setApprovalForModule(
           asksConfig.asksV11,
