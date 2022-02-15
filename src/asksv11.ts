@@ -4,16 +4,14 @@ import {BigNumberish} from 'ethers';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
 import {Signer} from '@ethersproject/abstract-signer';
-
 import {
   AsksV11 as AsksV11Type,
   AsksV11__factory,
 } from '@zoralabs/v3/dist/typechain';
 import {zoraAddresses} from './addresses';
-
 import {chainIdToNetwork, validateAndParseAddress} from './utils';
-
 import type {AskStruct} from '@zoralabs/v3/dist/typechain/AsksV11';
+
 export class AsksV11 {
   public chainId: number;
   public contractAddress: string;
@@ -27,11 +25,9 @@ export class AsksV11 {
     chainid: number,
     contractAddress?: string
   ) {
-    if (Signer.isSigner(signerOrProvider)) {
-      this.readOnly = false;
-    } else {
-      this.readOnly = true;
-    }
+    Signer.isSigner(signerOrProvider)
+      ? (this.readOnly = false)
+      : (this.readOnly = true);
 
     this.signerOrProvider = signerOrProvider;
     this.chainId = chainid;

@@ -1,12 +1,10 @@
-// asksv11.test.ts
-// Jest test suite for AsksV11 class
+// zoramodulemanager.test.ts
+// Jest test suite for ZoraModuleManager class
 
 import {ZoraModuleManager} from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {zoraAddresses} from '../src/addresses';
-import {BytesLike, formatUnits} from 'ethers/lib/utils';
-import {AddressZero} from '@ethersproject/constants';
 import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 

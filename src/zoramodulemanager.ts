@@ -35,11 +35,9 @@ export class ZoraModuleManager {
     chainid: number,
     contractAddress?: string
   ) {
-    if (Signer.isSigner(signerOrProvider)) {
-      this.readOnly = false;
-    } else {
-      this.readOnly = true;
-    }
+    Signer.isSigner(signerOrProvider)
+      ? (this.readOnly = false)
+      : (this.readOnly = true);
 
     this.signerOrProvider = signerOrProvider;
     this.chainId = chainid;

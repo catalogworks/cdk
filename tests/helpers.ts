@@ -14,6 +14,7 @@ import {
   ERC721TransferHelper__factory,
   RoyaltyEngineV1__factory,
   ZoraProtocolFeeSettings__factory,
+  ERC721__factory,
 } from '@zoralabs/v3/dist/typechain';
 
 // Type def for catalog protocol contracts
@@ -25,6 +26,11 @@ export type ZoraConfiguredAddresses = {
   asksV11: string;
   moduleManager: string;
   weth: string;
+  erc20TransferHelper: string;
+  erc721TransferHelper: string;
+  royaltyEngineV1: string;
+  zoraProtocolFeeSettings: string;
+  erc721: string;
 };
 
 export async function setupCatalog(
@@ -102,9 +108,22 @@ export async function setupZora(
   await asksV11.deployTransaction.wait();
   const asksV11Address = asksV11.address;
 
+  // setup dummy ERC721 contract
+  const erc721Test = await (
+    await new ERC721__factory(wallet).deploy('TEST', 'TST')
+  )._deployed();
+
+  await erc721Test.deployTransaction.wait();
+  const erc721TestAddress = erc721Test.address;
+
   return {
     asksV11: asksV11Address,
     moduleManager: moduleManagerAddress,
     weth: wethAddress,
+    erc20TransferHelper: erc20TransferHelperAddress,
+    erc721TransferHelper: erc721TransferHelperAddress,
+    royaltyEngineV1: royaltyEngineV1Address,
+    zoraProtocolFeeSettings: zoraProtocolFeeSettingsAddress,
+    erc721: erc721TestAddress,
   };
 }
