@@ -13,6 +13,7 @@ import {
   ZoraProtocolFeeSettings__factory,
   TestERC721__factory,
 } from '@zoralabs/v3/dist/typechain';
+import {Contract} from 'ethers';
 
 // Type def for catalog protocol contracts
 export type CatalogConfiguredAddresses = {
@@ -28,6 +29,8 @@ export type ZoraConfiguredAddresses = {
   royaltyEngineV1: string;
   zoraProtocolFeeSettings: string;
   erc721: string;
+  erc721Test: Contract;
+  moduleManagerTest: Contract;
 };
 
 export async function setupCatalog(
@@ -119,5 +122,7 @@ export async function setupZora(
     royaltyEngineV1: royaltyEngineV1Address,
     zoraProtocolFeeSettings: zoraProtocolFeeSettingsAddress,
     erc721: erc721TestAddress,
+    erc721Test: erc721Test,
+    moduleManagerTest: moduleManager,
   };
 }

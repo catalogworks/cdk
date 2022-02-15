@@ -9,6 +9,7 @@ import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupZora, ZoraConfiguredAddresses} from './helpers';
 import {waffleJest} from '@ethereum-waffle/jest';
+import {Contract} from 'ethers';
 
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
@@ -135,6 +136,59 @@ describe('Zora V3 Asks', () => {
         ).rejects.toThrowError(
           'Invariant failed: pee pee poo poo is not a valid address'
         );
+      });
+
+      //04
+      it('creates an ask', async () => {
+        const asks = new AsksV11(mainWallet, 50, asksConfig.asksV11);
+        expect(asks.readOnly).toBe(false);
+
+        // Setup ERC721 and mint
+        const erc721 = new Contract(
+          asksConfig.erc721,
+          asksConfig.erc721Test.interface,
+          mainWallet
+        );
+        const nftTx = await erc721.mint(mainWallet.address, 1);
+        console.log('mint tx: ', nftTx);
+        await nftTx.wait();
+
+        // Approve Transfer Helper
+        const approveTransferTx = await erc721.approve(
+          asksConfig.erc721TransferHelper,
+          1
+        );
+        await approveTransferTx.wait();
+
+        // Register Module and approve
+        const moduleManager = new Contract(
+          asksConfig.moduleManager,
+          asksConfig.moduleManagerTest.interface,
+          mainWallet
+        );
+        // const registerModuleTx = await moduleManager.registerModule(
+        //   asksConfig.asksV11
+        // );
+        // await registerModuleTx.wait();
+
+        const approveModuleManagerTx = await moduleManager.setApprovalForModule(
+          asksConfig.asksV11,
+          true
+        );
+        await approveModuleManagerTx.wait();
+        console.log('approveModuleManagerTx: ', approveModuleManagerTx);
+
+        const tx = await asks.createAsk(
+          asksConfig.erc721,
+          1,
+          100,
+          asksConfig.weth,
+          mainWallet.address,
+          50
+        );
+        tx.wait();
+
+        expect(tx.hash).toBeDefined();
       });
     });
 
