@@ -3,9 +3,6 @@
 
 import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Wallet} from '@ethersproject/wallet';
-import {BigNumber} from '@ethersproject/bignumber';
-import {ContractTransaction} from '@ethersproject/contracts';
-import {MaxUint256} from '@ethersproject/constants';
 import {
   ZoraModuleManager__factory,
   WETH__factory,
@@ -14,7 +11,7 @@ import {
   ERC721TransferHelper__factory,
   RoyaltyEngineV1__factory,
   ZoraProtocolFeeSettings__factory,
-  ERC721__factory,
+  TestERC721__factory,
 } from '@zoralabs/v3/dist/typechain';
 
 // Type def for catalog protocol contracts
@@ -39,10 +36,7 @@ export async function setupCatalog(
   // setup the catalog shared creator contract (cnft)
   const cnft = await (await new Catalog__factory(wallet).deploy())._deployed();
 
-  // console.log('cnft: ', cnft.deployTransaction);
-  // console.log('wallet:', wallet.address);
   await cnft.deployTransaction.wait();
-
   const cnftAddress = cnft.address;
 
   return {
@@ -110,7 +104,7 @@ export async function setupZora(
 
   // setup dummy ERC721 contract
   const erc721Test = await (
-    await new ERC721__factory(wallet).deploy('TEST', 'TST')
+    await new TestERC721__factory(wallet).deploy()
   )._deployed();
 
   await erc721Test.deployTransaction.wait();
