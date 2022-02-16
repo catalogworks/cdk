@@ -203,3 +203,33 @@ export function generateMerkleProofs(
 ): Proof[] {
   return addresses.map((address) => generateMerkleProof(inputTree, address));
 }
+
+// Wraps ETH to ERC20 WETH
+// @param {Wallet} wallet - signer wallet
+// @param {string} wethAddress - string address of WETH contract
+// @param {BigNumberish} amount - BigNumberish amount of ETH to wrap
+// @returns {Promise<TransactionResponse>} - TransactionResponse
+export async function wrapETH(
+  wallet: Wallet,
+  wethAddress: string,
+  amount: BigNumber
+): Promise<ContractTransaction> {
+  const abi = ['function deposit() public payable'];
+  const wethContract = new ethers.Contract(wethAddress, abi, wallet);
+  return wethContract.deposit({value: amount});
+}
+
+// Unwraps WETH to ETH
+// @param {Wallet} wallet - signer wallet
+// @param {string} wethAddress - string address of WETH contract
+// @param {BigNumberish} amount - BigNumberish amount of WETH to unwrap
+// @returns {Promise<TransactionResponse>} - TransactionResponse
+export async function unwrapWETH(
+  wallet: Wallet,
+  wethAddress: string,
+  amount: BigNumber
+): Promise<ContractTransaction> {
+  const abi = ['function withdraw(uint256) public'];
+  const wethContract = new ethers.Contract(wethAddress, abi, wallet);
+  return wethContract.withdraw(amount);
+}

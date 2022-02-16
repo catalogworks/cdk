@@ -54,3 +54,13 @@ export type Ask = {
   findersFeeBPS: BigNumberish;
   askPrice: BigNumberish;
 };
+
+// Ask Input Data Type
+export type AskData = {
+  tokenContract: string;
+  tokenId: BigNumberish;
+  askPrice: BigNumberish;
+  askCurrency: string;
+  sellerFundsRecipient: string;
+  findersFeeBPS: BigNumberish;
+};

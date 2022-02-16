@@ -3,9 +3,6 @@
 
 import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Wallet} from '@ethersproject/wallet';
-import {BigNumber} from '@ethersproject/bignumber';
-import {ContractTransaction} from '@ethersproject/contracts';
-import {MaxUint256} from '@ethersproject/constants';
 import {
   ZoraModuleManager__factory,
   WETH__factory,
@@ -14,7 +11,9 @@ import {
   ERC721TransferHelper__factory,
   RoyaltyEngineV1__factory,
   ZoraProtocolFeeSettings__factory,
+  TestERC721__factory,
 } from '@zoralabs/v3/dist/typechain';
+import {Contract} from 'ethers';
 
 // Type def for catalog protocol contracts
 export type CatalogConfiguredAddresses = {
@@ -25,6 +24,14 @@ export type ZoraConfiguredAddresses = {
   asksV11: string;
   moduleManager: string;
   weth: string;
+  erc20TransferHelper: string;
+  erc721TransferHelper: string;
+  royaltyEngineV1: string;
+  zoraProtocolFeeSettings: string;
+  erc721: string;
+  erc721Test: Contract;
+  moduleManagerTest: Contract;
+  wethTest: Contract;
 };
 
 export async function setupCatalog(
@@ -33,10 +40,7 @@ export async function setupCatalog(
   // setup the catalog shared creator contract (cnft)
   const cnft = await (await new Catalog__factory(wallet).deploy())._deployed();
 
-  // console.log('cnft: ', cnft.deployTransaction);
-  // console.log('wallet:', wallet.address);
   await cnft.deployTransaction.wait();
-
   const cnftAddress = cnft.address;
 
   return {
@@ -47,6 +51,21 @@ export async function setupCatalog(
 export async function setupZora(
   wallet: Wallet
 ): Promise<ZoraConfiguredAddresses> {
+  // setup dummy ERC721 contract
+  const erc721Test = await (
+    await new TestERC721__factory(wallet).deploy()
+  )._deployed();
+
+  await erc721Test.deployTransaction.wait();
+  const erc721TestAddress = erc721Test.address;
+
+  // setup the protocol fee settings contract
+  const zoraProtocolFeeSettings = await (
+    await new ZoraProtocolFeeSettings__factory(wallet).deploy()
+  )._deployed();
+  await zoraProtocolFeeSettings.deployTransaction.wait();
+  const zoraProtocolFeeSettingsAddress = zoraProtocolFeeSettings.address;
+
   // setup WETH contract so we have an ERC20 for fees
   const weth = await (await new WETH__factory(wallet).deploy())._deployed();
   await weth.deployTransaction.wait();
@@ -56,11 +75,18 @@ export async function setupZora(
   const moduleManager = await (
     await new ZoraModuleManager__factory(wallet).deploy(
       wallet.address,
-      wethAddress
+      zoraProtocolFeeSettingsAddress
     )
   )._deployed();
   await moduleManager.deployTransaction.wait();
   const moduleManagerAddress = moduleManager.address;
+
+  // init settings
+  const initSettings = await zoraProtocolFeeSettings.init(
+    moduleManagerAddress,
+    erc721TestAddress
+  );
+  await initSettings.wait();
 
   // setup Transfer Helpers
   const erc20TransferHelper = await (
@@ -75,18 +101,12 @@ export async function setupZora(
   await erc721TransferHelper.deployTransaction.wait();
   const erc721TransferHelperAddress = erc721TransferHelper.address;
 
-  // Setup royalty Engine and protocol fee settings
+  // Setup royalty Engine
   const royaltyEngineV1 = await (
     await new RoyaltyEngineV1__factory(wallet).deploy()
   )._deployed();
   await royaltyEngineV1.deployTransaction.wait();
   const royaltyEngineV1Address = royaltyEngineV1.address;
-
-  const zoraProtocolFeeSettings = await (
-    await new ZoraProtocolFeeSettings__factory(wallet).deploy()
-  )._deployed();
-  await zoraProtocolFeeSettings.deployTransaction.wait();
-  const zoraProtocolFeeSettingsAddress = zoraProtocolFeeSettings.address;
 
   // setup the asksV11 contract (asksV11)
   const asksV11 = await (
@@ -106,5 +126,13 @@ export async function setupZora(
     asksV11: asksV11Address,
     moduleManager: moduleManagerAddress,
     weth: wethAddress,
+    erc20TransferHelper: erc20TransferHelperAddress,
+    erc721TransferHelper: erc721TransferHelperAddress,
+    royaltyEngineV1: royaltyEngineV1Address,
+    zoraProtocolFeeSettings: zoraProtocolFeeSettingsAddress,
+    erc721: erc721TestAddress,
+    erc721Test: erc721Test,
+    moduleManagerTest: moduleManager,
+    wethTest: weth,
   };
 }
