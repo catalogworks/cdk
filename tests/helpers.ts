@@ -31,6 +31,7 @@ export type ZoraConfiguredAddresses = {
   erc721: string;
   erc721Test: Contract;
   moduleManagerTest: Contract;
+  wethTest: Contract;
 };
 
 export async function setupCatalog(
@@ -132,5 +133,6 @@ export async function setupZora(
     erc721: erc721TestAddress,
     erc721Test: erc721Test,
     moduleManagerTest: moduleManager,
+    wethTest: weth,
   };
 }

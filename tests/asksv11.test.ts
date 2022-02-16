@@ -1,7 +1,7 @@
 // asksv11.test.ts
 // Jest test suite for AsksV11 class
 
-import {AskData, AsksV11, ZoraModuleManager} from '../src';
+import {AskData, AsksV11, wrapETH, ZoraModuleManager} from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {zoraAddresses} from '../src/addresses';
@@ -416,7 +416,20 @@ describe('Zora V3 Asks', () => {
 
         //05
         it('fills an ask', async () => {
+          // Wrap some eth first
+          const wethTx = await wrapETH(
+            otherWallet,
+            asksConfig.weth,
+            BigNumber.from(50)
+          );
+          await wethTx.wait();
+
           const asks = new AsksV11(mainWallet, 50, asksConfig.asksV11);
+          const asksOtherWallet = new AsksV11(
+            otherWallet,
+            50,
+            asksConfig.asksV11
+          );
           expect(asks.readOnly).toBe(false);
 
           // Setup ERC721 and mint
@@ -425,8 +438,7 @@ describe('Zora V3 Asks', () => {
             asksConfig.erc721Test.interface,
             mainWallet
           );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          console.log('mint tx: ', nftTx);
+          const nftTx = await erc721.mint(mainWallet.address, 3);
           await nftTx.wait();
 
           // Approve Transfer Helper
@@ -443,6 +455,11 @@ describe('Zora V3 Asks', () => {
             50,
             asksConfig.moduleManagerTest.address
           );
+          const otherModuleManager = new ZoraModuleManager(
+            otherWallet,
+            50,
+            asksConfig.moduleManagerTest.address
+          );
           const registerModuleTx = await moduleManager.registerModule(
             asksConfig.asksV11
           );
@@ -456,24 +473,46 @@ describe('Zora V3 Asks', () => {
 
           const tx = await asks.createAsk(
             asksConfig.erc721,
+            3,
             1,
-            5,
-            AddressZero,
+            asksConfig.weth,
             mainWallet.address,
-            50
+            0
           );
           tx.wait();
           expect(tx.hash).toBeDefined();
 
-          const getAsk = await asks.fetchAskForNFT(asksConfig.erc721, 1);
+          const getAsk = await asks.fetchAskForNFT(asksConfig.erc721, 3);
 
           const askPrice = getAsk.askPrice;
+          blockchain.waitBlocksAsync(4);
+          console.log('ask price', askPrice.toString());
 
-          const fillTx = await asks.fillAsk(
+          expect(askPrice.toString()).toBe('1');
+
+          // Approve module from buyer
+          const approveModuleManagerTx2 =
+            await otherModuleManager.setApprovalForModule(
+              asksConfig.asksV11,
+              true
+            );
+          await approveModuleManagerTx2.wait();
+
+          const wethContract = new Contract(
+            asksConfig.weth,
+            asksConfig.wethTest.interface,
+            otherWallet
+          );
+          const wethApproval = await wethContract.approve(
+            asksConfig.erc20TransferHelper,
+            500000
+          );
+          await wethApproval.wait();
+          const fillTx = await asksOtherWallet.fillAsk(
             asksConfig.erc721,
+            3,
+            asksConfig.weth,
             1,
-            AddressZero,
-            askPrice,
             otherWallet.address
           );
 
