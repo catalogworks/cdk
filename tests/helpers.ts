@@ -64,11 +64,6 @@ export async function setupZora(
   )._deployed();
   await zoraProtocolFeeSettings.deployTransaction.wait();
   const zoraProtocolFeeSettingsAddress = zoraProtocolFeeSettings.address;
-  // const initSettings = await zoraProtocolFeeSettings.init(
-  //   wallet.address,
-  //   erc721TestAddress
-  // );
-  // await initSettings.wait();
 
   // setup WETH contract so we have an ERC20 for fees
   const weth = await (await new WETH__factory(wallet).deploy())._deployed();
@@ -84,6 +79,7 @@ export async function setupZora(
   )._deployed();
   await moduleManager.deployTransaction.wait();
   const moduleManagerAddress = moduleManager.address;
+
   // init settings
   const initSettings = await zoraProtocolFeeSettings.init(
     moduleManagerAddress,

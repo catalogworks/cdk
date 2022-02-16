@@ -9,13 +9,15 @@ import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupZora, ZoraConfiguredAddresses} from './helpers';
 import {waffleJest} from '@ethereum-waffle/jest';
-import {BigNumberish, Contract} from 'ethers';
+import {BigNumber, BigNumberish, Contract, utils} from 'ethers';
+import {AskStruct} from '@zoralabs/v3/dist/typechain/AsksV11';
+import {AddressZero} from '@ethersproject/constants';
 
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
 
 jest.setTimeout(30000);
-expect.extend(waffleJest);
+// expect.extend(waffleJest);
 
 describe('Zora V3 Asks', () => {
   describe('constructor', () => {
@@ -172,6 +174,7 @@ describe('Zora V3 Asks', () => {
             true
           );
           await approveTransferTx.wait();
+
           expect(approveTransferTx.hash).toBeDefined();
 
           const moduleManager = new ZoraModuleManager(
@@ -179,12 +182,6 @@ describe('Zora V3 Asks', () => {
             50,
             asksConfig.moduleManagerTest.address
           );
-          // Register Module and approve
-          // const moduleManager = new Contract(
-          //   asksConfig.moduleManagerTest.address,
-          //   asksConfig.moduleManagerTest.interface,
-          //   mainWallet
-          // );
           const registerModuleTx = await moduleManager.registerModule(
             asksConfig.asksV11
           );
@@ -195,6 +192,7 @@ describe('Zora V3 Asks', () => {
           await approveModuleManagerTx.wait();
 
           blockchain.waitBlocksAsync(4);
+
           const tx = await asks.createAsk(
             asksConfig.erc721,
             1,
@@ -275,6 +273,70 @@ describe('Zora V3 Asks', () => {
             'Invariant failed: pee pee poo poo is not a valid address'
           );
         });
+
+        //03
+        it('sets the ask price', async () => {
+          const asks = new AsksV11(mainWallet, 50, asksConfig.asksV11);
+          expect(asks.readOnly).toBe(false);
+
+          // Setup ERC721 and mint
+          const erc721 = new Contract(
+            asksConfig.erc721,
+            asksConfig.erc721Test.interface,
+            mainWallet
+          );
+          const nftTx = await erc721.mint(mainWallet.address, 1);
+          console.log('mint tx: ', nftTx);
+          await nftTx.wait();
+
+          // Approve Transfer Helper
+          const approveTransferTx = await erc721.setApprovalForAll(
+            asksConfig.erc721TransferHelper,
+            true
+          );
+          await approveTransferTx.wait();
+
+          expect(approveTransferTx.hash).toBeDefined();
+
+          const moduleManager = new ZoraModuleManager(
+            mainWallet,
+            50,
+            asksConfig.moduleManagerTest.address
+          );
+          const registerModuleTx = await moduleManager.registerModule(
+            asksConfig.asksV11
+          );
+          await registerModuleTx.wait();
+
+          const approveModuleManagerTx =
+            await moduleManager.setApprovalForModule(asksConfig.asksV11, true);
+          await approveModuleManagerTx.wait();
+
+          blockchain.waitBlocksAsync(4);
+
+          const tx = await asks.createAsk(
+            asksConfig.erc721,
+            1,
+            100,
+            asksConfig.weth,
+            mainWallet.address,
+            50
+          );
+          tx.wait();
+
+          expect(tx.hash).toBeDefined();
+
+          const setAskPriceTx = await asks.setAskPrice(
+            asksConfig.erc721,
+            1,
+            200,
+            asksConfig.weth
+          );
+
+          setAskPriceTx.wait();
+
+          expect(setAskPriceTx.hash).toBeDefined();
+        });
       });
 
       describe('fillAsk', () => {
@@ -350,6 +412,73 @@ describe('Zora V3 Asks', () => {
           ).rejects.toThrowError(
             'Invariant failed: pee pee poo poo is not a valid address'
           );
+        });
+
+        //05
+        it('fills an ask', async () => {
+          const asks = new AsksV11(mainWallet, 50, asksConfig.asksV11);
+          expect(asks.readOnly).toBe(false);
+
+          // Setup ERC721 and mint
+          const erc721 = new Contract(
+            asksConfig.erc721,
+            asksConfig.erc721Test.interface,
+            mainWallet
+          );
+          const nftTx = await erc721.mint(mainWallet.address, 1);
+          console.log('mint tx: ', nftTx);
+          await nftTx.wait();
+
+          // Approve Transfer Helper
+          const approveTransferTx = await erc721.setApprovalForAll(
+            asksConfig.erc721TransferHelper,
+            true
+          );
+          await approveTransferTx.wait();
+
+          expect(approveTransferTx.hash).toBeDefined();
+
+          const moduleManager = new ZoraModuleManager(
+            mainWallet,
+            50,
+            asksConfig.moduleManagerTest.address
+          );
+          const registerModuleTx = await moduleManager.registerModule(
+            asksConfig.asksV11
+          );
+          await registerModuleTx.wait();
+
+          const approveModuleManagerTx =
+            await moduleManager.setApprovalForModule(asksConfig.asksV11, true);
+          await approveModuleManagerTx.wait();
+
+          blockchain.waitBlocksAsync(4);
+
+          const tx = await asks.createAsk(
+            asksConfig.erc721,
+            1,
+            5,
+            AddressZero,
+            mainWallet.address,
+            50
+          );
+          tx.wait();
+          expect(tx.hash).toBeDefined();
+
+          const getAsk = await asks.fetchAskForNFT(asksConfig.erc721, 1);
+
+          const askPrice = getAsk.askPrice;
+
+          const fillTx = await asks.fillAsk(
+            asksConfig.erc721,
+            1,
+            AddressZero,
+            askPrice,
+            otherWallet.address
+          );
+
+          fillTx.wait();
+          expect(fillTx.hash).toBeDefined();
         });
       });
     });
