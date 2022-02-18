@@ -26,6 +26,7 @@
     "node": ">=10"
   },
   "devDependencies": {
+    "@codejedi365/jest-serial-runner": "^2.0.0",
     "@ethereum-waffle/jest": "^3.3.0",
     "@ethersproject/abstract-signer": "^5.0.7",
     "@ethersproject/address": "^5.0.5",
