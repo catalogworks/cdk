@@ -6,7 +6,6 @@ import warning from 'tiny-warning';
 import {TokenData, Proof, ContentData} from './types';
 
 import {
-  arrayify,
   BytesLike,
   hexDataLength,
   hexlify,
