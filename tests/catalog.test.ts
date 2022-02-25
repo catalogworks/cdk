@@ -15,7 +15,7 @@ import {
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {addresses as CatalogAddresses} from '../src/addresses';
-import {BigNumber, Bytes} from 'ethers';
+import {BigNumber, Bytes, Contract, utils} from 'ethers';
 import {BytesLike, formatUnits} from 'ethers/lib/utils';
 import {AddressZero} from '@ethersproject/constants';
 import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
@@ -181,10 +181,21 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(
+          const mintTx = await catalog.mint(
             defaultTokendata,
             defaultContentData,
             defaultProof
+          );
+
+          await mintTx.wait(1);
+
+          catalog.contract.on(
+            'ContentUpdated',
+            (tokenId: number, contentHash: string, contentURI: string) => {
+              expect(tokenId).toBe(1);
+              expect(contentHash).toBe(defaultContentData.contentHash);
+              expect(contentURI).toBe(defaultContentData.contentURI);
+            }
           );
 
           // update contentURI
@@ -192,9 +203,18 @@ describe('Catalog', () => {
             1,
             defaultContentData
           );
-          const receipt = await updateTx.wait();
 
-          // capture event (not sure how in jest here rn)
+          await updateTx.wait(1);
+
+          // Check for emitted event
+          catalog.contract.on(
+            'ContentUpdated',
+            (tokenId: number, contentHash: string, contentURI: string) => {
+              expect(tokenId).toBe(1);
+              expect(contentHash).toBe(contentHash);
+              expect(contentURI).toBe(content);
+            }
+          );
         });
       });
 
@@ -241,6 +261,15 @@ describe('Catalog', () => {
           const metadataURI = await catalog.fetchMetadataURI(1);
           expect(metadataURI).toEqual(defaultTokendata.metadataURI);
 
+          // event assertion check
+          catalog.contract.on(
+            'MetadataUpdated',
+            (tokenId: number, metadataURI: string) => {
+              expect(tokenId).toBe(1);
+              expect(metadataURI).toBe(defaultTokendata.metadataURI);
+            }
+          );
+
           // update metadataURI
           await catalog.updateMetadataURI(
             1,
@@ -249,6 +278,15 @@ describe('Catalog', () => {
 
           const newMetadataURI = await catalog.fetchMetadataURI(1);
           expect(newMetadataURI).toEqual('https://catalog.com/new-metadata');
+
+          // another event asseertion check
+          catalog.contract.on(
+            'MetadataUpdated',
+            (tokenId: number, metadataURI: string) => {
+              expect(tokenId).toBe(1);
+              expect(metadataURI).toBe('https://catalog.com/new-metadata');
+            }
+          );
         });
       });
 
@@ -289,10 +327,21 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-          await catalog.mint(
+          const mintTx = await catalog.mint(
             defaultTokendata,
             defaultContentData,
             defaultProof
+          );
+
+          await mintTx.wait(1);
+
+          // assertion check
+          catalog.contract.on(
+            'RoyaltyUpdated',
+            (tokenId: number, royaltyAddress: string) => {
+              expect(tokenId).toBe(1);
+              expect(royaltyAddress).toBe(mainWallet.address);
+            }
           );
 
           expect(catalog.readOnly).toBe(false);
@@ -301,6 +350,15 @@ describe('Catalog', () => {
 
           await expect(catalog.fetchRoyaltyPayoutAddress(1)).resolves.toEqual(
             otherWallet.address
+          );
+
+          // another event assertion check
+          catalog.contract.on(
+            'RoyaltyUpdated',
+            (tokenId: number, royaltyAddress: string) => {
+              expect(tokenId).toBe(1);
+              expect(royaltyAddress).toBe(otherWallet.address);
+            }
           );
         });
       });
@@ -331,9 +389,15 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           expect(catalog.readOnly).toBe(false);
-          await catalog.updateRoot(defaultRoot);
+          const rootTx = await catalog.updateRoot(defaultRoot);
+          rootTx.wait(1);
 
           await expect(catalog.fetchMerkleRoot()).resolves.toEqual(defaultRoot);
+
+          // event asertion check
+          catalog.contract.on('RootUpdated', (root: string) => {
+            expect(root).toBe(defaultRoot);
+          });
         });
       });
 
@@ -374,7 +438,6 @@ describe('Catalog', () => {
           const catalog = new Catalog(mainWallet, 50, catalogConfig.cnft);
           await catalog.initialize('catalog', 'CTST');
           await catalog.updateRoot(defaultRoot);
-
           await catalog.mint(
             defaultTokendata,
             defaultContentData,
@@ -387,6 +450,15 @@ describe('Catalog', () => {
 
           await expect(catalog.fetchCreator(1)).resolves.toEqual(
             otherWallet.address
+          );
+
+          // event assertion check
+          catalog.contract.on(
+            'CreatorUpdated',
+            (tokenId: number, creatorAddress: string) => {
+              expect(tokenId).toBe(1);
+              expect(creatorAddress).toBe(otherWallet.address);
+            }
           );
         });
       });
@@ -481,7 +553,15 @@ describe('Catalog', () => {
           const tokenOwner = await catalog.fetchOwnerOf(1);
           const creator = await catalog.fetchCreator(1);
           const onChainMetadataURI = await catalog.fetchMetadataURI(1);
-          // TODO: check for contentURI validity (event)
+          // event assertion check
+          catalog.contract.on(
+            'ContentUpdated',
+            (tokenId: number, contentHash: string, contentURI: string) => {
+              expect(tokenId).toBe(1);
+              expect(contentHash).toBe(defaultContentData.contentHash);
+              expect(contentURI).toBe(defaultContentData.contentURI);
+            }
+          );
           expect(tokenOwner.toLowerCase()).toBe(
             mainWallet.address.toLowerCase()
           );
@@ -522,7 +602,6 @@ describe('Catalog', () => {
           // super janky way of checking this lol
           const event = test.events?.find((e) => e.event === 'Transfer');
           expect(event?.event?.toLowerCase()).toBe('transfer');
-          // expect(event).toEqual('Transfer');
         });
       });
 
