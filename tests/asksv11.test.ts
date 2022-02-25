@@ -9,7 +9,8 @@ import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupZora, ZoraConfiguredAddresses} from './helpers';
 import {waffleJest} from '@ethereum-waffle/jest';
-import {BigNumber, BigNumberish, Contract} from 'ethers';
+import {BigNumber, Contract} from 'ethers';
+import type {Ask as AskType} from '../src';
 
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
@@ -189,6 +190,15 @@ describe('Zora V3 Asks', () => {
             await moduleManager.setApprovalForModule(asksConfig.asksV11, true);
           await approveModuleManagerTx.wait();
 
+          moduleManager.contract.on(
+            'ModuleApprovalSet',
+            (user: string, module: string, approved: boolean) => {
+              expect(user).toEqual(mainWallet.address),
+                expect(module).toEqual(asksConfig.asksV11),
+                expect(approved).toEqual(true);
+            }
+          );
+
           blockchain.waitBlocksAsync(4);
 
           const tx = await asks.createAsk(
@@ -201,7 +211,22 @@ describe('Zora V3 Asks', () => {
           );
           tx.wait();
 
+          asks.contract.on(
+            'AskCreated',
+            (tokenContract: string, tokenId: BigNumber, ask: AskType) => {
+              expect(tokenContract).toEqual(asksConfig.erc721),
+                expect(tokenId).toEqual(BigNumber.from(1)),
+                expect(ask.askPrice).toEqual(BigNumber.from(100)),
+                expect(ask.askCurrency).toEqual(asksConfig.weth),
+                expect(ask.sellerFundsRecipient).toEqual(mainWallet.address),
+                expect(ask.findersFeeBPS).toEqual(BigNumber.from(50));
+            }
+          );
+
           expect(tx.hash).toBeDefined();
+          // Clear event listeners
+          moduleManager.contract.removeAllListeners('ModuleApprovalSet');
+          asks.contract.removeAllListeners('AskCreated');
         });
       });
 
@@ -305,7 +330,21 @@ describe('Zora V3 Asks', () => {
 
           setAskPriceTx.wait();
 
+          asks.contract.on(
+            'AskPriceUpdated',
+            (tokenContract: string, tokenId: BigNumber, ask: AskType) => {
+              expect(tokenContract).toEqual(asksConfig.erc721),
+                expect(tokenId).toEqual(BigNumber.from(1)),
+                expect(ask.askPrice).toEqual(BigNumber.from(200)),
+                expect(ask.askCurrency).toEqual(asksConfig.weth),
+                expect(ask.sellerFundsRecipient).toEqual(mainWallet.address),
+                expect(ask.findersFeeBPS).toEqual(BigNumber.from(50));
+            }
+          );
+
           expect(setAskPriceTx.hash).toBeDefined();
+          // Remove event listeners
+          asks.contract.removeAllListeners('AskPriceUpdated');
         });
       });
 
@@ -392,7 +431,21 @@ describe('Zora V3 Asks', () => {
 
           cancelAskTx.wait();
 
+          asks.contract.on(
+            'AskCanceled',
+            (tokenContract: string, tokenId: BigNumber, ask: AskType) => {
+              expect(tokenContract).toEqual(asksConfig.erc721),
+                expect(tokenId).toEqual(BigNumber.from(1)),
+                expect(ask.askPrice).toEqual(BigNumber.from(100)),
+                expect(ask.askCurrency).toEqual(asksConfig.weth),
+                expect(ask.sellerFundsRecipient).toEqual(mainWallet.address),
+                expect(ask.findersFeeBPS).toEqual(BigNumber.from(50));
+            }
+          );
+
           expect(cancelAskTx.hash).toBeDefined();
+          // Remove event listeners
+          asks.contract.removeAllListeners('AskCanceled');
         });
       });
 
@@ -574,7 +627,30 @@ describe('Zora V3 Asks', () => {
           );
 
           fillTx.wait();
+
+          asksOtherWallet.contract.on(
+            'AskFilled',
+            (
+              tokenContract: string,
+              tokenId: BigNumber,
+              buyer: string,
+              finder: string,
+              ask: AskType
+            ) => {
+              expect(tokenContract).toEqual(asksConfig.erc721),
+                expect(tokenId).toEqual(BigNumber.from(3)),
+                expect(buyer).toEqual(otherWallet.address),
+                expect(finder).toEqual(mainWallet.address),
+                expect(ask.askPrice).toEqual(BigNumber.from(1)),
+                expect(ask.askCurrency).toEqual(asksConfig.weth),
+                expect(ask.sellerFundsRecipient).toEqual(otherWallet.address),
+                expect(ask.findersFeeBPS).toEqual(BigNumber.from(50));
+            }
+          );
           expect(fillTx.hash).toBeDefined();
+
+          // Remove event listener
+          asksOtherWallet.contract.removeAllListeners('AskFilled');
         });
       });
     });
