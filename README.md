@@ -25,11 +25,11 @@ This repository is based on the [Zora ZDK](https://github.com/ourzora/zdk).
 The CDK has these primary exports plus some types:
 
 - [Catalog](docs/catalog.md)
-- [Utils]
-- [Addresses]
-- [Metadata]
-- [AsksV11]
-- [ZoraModuleManager]
+- [Utils](src/utils.ts)
+- [Addresses](src/addresses.ts)
+- [Metadata](src/metadata.ts)
+- [AsksV11](src/asksv11.ts)
+- [ZoraModuleManager](src/zoramodulemanager.ts)
 
 ---
 
