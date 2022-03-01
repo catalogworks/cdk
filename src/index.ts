@@ -7,3 +7,4 @@ export * from './utils';
 export * from './metadata';
 export * from './asksv11';
 export * from './zoramodulemanager';
+export * from './addresses';

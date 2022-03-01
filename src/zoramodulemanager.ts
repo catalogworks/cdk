@@ -15,7 +15,6 @@ import {
   chainIdToNetwork,
   validateAndParseAddress,
   validateAndParseAddresses,
-  validateBytes32,
 } from './utils';
 
 export class ZoraModuleManager {

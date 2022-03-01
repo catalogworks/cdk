@@ -7,7 +7,7 @@ import ZoraRinkebyAddresses from '@zoralabs/v3/dist/addresses/4.json';
 import ZoraMainnetAddresses from '@zoralabs/v3/dist/addresses/1.json';
 
 // AddressBook Interface for Catalog Contracts
-interface AddressBook {
+export interface AddressBook {
   [key: string]: {
     [key: string]: string;
   };
