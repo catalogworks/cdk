@@ -129,7 +129,7 @@ View: [LICENSE](./LICENSE)
 
 ### Dependencies
 
-- [@catalogworks/catalog-contracts@0.1.2](https://github.com/catalogworks/catalog-contracts/packages/1165811)
+- [@catalogworks/catalog-contracts@0.1.4](https://github.com/catalogworks/catalog-contracts/packages/1165811)
 - Ethers
 - sjcl
 - tiny-invariant
