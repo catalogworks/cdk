@@ -30,6 +30,7 @@ The CDK has these primary exports plus some types:
 - [Metadata](src/metadata.ts)
 - [AsksV11](src/asksv11.ts)
 - [ZoraModuleManager](src/zoramodulemanager.ts)
+- [OffersV1](src/offersv1.ts)
 
 ---
 
@@ -38,7 +39,7 @@ The CDK has these primary exports plus some types:
 [Package](https://github.com/catalogworks/cdk/packages/1173720)
 
 ```bash
-yarn add @catalogworks/cdk@0.1.0
+yarn add @catalogworks/cdk@0.1.2
 ```
 
 ---

@@ -8,3 +8,4 @@ export * from './metadata';
 export * from './asksv11';
 export * from './zoramodulemanager';
 export * from './addresses';
+export * from './offersv1';

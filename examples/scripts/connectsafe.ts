@@ -4,11 +4,7 @@
 // Execute with `$ ts-node examples/scripts/connectsafe.ts`
 // @note Requires environment variables, not included in the SDK
 
-import Safe, {
-  SafeFactory,
-  SafeAccountConfig,
-  EthersAdapter,
-} from '@gnosis.pm/safe-core-sdk';
+import Safe, {EthersAdapter} from '@gnosis.pm/safe-core-sdk';
 import type {
   SafeTransaction,
   SafeTransactionDataPartial,
