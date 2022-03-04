@@ -5,17 +5,20 @@ import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typec
 import {Wallet} from '@ethersproject/wallet';
 import {
   ZoraModuleManager__factory,
-  WETH__factory,
   AsksV11__factory,
   ERC20TransferHelper__factory,
   ERC721TransferHelper__factory,
-  RoyaltyEngineV1__factory,
   ZoraProtocolFeeSettings__factory,
-  ERC721__factory,
-  TestERC721__factory,
   OffersV1__factory,
 } from '@zoralabs/v3/dist/typechain';
 import {Contract} from 'ethers';
+
+// smh - manually copied helper types/contracts from previous version of '@zoralabs/v3'
+import {
+  WETH__factory,
+  RoyaltyEngineV1__factory,
+  TestERC721__factory,
+} from './v3helpers/typechain';
 
 // Type def for catalog protocol contracts
 export type CatalogConfiguredAddresses = {
