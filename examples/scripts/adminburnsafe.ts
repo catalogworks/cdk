@@ -9,7 +9,7 @@ import type {
   SafeTransaction,
   SafeTransactionDataPartial,
 } from '@gnosis.pm/safe-core-sdk-types';
-import {BigNumberish, BytesLike, ethers, Wallet} from 'ethers';
+import {BigNumberish, ethers, Wallet} from 'ethers';
 import dotenv from 'dotenv';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {SafeEthersSigner, SafeService} from '@gnosis.pm/safe-ethers-adapters';

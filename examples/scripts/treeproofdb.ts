@@ -7,11 +7,10 @@
 import axios, {AxiosRequestConfig} from 'axios';
 import {
   generateMerkleTree,
-  generateMerkleProofs,
   generateMerkleProof,
   generateMerkleRootFromTree,
 } from '../../src/utils';
-import type {Proof} from '../../src/types';
+
 import dotenv from 'dotenv';
 
 dotenv.config();

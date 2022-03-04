@@ -72,3 +72,12 @@ export type Offer = {
   findersFeeBPS: BigNumberish;
   amount: BigNumberish;
 };
+
+// Offer Input Data Type
+export type OfferData = {
+  tokenContract: string;
+  tokenId: BigNumberish;
+  currency: string;
+  amount: BigNumberish;
+  findersFeeBPS: BigNumberish;
+};

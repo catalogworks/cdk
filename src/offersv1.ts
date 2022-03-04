@@ -49,7 +49,7 @@ export class OffersV1 {
     );
   }
 
-  // VIEW FUNCTONS
+  // View Methods [Getters]
 
   // fetchOffers
   // @param {string} inputAddress - Address of the token contract
