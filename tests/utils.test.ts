@@ -4,12 +4,6 @@
 import {
   constructTokenData,
   constructContentData,
-  chainIdToNetwork,
-  validateBytes32,
-  validateBytes32Array,
-  stripHexPrefix,
-  validateAndParseAddress,
-  validateURI,
   sha256FromHexString,
   sha256FromBuffer,
   generateMerkleTree,
@@ -18,9 +12,7 @@ import {
   generateMerkleProofs,
 } from '../src/utils';
 import {JsonRpcProvider} from '@ethersproject/providers';
-import {BigNumber} from '@ethersproject/bignumber';
-import {MaxUint256} from '@ethersproject/constants';
-import {BytesLike, ethers} from 'ethers';
+import {BytesLike} from 'ethers';
 import MerkleTree from 'merkletreejs';
 
 jest.setTimeout(1000000);
