@@ -1,7 +1,7 @@
 // offersv1.test.ts
 // Jest test suite for OffersV1 class
 
-import {ZoraModuleManager, OffersV1, OfferData, AsksV11} from '../src';
+import {ZoraModuleManager, OffersV1, OfferData, wrapETH} from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {waffleJest} from '@ethereum-waffle/jest';
@@ -76,7 +76,7 @@ describe('Zora V3 Offers', () => {
           tokenContract: offersConfig.erc721Test.address,
           tokenId: 1,
           currency: offersConfig.weth,
-          amount: 100,
+          amount: 24,
           findersFeeBPS: 50,
         };
       });
@@ -100,6 +100,146 @@ describe('Zora V3 Offers', () => {
           ).rejects.toThrowError(
             'ensureReadOnly: Cannot modify read-only instance'
           );
+        });
+        // 02
+        it('throws an error if the input contract address is not valid', async () => {
+          const offers = new OffersV1(mainWallet, 50, offersConfig.offersV1);
+          expect(offers.readOnly).toBe(false);
+
+          await expect(
+            offers.createOffer(
+              'pee pee poo poo',
+              defaultOfferData.tokenId,
+              defaultOfferData.currency,
+              defaultOfferData.amount,
+              defaultOfferData.findersFeeBPS
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 03
+        it('throws an error if the input token contract address is not valid', async () => {
+          const offers = new OffersV1(mainWallet, 50, offersConfig.offersV1);
+          expect(offers.readOnly).toBe(false);
+
+          await expect(
+            offers.createOffer(
+              offersConfig.erc721Test.address,
+              defaultOfferData.tokenId,
+              'pee pee poo poo',
+              defaultOfferData.amount,
+              defaultOfferData.findersFeeBPS
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 04
+        it('creates an offer', async () => {
+          // Wrap some eth first
+          const wethTx = await wrapETH(
+            otherWallet,
+            offersConfig.weth,
+            BigNumber.from(50)
+          );
+          await wethTx.wait();
+
+          const offers = new OffersV1(mainWallet, 50, offersConfig.offersV1);
+          expect(offers.readOnly).toBe(false);
+
+          // Setup ERC721 and mint
+          const erc721 = new Contract(
+            offersConfig.erc721,
+            offersConfig.erc721Test.interface,
+            mainWallet
+          );
+
+          const nftTx = await erc721.mint(mainWallet.address, 1);
+          await nftTx.wait();
+
+          // Approve Transfer Helper
+          const approveTransferTx = await erc721.setApprovalForAll(
+            offersConfig.erc721TransferHelper,
+            true
+          );
+          await approveTransferTx.wait();
+          expect(approveTransferTx.hash).toBeDefined();
+
+          // Setup module manager
+          const moduleManager = new ZoraModuleManager(
+            mainWallet,
+            50,
+            offersConfig.moduleManagerTest.address
+          );
+          const registerModuleTx = await moduleManager.registerModule(
+            offersConfig.offersV1
+          );
+          await registerModuleTx.wait();
+
+          const approveModuleManagerTx =
+            await moduleManager.setApprovalForModule(
+              offersConfig.offersV1,
+              true
+            );
+          await approveModuleManagerTx.wait();
+
+          // Listen for emitted event
+          moduleManager.contract.on(
+            'ModuleApprovalSet',
+            (user: string, module: string, approved: boolean) => {
+              expect(user).toBe(mainWallet.address);
+              expect(module).toBe(offersConfig.offersV1);
+              expect(approved).toBe(true);
+            }
+          );
+          blockchain.waitBlocksAsync(4);
+          // Approve ERC20 Transfer Helper
+          const wethContract = new Contract(
+            offersConfig.weth,
+            offersConfig.wethTest.interface,
+            mainWallet
+          );
+          const wethApproval = await wethContract.approve(
+            offersConfig.erc20TransferHelper,
+            5000000
+          );
+          await wethApproval.wait();
+
+          // Create offer
+          const tx = await offers.createOffer(
+            offersConfig.erc721,
+            1,
+            offersConfig.weth,
+            defaultOfferData.amount,
+            defaultOfferData.findersFeeBPS
+          );
+          tx.wait();
+
+          // Check that the offer was created
+          offers.contract.on(
+            'OfferCreated',
+            (
+              tokenContract: string,
+              tokenId: BigNumber,
+              offerId: BigNumber,
+              offer: OfferType
+            ) => {
+              expect(tokenContract).toBe(defaultOfferData.tokenContract);
+              expect(tokenId).toBe(defaultOfferData.tokenId);
+              expect(offerId).toBeDefined();
+              expect(offer.currency).toBe(defaultOfferData.currency);
+              expect(offer.amount).toBe(defaultOfferData.amount);
+              expect(offer.findersFeeBPS).toBe(defaultOfferData.findersFeeBPS);
+            }
+          );
+
+          expect(tx.hash).toBeDefined();
+          // Clear event listeners
+          moduleManager.contract.removeAllListeners('ModuleApprovalSet');
+          offers.contract.removeAllListeners('OfferCreated');
         });
       });
     });
