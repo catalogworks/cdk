@@ -1,7 +1,7 @@
 {
   "include": [
     "src",
-    "src/schemas/**/*.json"
+    "src/schemas/**/*.json",
   ],
   "exclude": [
     "node_modules",

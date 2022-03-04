@@ -141,7 +141,7 @@ describe('Zora V3 Offers', () => {
         it('creates an offer', async () => {
           // Wrap some eth first
           const wethTx = await wrapETH(
-            otherWallet,
+            mainWallet,
             offersConfig.weth,
             BigNumber.from(50)
           );
@@ -195,7 +195,7 @@ describe('Zora V3 Offers', () => {
               expect(approved).toBe(true);
             }
           );
-          blockchain.waitBlocksAsync(4);
+          //   blockchain.waitBlocksAsync(4);
           // Approve ERC20 Transfer Helper
           const wethContract = new Contract(
             offersConfig.weth,
