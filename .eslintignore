@@ -6,6 +6,8 @@
 **/dist
 **/node_modules
 **/docs
+**/tests/v3helpers
+**/tests/v3helpers/typechain
 
 
 # files
