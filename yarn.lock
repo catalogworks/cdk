@@ -610,31 +610,6 @@
     bech32 "1.1.4"
     ws "7.4.6"
 
-"@ethersproject/providers@5.5.3":
-  version "5.5.3"
-  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.5.3.tgz#56c2b070542ac44eb5de2ed3cf6784acd60a3130"
-  integrity sha512-ZHXxXXXWHuwCQKrgdpIkbzMNJMvs+9YWemanwp1fA7XZEv7QlilseysPvQe0D7Q7DlkJX/w/bGA1MdgK2TbGvA==
-  dependencies:
-    "@ethersproject/abstract-provider" "^5.5.0"
-    "@ethersproject/abstract-signer" "^5.5.0"
-    "@ethersproject/address" "^5.5.0"
-    "@ethersproject/basex" "^5.5.0"
-    "@ethersproject/bignumber" "^5.5.0"
-    "@ethersproject/bytes" "^5.5.0"
-    "@ethersproject/constants" "^5.5.0"
-    "@ethersproject/hash" "^5.5.0"
-    "@ethersproject/logger" "^5.5.0"
-    "@ethersproject/networks" "^5.5.0"
-    "@ethersproject/properties" "^5.5.0"
-    "@ethersproject/random" "^5.5.0"
-    "@ethersproject/rlp" "^5.5.0"
-    "@ethersproject/sha2" "^5.5.0"
-    "@ethersproject/strings" "^5.5.0"
-    "@ethersproject/transactions" "^5.5.0"
-    "@ethersproject/web" "^5.5.0"
-    bech32 "1.1.4"
-    ws "7.4.6"
-
 "@ethersproject/random@5.5.1", "@ethersproject/random@^5.5.0":
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/@ethersproject/random/-/random-5.5.1.tgz#7cdf38ea93dc0b1ed1d8e480ccdaf3535c555415"
@@ -1125,10 +1100,10 @@
     "@openzeppelin/contracts" "^4.2.0"
     "@openzeppelin/contracts-upgradeable" "^4.2.0"
 
-"@manifoldxyz/royalty-registry-solidity@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@manifoldxyz/royalty-registry-solidity/-/royalty-registry-solidity-1.0.4.tgz#ac6d1a1d4331ef1eeca9ffd26100d0346996e689"
-  integrity sha512-6ttcxRT4EDsihLYuRn/qmtJjm/FVfj9nzmy4wQX8RuIs0y68KtDEK9cURY8umgmPCcKBDCrjM3w7dcMzjTqQbw==
+"@manifoldxyz/royalty-registry-solidity@^1.0.7":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@manifoldxyz/royalty-registry-solidity/-/royalty-registry-solidity-1.0.9.tgz#4d3516338c8b351e1e61d5a597ec532574beed6d"
+  integrity sha512-Cv38ROezkl6J8lizyPlEmPoAvLiRcO31OnWe/Jept0mNk7oygrPZrfG07OMfwphn+dOFxmszQTns7AJRQfxMBA==
   dependencies:
     "@manifoldxyz/libraries-solidity" "^1.0.2"
     "@openzeppelin/contracts" "^4.3.2"
@@ -1160,15 +1135,15 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.5.1.tgz#dc354082460eb34f5833afdecfab46538b208c4f"
   integrity sha512-xcKycsSyFauIGMhSeeTJW/Jzz9jZUJdiFNP9Wo/9VhMhw8t5X0M92RY6x176VfcIWsxURMHFWOJVTlFA78HI/w==
 
-"@openzeppelin/contracts@^4.2.0", "@openzeppelin/contracts@^4.3.2":
+"@openzeppelin/contracts@^4.2.0", "@openzeppelin/contracts@^4.3.2", "@openzeppelin/contracts@^4.4.2":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.5.0.tgz#3fd75d57de172b3743cdfc1206883f56430409cc"
   integrity sha512-fdkzKPYMjrRiPK6K4y64e6GzULR7R7RwxSigHS8DDp7aWDeoReqsQI+cxHV1UuhAqX69L1lAaWDxenfP+xiqzA==
 
-"@rari-capital/solmate@^5.9.0":
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/@rari-capital/solmate/-/solmate-5.9.0.tgz#bb80a43ca3110521cc7d73bf34de2ec4bf71f024"
-  integrity sha512-Rf01eoR5i+8RMvavatNu8hdxDvzIOxpb3lAhjqGX2STvVB0a99V4GXVPMqoUomucuy0umZ39ORssPIgXTNHJdA==
+"@rari-capital/solmate@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@rari-capital/solmate/-/solmate-6.2.0.tgz#4f70dc236606c27ec2cb1b4261dd830235d01fe4"
+  integrity sha512-g94F+Ra9ixyJyNgvnOIufNjUz488uEG0nxIEEtJ7+g+tA1XGUupRB2kB5b+VO7WYO26RNOVD2fW6xE4e14iWpg==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -1475,22 +1450,14 @@
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@zoralabs/core@^1.0.5":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@zoralabs/core/-/core-1.0.7.tgz#c426b5d85cf1cb0c57d7e9dc0a3fd8519c78566d"
-  integrity sha512-BZ6/n/2YIOAXWU+VtxNo+O/1wy9mFb7Grfdg2EkJoaq/2UJjf7cpMZfdQHp2CRa+m3XYb1uVG3q6236i+Uz1MQ==
+"@zoralabs/v3@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.3.tgz#f846400e855bc0da597f2b0c9a99e01319e52554"
+  integrity sha512-pKb+W1EcQ+zIY3ocEoP2tkfhnb5y3g44v1bjtVCHedhvPTPirPIcB5cYZJWW1ERdsv+McDFAl4+221k1GoscvA==
   dependencies:
-    ethers "^5.0.19"
-
-"@zoralabs/v3@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.1.tgz#d3e24a07d14ad144696450c7ba7fc4c85decb50d"
-  integrity sha512-zM7EB3sBKtGQNm2fnv9NJLzR3sVyER9bJPbji7Iz7yRb2Ft5SPTGdRZ4AT0t607SnRe6iONNVXzlYsdL3OslAg==
-  dependencies:
-    "@manifoldxyz/royalty-registry-solidity" "1.0.4"
-    "@openzeppelin/contracts" "^4.3.2"
-    "@rari-capital/solmate" "^5.9.0"
-    "@zoralabs/core" "^1.0.5"
+    "@manifoldxyz/royalty-registry-solidity" "^1.0.7"
+    "@openzeppelin/contracts" "^4.4.2"
+    "@rari-capital/solmate" "^6.2.0"
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
@@ -4150,42 +4117,6 @@ ethers@^5.0.0, ethers@^5.4.7, ethers@^5.5.2:
     "@ethersproject/pbkdf2" "5.5.0"
     "@ethersproject/properties" "5.5.0"
     "@ethersproject/providers" "5.5.2"
-    "@ethersproject/random" "5.5.1"
-    "@ethersproject/rlp" "5.5.0"
-    "@ethersproject/sha2" "5.5.0"
-    "@ethersproject/signing-key" "5.5.0"
-    "@ethersproject/solidity" "5.5.0"
-    "@ethersproject/strings" "5.5.0"
-    "@ethersproject/transactions" "5.5.0"
-    "@ethersproject/units" "5.5.0"
-    "@ethersproject/wallet" "5.5.0"
-    "@ethersproject/web" "5.5.1"
-    "@ethersproject/wordlists" "5.5.0"
-
-ethers@^5.0.19:
-  version "5.5.4"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.4.tgz#e1155b73376a2f5da448e4a33351b57a885f4352"
-  integrity sha512-N9IAXsF8iKhgHIC6pquzRgPBJEzc9auw3JoRkaKe+y4Wl/LFBtDDunNe7YmdomontECAcC5APaAgWZBiu1kirw==
-  dependencies:
-    "@ethersproject/abi" "5.5.0"
-    "@ethersproject/abstract-provider" "5.5.1"
-    "@ethersproject/abstract-signer" "5.5.0"
-    "@ethersproject/address" "5.5.0"
-    "@ethersproject/base64" "5.5.0"
-    "@ethersproject/basex" "5.5.0"
-    "@ethersproject/bignumber" "5.5.0"
-    "@ethersproject/bytes" "5.5.0"
-    "@ethersproject/constants" "5.5.0"
-    "@ethersproject/contracts" "5.5.0"
-    "@ethersproject/hash" "5.5.0"
-    "@ethersproject/hdnode" "5.5.0"
-    "@ethersproject/json-wallets" "5.5.0"
-    "@ethersproject/keccak256" "5.5.0"
-    "@ethersproject/logger" "5.5.0"
-    "@ethersproject/networks" "5.5.2"
-    "@ethersproject/pbkdf2" "5.5.0"
-    "@ethersproject/properties" "5.5.0"
-    "@ethersproject/providers" "5.5.3"
     "@ethersproject/random" "5.5.1"
     "@ethersproject/rlp" "5.5.0"
     "@ethersproject/sha2" "5.5.0"

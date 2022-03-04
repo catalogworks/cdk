@@ -64,3 +64,11 @@ export type AskData = {
   sellerFundsRecipient: string;
   findersFeeBPS: BigNumberish;
 };
+
+// Zora V3 Offer Type
+export type Offer = {
+  makerAddress: string;
+  currency: string;
+  findersFeeBPS: BigNumberish;
+  amount: BigNumberish;
+};
