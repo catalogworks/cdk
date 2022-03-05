@@ -92,6 +92,7 @@ export type OfferData = {
   amount: BigNumberish;
   findersFeeBPS: BigNumberish;
 };
+
 // Offer Return Data Type
 export type OfferStructOutput = [string, string, number, BigNumber] & {
   maker: string;
@@ -377,4 +378,12 @@ export type AuctionStructOutputListingERC20 = [
   listingFeeRecipient: string;
   duration: BigNumber;
   listingFeeBps: number;
+};
+  
+// 0x Split Input Data Type
+export type SplitData = {
+  accounts: string[];
+  percentAllocations: BigNumberish[];
+  distributorFee: BigNumberish;
+  controller: string;
 };

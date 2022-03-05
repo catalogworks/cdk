@@ -46,3 +46,12 @@ export const zoraAddresses: AddressBook = {
     reserveAuctionListingErc20: ZoraMainnetAddresses.ReserveAuctionListingErc20,
   },
 };
+
+export const splitsAddresses: AddressBook = {
+  rinkeby: {
+    splitMain: '0x2ed6c4B5dA6378c7897AC67Ba9e43102Feb694EE',
+  },
+  mainnet: {
+    splitMain: '0x2ed6c4B5dA6378c7897AC67Ba9e43102Feb694EE',
+  },
+};
