@@ -26,6 +26,11 @@ import {
   TestERC721__factory,
 } from './v3helpers/typechain';
 
+import {
+  SplitMain__factory,
+  SplitWallet__factory,
+} from '../lib/0xsplits/typechain';
+
 // Type def for catalog protocol contracts
 export type CatalogConfiguredAddresses = {
   cnft: string;
@@ -46,6 +51,7 @@ export type ZoraConfiguredAddresses = {
   offersV1: string;
 };
 
+
 export type ZoraReserveAuctionConfiguredAddresses = {
   moduleManager: string;
   weth: string;
@@ -63,6 +69,11 @@ export type ZoraReserveAuctionConfiguredAddresses = {
   reserveAuctionFindersERC20: string;
   reserveAuctionListingETH: string;
   reserveAuctionListingERC20: string;
+};
+
+export type SplitConfiguredAddresses = {
+  splitMain: string;
+  splitWallet?: string;
 };
 
 export async function setupCatalog(
@@ -332,5 +343,20 @@ export async function setupZora(
     moduleManagerTest: moduleManager,
     wethTest: weth,
     offersV1: offersV1Address,
+  };
+}
+
+export async function setupSplits(
+  wallet: Wallet
+): Promise<SplitConfiguredAddresses> {
+  // Setup the split main contract
+  const splitMain = await (
+    await new SplitMain__factory(wallet).deploy()
+  )._deployed();
+  await splitMain.deployTransaction.wait();
+  const splitMainAddress = splitMain.address;
+
+  return {
+    splitMain: splitMainAddress,
   };
 }
