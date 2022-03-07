@@ -1,7 +1,7 @@
 // 0xsplits.test.ts
 // Jest test suite for ZeroXSplits class
 
-import {ZeroXSplits, SplitData} from '../src';
+import {ZeroXSplits, SplitData, wrapETH} from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {waffleJest} from '@ethereum-waffle/jest';
@@ -9,8 +9,7 @@ import {splitsAddresses} from '../src/addresses';
 import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupSplits, SplitConfiguredAddresses} from './helpers';
-import {BigNumber, Contract, ethers} from 'ethers';
-import type {Offer as OfferType} from '../src';
+import {BigNumber, BigNumberish, Contract, ethers} from 'ethers';
 
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
@@ -363,6 +362,795 @@ describe('0xSplits Test Suite', () => {
           splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('InitiateControlTransfer');
           splits.contract.removeAllListeners('CancelControlTransfer');
+        });
+      });
+
+      describe('distributeETH', () => {
+        // 01
+        it('throws an error on a read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const splits = new ZeroXSplits(provider, 50, splitsConfig.splitMain);
+
+          expect(splits.readOnly).toBe(true);
+
+          await expect(
+            splits.distributeETH(
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        // 02
+        it('throws an error if the input address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.distributeETH(
+              'pee pee poo poo',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+        // 03
+        it('distributes ETH to the split', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          const createSplitTx = await splits.createSplit(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+          const txLogs = await createSplitTx.wait();
+
+          const emittedData = txLogs.logs[0].topics[1];
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(splitAddress);
+          });
+
+          const distTx = await splits.distributeETH(
+            splitAddress,
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+          await distTx.wait();
+
+          splits.contract.on(
+            'DistributeETH',
+            (
+              splitAddress: string,
+              amount: BigNumberish,
+              distributorAddress: string
+            ) => {
+              expect(splitAddress).toBeDefined();
+              expect(splitAddress).toBe(splitAddress);
+              expect(amount).toBeDefined();
+              expect(amount).toBe(defaultSplitData.distributorFee);
+              expect(distributorAddress).toBeDefined();
+              expect(distributorAddress).toBe(mainWallet.address);
+            }
+          );
+
+          splits.contract.removeAllListeners('CreateSplit');
+          splits.contract.removeAllListeners('DistributeETH');
+        });
+      });
+
+      describe('distributeERC20', () => {
+        // 01
+        it('throws an error on a read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const splits = new ZeroXSplits(provider, 50, splitsConfig.splitMain);
+
+          expect(splits.readOnly).toBe(true);
+
+          await expect(
+            splits.distributeERC20(
+              '0x0000000000000000000000000000000000000000',
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        // 02
+        it('throws an error if the input split address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.distributeERC20(
+              'pee pee poo poo',
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 03
+        it('throws an error if the input contract address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.distributeERC20(
+              '0x0000000000000000000000000000000000000000',
+              'pee pee poo poo',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 04
+        it('distributes erc20 tokens to the split', async () => {
+          // Wrap some eth first
+          const wethTx = await wrapETH(
+            mainWallet,
+            splitsConfig.weth,
+            BigNumber.from(50)
+          );
+          await wethTx.wait();
+
+          const wethContract = new Contract(
+            splitsConfig.weth,
+            splitsConfig.wethTest.interface,
+            mainWallet
+          );
+
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          const createSplitTx = await splits.createSplit(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(
+              ethers.utils.hexStripZeros(createSplitTx.hash)
+            );
+          });
+
+          const txLogs = await createSplitTx.wait();
+          const emittedData = txLogs.logs[0].topics[1];
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+
+          const distTx = await splits.distributeERC20(
+            splitAddress,
+            wethContract.address,
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+          await distTx.wait();
+
+          splits.contract.on(
+            'DistributeERC20',
+            (
+              splitAddress: string,
+              erc20Address: string,
+              amount: BigNumberish,
+              distributorAddress: string
+            ) => {
+              expect(splitAddress).toBeDefined();
+              expect(splitAddress).toBe(splitAddress);
+              expect(erc20Address).toBeDefined();
+              expect(erc20Address).toBe(wethContract.address);
+              expect(amount).toBeDefined();
+              expect(amount).toBe(defaultSplitData.distributorFee);
+              expect(distributorAddress).toBeDefined();
+              expect(distributorAddress).toBe(mainWallet.address);
+            }
+          );
+
+          splits.contract.removeAllListeners('CreateSplit');
+          splits.contract.removeAllListeners('DistributeERC20');
+        });
+      });
+
+      describe('makeSplitImmutable', () => {
+        // 01
+        it('throws an error on a read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const splits = new ZeroXSplits(provider, 50, splitsConfig.splitMain);
+
+          expect(splits.readOnly).toBe(true);
+
+          await expect(
+            splits.makeSplitImmutable(
+              '0x0000000000000000000000000000000000000000'
+            )
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        // 02
+        it('throws an error if the input split address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.makeSplitImmutable('pee pee poo poo')
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 03
+        it('makes an mutable split immutable', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          const createSplitTx = await splits.createSplit(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+
+          await createSplitTx.wait();
+          const txLogs = await createSplitTx.wait();
+          const emittedData = txLogs.logs[0].topics[1];
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(splitAddress);
+          });
+
+          const makeImmutableTx = await splits.makeSplitImmutable(splitAddress);
+          await makeImmutableTx.wait();
+
+          splits.contract.on(
+            'ControlTransfer',
+            (
+              address: string,
+              previousController: string,
+              newController: string
+            ) => {
+              expect(address).toBeDefined();
+              expect(address).toBe(splitAddress);
+              expect(previousController).toBeDefined();
+              expect(previousController).toBe(mainWallet.address);
+              expect(newController).toBeDefined();
+              expect(newController).toBe(
+                '0x0000000000000000000000000000000000000000'
+              );
+            }
+          );
+
+          splits.contract.removeAllListeners('CreateSplit');
+          splits.contract.removeAllListeners('ControlTransfer');
+        });
+      });
+
+      describe('transferControl', () => {
+        // 01
+        it('throws an error on a read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const splits = new ZeroXSplits(provider, 50, splitsConfig.splitMain);
+
+          expect(splits.readOnly).toBe(true);
+
+          await expect(
+            splits.transferControl(
+              '0x0000000000000000000000000000000000000000',
+              '0x0000000000000000000000000000000000000000'
+            )
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        // 02
+        it('throws an error if the input split address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.transferControl(
+              'pee pee poo poo',
+              '0x0000000000000000000000000000000000000000'
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 03
+        it('succesfully begins transfer control request', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          const createSplitTx = await splits.createSplit(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+          const txLogs = await createSplitTx.wait();
+
+          const emittedData = txLogs.logs[0].topics[1];
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(splitAddress);
+          });
+
+          // Transfer control of the split to the other wallet
+          const transferTx = await splits.transferControl(
+            splitAddress,
+            otherWallet.address
+          );
+          await transferTx.wait();
+
+          splits.contract.on(
+            'InitiateControlTransfer',
+            (splitAddress: string, newController: string) => {
+              expect(splitAddress).toBeDefined();
+              expect(splitAddress).toBe(splitAddress);
+              expect(newController).toBeDefined();
+              expect(newController).toBe(otherWallet.address);
+            }
+          );
+
+          splits.contract.removeAllListeners('CreateSplit');
+          splits.contract.removeAllListeners('InitiateControlTransfer');
+        });
+      });
+
+      describe('updateAndDistributeERC20', () => {
+        // 01
+        it('throws an error on a read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const splits = new ZeroXSplits(provider, 50, splitsConfig.splitMain);
+
+          expect(splits.readOnly).toBe(true);
+
+          await expect(
+            splits.updateAndDistributeERC20(
+              '0x0000000000000000000000000000000000000000',
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        // 02
+        it('throws an error if the input split address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.updateAndDistributeERC20(
+              'pee pee poo poo',
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 03
+        it('throws an error if the input contract address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.updateAndDistributeERC20(
+              '0x0000000000000000000000000000000000000000',
+              'pee pee poo poo',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 04
+        it('updates and distributes ERC20 to the split', async () => {
+          // Wrap some eth first
+          const wethTx = await wrapETH(
+            mainWallet,
+            splitsConfig.weth,
+            BigNumber.from(50)
+          );
+          await wethTx.wait();
+
+          const wethContract = new Contract(
+            splitsConfig.weth,
+            splitsConfig.wethTest.interface,
+            mainWallet
+          );
+
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          const createSplitTx = await splits.createSplit(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(
+              ethers.utils.hexStripZeros(createSplitTx.hash)
+            );
+          });
+
+          const txLogs = await createSplitTx.wait();
+          const emittedData = txLogs.logs[0].topics[1];
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+
+          const distTx = await splits.updateAndDistributeERC20(
+            splitAddress,
+            wethContract.address,
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+          await distTx.wait();
+
+          splits.contract.on(
+            'DistributeERC20',
+            (
+              splitAddress: string,
+              erc20Address: string,
+              amount: BigNumberish,
+              distributorAddress: string
+            ) => {
+              expect(splitAddress).toBeDefined();
+              expect(splitAddress).toBe(splitAddress);
+              expect(erc20Address).toBeDefined();
+              expect(erc20Address).toBe(wethContract.address);
+              expect(amount).toBeDefined();
+              expect(amount).toBe(defaultSplitData.distributorFee);
+              expect(distributorAddress).toBeDefined();
+              expect(distributorAddress).toBe(mainWallet.address);
+            }
+          );
+
+          splits.contract.on('UpdateSplit', (splitAddress: string) => {
+            expect(splitAddress).toBeDefined();
+            expect(splitAddress).toBe(splitAddress);
+          });
+
+          splits.contract.removeAllListeners('CreateSplit');
+          splits.contract.removeAllListeners('DistributeERC20');
+          splits.contract.removeAllListeners('UpdateSplit');
+        });
+      });
+
+      describe('updateAndDistributeETH', () => {
+        // 01
+        it('throws an error on a read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const splits = new ZeroXSplits(provider, 50, splitsConfig.splitMain);
+
+          expect(splits.readOnly).toBe(true);
+
+          await expect(
+            splits.updateAndDistributeETH(
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        // 02
+        it('throws an error if the input split address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.updateAndDistributeETH(
+              'pee pee poo poo',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              mainWallet.address
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 03
+        it('throws an error if the input distributor address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.updateAndDistributeETH(
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee,
+              'pee pee poo poo'
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 04
+        it('updated and distributes ETH to the split', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          const createSplitTx = await splits.createSplit(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(
+              ethers.utils.hexStripZeros(createSplitTx.hash)
+            );
+          });
+
+          const txLogs = await createSplitTx.wait();
+          const emittedData = txLogs.logs[0].topics[1];
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+
+          const distTx = await splits.updateAndDistributeETH(
+            splitAddress,
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+          await distTx.wait();
+
+          splits.contract.on(
+            'DistributeETH',
+            (
+              splitAddress: string,
+              amount: BigNumberish,
+              distributorAddress: string
+            ) => {
+              expect(splitAddress).toBeDefined();
+              expect(splitAddress).toBe(splitAddress);
+              expect(amount).toBeDefined();
+              expect(amount).toBe(defaultSplitData.distributorFee);
+              expect(distributorAddress).toBeDefined();
+              expect(distributorAddress).toBe(mainWallet.address);
+            }
+          );
+
+          splits.contract.on('UpdateSplit', (splitAddress: string) => {
+            expect(splitAddress).toBeDefined();
+            expect(splitAddress).toBe(splitAddress);
+          });
+
+          splits.contract.removeAllListeners('CreateSplit');
+          splits.contract.removeAllListeners('DistributeETH');
+          splits.contract.removeAllListeners('UpdateSplit');
+        });
+      });
+
+      describe('updateSplit', () => {
+        // 01
+        it('throws an error on a read only instance', async () => {
+          const provider = new JsonRpcProvider();
+          const splits = new ZeroXSplits(provider, 50, splitsConfig.splitMain);
+
+          expect(splits.readOnly).toBe(true);
+
+          await expect(
+            splits.updateSplit(
+              '0x0000000000000000000000000000000000000000',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee
+            )
+          ).rejects.toThrowError(
+            'ensureReadOnly: Cannot modify read-only instance'
+          );
+        });
+
+        // 02
+        it('throws an error if the input split address is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.updateSplit(
+              'pee pee poo poo',
+              defaultSplitData.accounts,
+              defaultSplitData.percentAllocations,
+              defaultSplitData.distributorFee
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 03
+        it('updates the split', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          const createSplitTx = await splits.createSplit(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee,
+            mainWallet.address
+          );
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(
+              ethers.utils.hexStripZeros(createSplitTx.hash)
+            );
+          });
+
+          const txLogs = await createSplitTx.wait();
+          const emittedData = txLogs.logs[0].topics[1];
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+
+          const updateSplitTx = await splits.updateSplit(
+            splitAddress,
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee
+          );
+          await updateSplitTx.wait();
+
+          splits.contract.on('UpdateSplit', (address: string) => {
+            expect(address).toBeDefined();
+            expect(address).toBe(splitAddress);
+          });
+
+          splits.contract.removeAllListeners('CreateSplit');
+          splits.contract.removeAllListeners('UpdateSplit');
         });
       });
     });

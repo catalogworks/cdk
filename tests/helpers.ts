@@ -74,6 +74,8 @@ export type ZoraReserveAuctionConfiguredAddresses = {
 export type SplitConfiguredAddresses = {
   splitMain: string;
   splitWallet?: string;
+  weth: string;
+  wethTest: Contract;
 };
 
 export async function setupCatalog(
@@ -356,7 +358,14 @@ export async function setupSplits(
   await splitMain.deployTransaction.wait();
   const splitMainAddress = splitMain.address;
 
+  // setup WETH contract so we have an ERC20 for fees
+  const weth = await (await new WETH__factory(wallet).deploy())._deployed();
+  await weth.deployTransaction.wait();
+  const wethAddress = weth.address;
+
   return {
     splitMain: splitMainAddress,
+    weth: wethAddress,
+    wethTest: weth,
   };
 }
