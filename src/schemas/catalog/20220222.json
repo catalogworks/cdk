@@ -1,0 +1,364 @@
+{
+    "$id": "http://catalog.works/schemas/2022022.json",
+    "type": "object",
+    "title": "mnft-20220222",
+    "description": "This schema defined version 20220222 of the Catalog Metadata Schema",
+    "properties": {
+        "version": {
+            "type": "string",
+            "description": "The version of the schema",
+            "const": "mnft-20220222",
+            "required": true
+        },
+        "title": {
+            "type": "string",
+            "description": "The title of the track",
+            "required": true
+        },
+        "artist": {
+            "type": "string",
+            "description": "The artist of the track",
+            "required": true
+        },
+        "description": {
+            "type": "string",
+            "description": "The description of the track"
+        },
+        "duration": {
+            "type": "number",
+            "description": "The duration of the track in seconds",
+            "required": true
+        },
+        "mimeType": {
+            "type": "string",
+            "description": "The mime type of the content file",
+            "required": true
+        },
+        "trackNumber": {
+            "type": "integer",
+            "description": "The track number of the track",
+            "required": true,
+            "minimum": 1
+        },
+        "project": {
+            "type": [
+                "object",
+                null
+            ],
+            "description": "The project that the track belongs to",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "The title of the project",
+                    "required": true
+                },
+                "artwork": {
+                    "type": "object",
+                    "description": "The artwork of the project",
+                    "properties": {
+                        "uri": {
+                            "type": "string",
+                            "description": "The uri of the artwork (ipfs://<CID>)",
+                            "required": true
+                        },
+                        "mimeType": {
+                            "type": "string",
+                            "description": "The mime type of the artwork",
+                            "required": true
+                        },
+                        "nft": {
+                            "type": "string",
+                            "description": "The NFT of the artwork (caip19)"
+                        }
+                    }
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the project"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "The type of the project",
+                    "examples": [
+                        "EP",
+                        "LP",
+                        "Compilation",
+                        "Single",
+                        "Other"
+                    ]
+                },
+                "originalReleaseDate": {
+                    "type": "string",
+                    "description": "The original release date of the project (DateTime ISO8601)",
+                    "format": "date-time"
+                },
+                "recordLabel": {
+                    "type": "string",
+                    "description": "The record label of the project"
+                },
+                "publisher": {
+                    "type": "string",
+                    "description": "The publisher of the project"
+                },
+                "upc": {
+                    "type": "string",
+                    "description": "The UPC of the project"
+                }
+            }
+        },
+        "artwork": {
+            "type": "object",
+            "description": "The artwork of the track",
+            "properties": {
+                "uri": {
+                    "type": "string",
+                    "description": "The uri of the artwork (ipfs://<CID>)",
+                    "required": true
+                },
+                "mimeType": {
+                    "type": "string",
+                    "description": "The mime type of the artwork",
+                    "required": true
+                },
+                "nft": {
+                    "type": "string",
+                    "description": "The NFT of the artwork (caip19)"
+                }
+            }
+        },
+        "visualizer": {
+            "type": [
+                "object",
+                null
+            ],
+            "description": "The visualizer of the track",
+            "properties": {
+                "uri": {
+                    "type": "string",
+                    "description": "The uri of the visualizer (ipfs://<CID>)",
+                    "required": true
+                },
+                "mimeType": {
+                    "type": "string",
+                    "description": "The mime type of the visualizer",
+                    "required": true
+                },
+                "nft": {
+                    "type": "string",
+                    "description": "The NFT of the visualizer (caip19)"
+                }
+            }
+        },
+        "genre": {
+            "type": "string",
+            "description": "The genre of the track",
+            "examples": [
+                "Electronic",
+                "Rock",
+                "Pop",
+                "Hip-Hop",
+                "Jazz",
+                "Funk",
+                "Classical",
+                "Other"
+            ],
+            "maxLength": 50
+        },
+        "tags": {
+            "type": "array",
+            "description": "The tags of the track",
+            "items": {
+                "type": "string",
+                "description": "The tag of the track"
+            }
+        },
+        "lyrics": {
+            "type": [
+                "object",
+                null
+            ],
+            "description": "The lyrics of the track",
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "The text of the lyrics",
+                    "required": true
+                },
+                "nft": {
+                    "type": "string",
+                    "description": "The NFT of the lyrics (caip19)"
+                }
+            }
+        },
+        "bpm": {
+            "type": "number",
+            "description": "The BPM of the track",
+            "minimum": 0
+        },
+        "key": {
+            "type": "string",
+            "description": "The key of the track",
+            "examples": [
+                "C",
+                "G#",
+                "6A",
+                "12B"
+            ]
+        },
+        "license": {
+            "type": "string",
+            "description": "The license of the track",
+            "examples": [
+                "CC-BY-NC-SA",
+                "CC-BY-NC-ND",
+                "CC-BY-NC",
+                "CC-BY-SA",
+                "CC-BY-ND",
+                "CC-BY",
+                "CC0",
+                "PD",
+                "Other"
+            ],
+            "required": true
+        },
+        "isrc": {
+            "type": "string",
+            "description": "The ISRC of the track"
+        },
+        "locationCreated": {
+            "type": "string",
+            "description": "The location where the track was created",
+        },
+        "originalReleaseDate": {
+            "type": "string",
+            "description": "The original release date of the track (DateTime ISO8601)",
+            "format": "date-time"
+        },
+        "recordLabel": {
+            "type": "string",
+            "description": "The record label of the track"
+        },
+        "publisher": {
+            "type": "string",
+            "description": "The publisher of the track"
+        },
+        "credits": {
+            "type": [
+                "array",
+                null
+            ],
+            "description": "The credits of the track",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the credit",
+                        "required": true
+                    },
+                    "collaboratorType": {
+                        "type": "string",
+                        "description": "The type of the collaborator",
+                        "examples": [
+                            "Producer",
+                            "Engineer",
+                            "Composer",
+                            "Arranger",
+                            "Mixer",
+                            "Other"
+                        ],
+                        "required": true
+                    }
+                }
+            }
+        },
+        "losslessAudio": {
+            "type": "string",
+            "description": "The lossless audio URI of the track",
+            "required": true
+        },
+        "image": {
+            "type": "string",
+            "description": "The image URI of the track",
+            "required": true
+        },
+        "name": {
+            "type": "string",
+            "description": "The name of the track (<artist> - <title>)",
+            "required": true
+        },
+        "external_url": {
+            "type": "string",
+            "description": "The external url of the track",
+            "required": true
+        },
+        "animation_url": {
+            "type": "string",
+            "description": "The animation url of the track",
+            "required": true
+        },
+        "attributes": {
+            "type": "object",
+            "description": "OpenSea NFT Metadata standard attribute tags",
+            "properties": {
+                "artist": {
+                    "type": "string",
+                    "description": "The artist of the track",
+                    "required": true
+                },
+                "project": {
+                    "type": "string",
+                    "description": "The project of the track",
+                },
+                "bpm": {
+                    "type": "number",
+                    "description": "The BPM of the track",
+                    "minimum": 0
+                },
+                "key": {
+                    "type": "string",
+                    "description": "The key of the track",
+                    "examples": [
+                        "C",
+                        "G#",
+                        "6A",
+                        "12B"
+                    ]
+                },
+                "genre": {
+                    "type": "string",
+                    "description": "The genre of the track",
+                    "examples": [
+                        "Electronic",
+                        "Rock",
+                        "Pop",
+                        "Hip-Hop",
+                        "Jazz",
+                        "Funk",
+                        "Classical",
+                        "Other"
+                    ]
+                },
+                "recordLabel": {
+                    "type": "string",
+                    "description": "The record label of the track"
+                },
+                "license": {
+                    "type": "string",
+                    "description": "The license of the track",
+                    "examples": [
+                        "CC-BY-NC-SA",
+                        "CC-BY-NC-ND",
+                        "CC-BY-NC",
+                        "CC-BY-SA",
+                        "CC-BY-ND",
+                        "CC-BY",
+                        "CC0",
+                        "PD",
+                        "Other"
+                    ]
+                }
+            }
+        }
+    }
+}
