@@ -37,6 +37,7 @@ The CDK has these primary exports plus some types:
 - [ReserveAuctionERC20](src/reserveAuctionERC20.ts)
 - [ReserveAuctionFindersERC20](src/reserveAuctionFindersERC20.ts)
 - [ReserveAuctionListingERC20](src/reserveAuctionListingERC20.ts)
+- [ZeroXSplits](src/0xsplits.ts)
 
 ---
 

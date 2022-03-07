@@ -13,151 +13,151 @@ import {
   ContractTransaction,
   Overrides,
   CallOverrides,
-} from "ethers";
-import { BytesLike } from "@ethersproject/bytes";
-import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+} from 'ethers';
+import {BytesLike} from '@ethersproject/bytes';
+import {Listener, Provider} from '@ethersproject/providers';
+import {FunctionFragment, EventFragment, Result} from '@ethersproject/abi';
+import {TypedEventFilter, TypedEvent, TypedListener} from './commons';
 
 interface ISplitMainInterface extends ethers.utils.Interface {
   functions: {
-    "acceptControl(address)": FunctionFragment;
-    "cancelControlTransfer(address)": FunctionFragment;
-    "createSplit(address[],uint32[],uint32,address)": FunctionFragment;
-    "distributeERC20(address,address,address[],uint32[],uint32,address)": FunctionFragment;
-    "distributeETH(address,address[],uint32[],uint32,address)": FunctionFragment;
-    "makeSplitImmutable(address)": FunctionFragment;
-    "predictImmutableSplitAddress(address[],uint32[],uint32)": FunctionFragment;
-    "transferControl(address,address)": FunctionFragment;
-    "updateAndDistributeERC20(address,address,address[],uint32[],uint32,address)": FunctionFragment;
-    "updateAndDistributeETH(address,address[],uint32[],uint32,address)": FunctionFragment;
-    "updateSplit(address,address[],uint32[],uint32)": FunctionFragment;
-    "walletImplementation()": FunctionFragment;
-    "withdraw(address,uint256,address[])": FunctionFragment;
+    'acceptControl(address)': FunctionFragment;
+    'cancelControlTransfer(address)': FunctionFragment;
+    'createSplit(address[],uint32[],uint32,address)': FunctionFragment;
+    'distributeERC20(address,address,address[],uint32[],uint32,address)': FunctionFragment;
+    'distributeETH(address,address[],uint32[],uint32,address)': FunctionFragment;
+    'makeSplitImmutable(address)': FunctionFragment;
+    'predictImmutableSplitAddress(address[],uint32[],uint32)': FunctionFragment;
+    'transferControl(address,address)': FunctionFragment;
+    'updateAndDistributeERC20(address,address,address[],uint32[],uint32,address)': FunctionFragment;
+    'updateAndDistributeETH(address,address[],uint32[],uint32,address)': FunctionFragment;
+    'updateSplit(address,address[],uint32[],uint32)': FunctionFragment;
+    'walletImplementation()': FunctionFragment;
+    'withdraw(address,uint256,address[])': FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "acceptControl",
+    functionFragment: 'acceptControl',
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "cancelControlTransfer",
+    functionFragment: 'cancelControlTransfer',
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "createSplit",
+    functionFragment: 'createSplit',
     values: [string[], BigNumberish[], BigNumberish, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "distributeERC20",
+    functionFragment: 'distributeERC20',
     values: [string, string, string[], BigNumberish[], BigNumberish, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "distributeETH",
+    functionFragment: 'distributeETH',
     values: [string, string[], BigNumberish[], BigNumberish, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "makeSplitImmutable",
+    functionFragment: 'makeSplitImmutable',
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "predictImmutableSplitAddress",
+    functionFragment: 'predictImmutableSplitAddress',
     values: [string[], BigNumberish[], BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferControl",
+    functionFragment: 'transferControl',
     values: [string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateAndDistributeERC20",
+    functionFragment: 'updateAndDistributeERC20',
     values: [string, string, string[], BigNumberish[], BigNumberish, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateAndDistributeETH",
+    functionFragment: 'updateAndDistributeETH',
     values: [string, string[], BigNumberish[], BigNumberish, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateSplit",
+    functionFragment: 'updateSplit',
     values: [string, string[], BigNumberish[], BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "walletImplementation",
+    functionFragment: 'walletImplementation',
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw",
+    functionFragment: 'withdraw',
     values: [string, BigNumberish, string[]]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "acceptControl",
+    functionFragment: 'acceptControl',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "cancelControlTransfer",
+    functionFragment: 'cancelControlTransfer',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "createSplit",
+    functionFragment: 'createSplit',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "distributeERC20",
+    functionFragment: 'distributeERC20',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "distributeETH",
+    functionFragment: 'distributeETH',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "makeSplitImmutable",
+    functionFragment: 'makeSplitImmutable',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "predictImmutableSplitAddress",
+    functionFragment: 'predictImmutableSplitAddress',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferControl",
+    functionFragment: 'transferControl',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateAndDistributeERC20",
+    functionFragment: 'updateAndDistributeERC20',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateAndDistributeETH",
+    functionFragment: 'updateAndDistributeETH',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateSplit",
+    functionFragment: 'updateSplit',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "walletImplementation",
+    functionFragment: 'walletImplementation',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
 
   events: {
-    "CancelControlTransfer(address)": EventFragment;
-    "ControlTransfer(address,address,address)": EventFragment;
-    "CreateSplit(address)": EventFragment;
-    "DistributeERC20(address,address,uint256,address)": EventFragment;
-    "DistributeETH(address,uint256,address)": EventFragment;
-    "InitiateControlTransfer(address,address)": EventFragment;
-    "UpdateSplit(address)": EventFragment;
-    "Withdrawal(address,uint256,address[],uint256[])": EventFragment;
+    'CancelControlTransfer(address)': EventFragment;
+    'ControlTransfer(address,address,address)': EventFragment;
+    'CreateSplit(address)': EventFragment;
+    'DistributeERC20(address,address,uint256,address)': EventFragment;
+    'DistributeETH(address,uint256,address)': EventFragment;
+    'InitiateControlTransfer(address,address)': EventFragment;
+    'UpdateSplit(address)': EventFragment;
+    'Withdrawal(address,uint256,address[],uint256[])': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "CancelControlTransfer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ControlTransfer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CreateSplit"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DistributeERC20"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DistributeETH"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "InitiateControlTransfer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateSplit"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdrawal"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CancelControlTransfer'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ControlTransfer'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CreateSplit'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'DistributeERC20'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'DistributeETH'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'InitiateControlTransfer'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'UpdateSplit'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Withdrawal'): EventFragment;
 }
 
 export class ISplitMain extends BaseContract {
@@ -206,12 +206,12 @@ export class ISplitMain extends BaseContract {
   functions: {
     acceptControl(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     cancelControlTransfer(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     createSplit(
@@ -219,7 +219,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     distributeERC20(
@@ -229,7 +229,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     distributeETH(
@@ -238,12 +238,12 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     makeSplitImmutable(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     predictImmutableSplitAddress(
@@ -256,7 +256,7 @@ export class ISplitMain extends BaseContract {
     transferControl(
       split: string,
       newController: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     updateAndDistributeERC20(
@@ -266,7 +266,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     updateAndDistributeETH(
@@ -275,7 +275,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     updateSplit(
@@ -283,29 +283,29 @@ export class ISplitMain extends BaseContract {
       accounts: string[],
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     walletImplementation(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     withdraw(
       account: string,
       withdrawETH: BigNumberish,
       tokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
   };
 
   acceptControl(
     split: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   cancelControlTransfer(
     split: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   createSplit(
@@ -313,7 +313,7 @@ export class ISplitMain extends BaseContract {
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
     controller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   distributeERC20(
@@ -323,7 +323,7 @@ export class ISplitMain extends BaseContract {
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
     distributorAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   distributeETH(
@@ -332,12 +332,12 @@ export class ISplitMain extends BaseContract {
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
     distributorAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   makeSplitImmutable(
     split: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   predictImmutableSplitAddress(
@@ -350,7 +350,7 @@ export class ISplitMain extends BaseContract {
   transferControl(
     split: string,
     newController: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   updateAndDistributeERC20(
@@ -360,7 +360,7 @@ export class ISplitMain extends BaseContract {
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
     distributorAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   updateAndDistributeETH(
@@ -369,7 +369,7 @@ export class ISplitMain extends BaseContract {
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
     distributorAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   updateSplit(
@@ -377,18 +377,18 @@ export class ISplitMain extends BaseContract {
     accounts: string[],
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   walletImplementation(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   withdraw(
     account: string,
     withdrawETH: BigNumberish,
     tokens: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -481,7 +481,7 @@ export class ISplitMain extends BaseContract {
   filters: {
     CancelControlTransfer(
       split?: string | null
-    ): TypedEventFilter<[string], { split: string }>;
+    ): TypedEventFilter<[string], {split: string}>;
 
     ControlTransfer(
       split?: string | null,
@@ -489,12 +489,12 @@ export class ISplitMain extends BaseContract {
       newController?: string | null
     ): TypedEventFilter<
       [string, string, string],
-      { split: string; previousController: string; newController: string }
+      {split: string; previousController: string; newController: string}
     >;
 
     CreateSplit(
       split?: string | null
-    ): TypedEventFilter<[string], { split: string }>;
+    ): TypedEventFilter<[string], {split: string}>;
 
     DistributeERC20(
       split?: string | null,
@@ -517,7 +517,7 @@ export class ISplitMain extends BaseContract {
       distributorAddress?: string | null
     ): TypedEventFilter<
       [string, BigNumber, string],
-      { split: string; amount: BigNumber; distributorAddress: string }
+      {split: string; amount: BigNumber; distributorAddress: string}
     >;
 
     InitiateControlTransfer(
@@ -525,12 +525,12 @@ export class ISplitMain extends BaseContract {
       newPotentialController?: string | null
     ): TypedEventFilter<
       [string, string],
-      { split: string; newPotentialController: string }
+      {split: string; newPotentialController: string}
     >;
 
     UpdateSplit(
       split?: string | null
-    ): TypedEventFilter<[string], { split: string }>;
+    ): TypedEventFilter<[string], {split: string}>;
 
     Withdrawal(
       account?: string | null,
@@ -551,12 +551,12 @@ export class ISplitMain extends BaseContract {
   estimateGas: {
     acceptControl(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     cancelControlTransfer(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     createSplit(
@@ -564,7 +564,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     distributeERC20(
@@ -574,7 +574,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     distributeETH(
@@ -583,12 +583,12 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     makeSplitImmutable(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     predictImmutableSplitAddress(
@@ -601,7 +601,7 @@ export class ISplitMain extends BaseContract {
     transferControl(
       split: string,
       newController: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     updateAndDistributeERC20(
@@ -611,7 +611,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     updateAndDistributeETH(
@@ -620,7 +620,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     updateSplit(
@@ -628,30 +628,30 @@ export class ISplitMain extends BaseContract {
       accounts: string[],
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     walletImplementation(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     withdraw(
       account: string,
       withdrawETH: BigNumberish,
       tokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     acceptControl(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     cancelControlTransfer(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     createSplit(
@@ -659,7 +659,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     distributeERC20(
@@ -669,7 +669,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     distributeETH(
@@ -678,12 +678,12 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     makeSplitImmutable(
       split: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     predictImmutableSplitAddress(
@@ -696,7 +696,7 @@ export class ISplitMain extends BaseContract {
     transferControl(
       split: string,
       newController: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     updateAndDistributeERC20(
@@ -706,7 +706,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     updateAndDistributeETH(
@@ -715,7 +715,7 @@ export class ISplitMain extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       distributorAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     updateSplit(
@@ -723,18 +723,18 @@ export class ISplitMain extends BaseContract {
       accounts: string[],
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     walletImplementation(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     withdraw(
       account: string,
       withdrawETH: BigNumberish,
       tokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
   };
 }

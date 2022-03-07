@@ -12,20 +12,20 @@ import {
   BaseContract,
   ContractTransaction,
   CallOverrides,
-} from "ethers";
-import { BytesLike } from "@ethersproject/bytes";
-import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+} from 'ethers';
+import {BytesLike} from '@ethersproject/bytes';
+import {Listener, Provider} from '@ethersproject/providers';
+import {FunctionFragment, EventFragment, Result} from '@ethersproject/abi';
+import {TypedEventFilter, TypedEvent, TypedListener} from './commons';
 
 interface ReverseRecordsInterface extends ethers.utils.Interface {
   functions: {
-    "getNames(address[])": FunctionFragment;
+    'getNames(address[])': FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "getNames", values: [string[]]): string;
+  encodeFunctionData(functionFragment: 'getNames', values: [string[]]): string;
 
-  decodeFunctionResult(functionFragment: "getNames", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getNames', data: BytesLike): Result;
 
   events: {};
 }
@@ -77,7 +77,7 @@ export class ReverseRecords extends BaseContract {
     getNames(
       addresses: string[],
       overrides?: CallOverrides
-    ): Promise<[string[]] & { r: string[] }>;
+    ): Promise<[string[]] & {r: string[]}>;
   };
 
   getNames(addresses: string[], overrides?: CallOverrides): Promise<string[]>;

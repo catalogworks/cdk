@@ -2,32 +2,29 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import { Provider } from "@ethersproject/providers";
-import type {
-  ReverseRecords,
-  ReverseRecordsInterface,
-} from "../ReverseRecords";
+import {Contract, Signer, utils} from 'ethers';
+import {Provider} from '@ethersproject/providers';
+import type {ReverseRecords, ReverseRecordsInterface} from '../ReverseRecords';
 
 const _abi = [
   {
     inputs: [
       {
-        internalType: "address[]",
-        name: "addresses",
-        type: "address[]",
+        internalType: 'address[]',
+        name: 'addresses',
+        type: 'address[]',
       },
     ],
-    name: "getNames",
+    name: 'getNames',
     outputs: [
       {
-        internalType: "string[]",
-        name: "r",
-        type: "string[]",
+        internalType: 'string[]',
+        name: 'r',
+        type: 'string[]',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
 ];
 

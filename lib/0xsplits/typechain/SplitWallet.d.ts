@@ -13,44 +13,44 @@ import {
   ContractTransaction,
   PayableOverrides,
   CallOverrides,
-} from "ethers";
-import { BytesLike } from "@ethersproject/bytes";
-import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+} from 'ethers';
+import {BytesLike} from '@ethersproject/bytes';
+import {Listener, Provider} from '@ethersproject/providers';
+import {FunctionFragment, EventFragment, Result} from '@ethersproject/abi';
+import {TypedEventFilter, TypedEvent, TypedListener} from './commons';
 
 interface SplitWalletInterface extends ethers.utils.Interface {
   functions: {
-    "sendERC20ToMain(address,uint256)": FunctionFragment;
-    "sendETHToMain(uint256)": FunctionFragment;
-    "splitMain()": FunctionFragment;
+    'sendERC20ToMain(address,uint256)': FunctionFragment;
+    'sendETHToMain(uint256)': FunctionFragment;
+    'splitMain()': FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "sendERC20ToMain",
+    functionFragment: 'sendERC20ToMain',
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "sendETHToMain",
+    functionFragment: 'sendETHToMain',
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "splitMain", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'splitMain', values?: undefined): string;
 
   decodeFunctionResult(
-    functionFragment: "sendERC20ToMain",
+    functionFragment: 'sendERC20ToMain',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "sendETHToMain",
+    functionFragment: 'sendETHToMain',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "splitMain", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'splitMain', data: BytesLike): Result;
 
   events: {
-    "ReceiveETH(address,uint256)": EventFragment;
+    'ReceiveETH(address,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ReceiveETH"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ReceiveETH'): EventFragment;
 }
 
 export class SplitWallet extends BaseContract {
@@ -100,12 +100,12 @@ export class SplitWallet extends BaseContract {
     sendERC20ToMain(
       token: string,
       amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     sendETHToMain(
       amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     splitMain(overrides?: CallOverrides): Promise<[string]>;
@@ -114,12 +114,12 @@ export class SplitWallet extends BaseContract {
   sendERC20ToMain(
     token: string,
     amount: BigNumberish,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    overrides?: PayableOverrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   sendETHToMain(
     amount: BigNumberish,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    overrides?: PayableOverrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   splitMain(overrides?: CallOverrides): Promise<string>;
@@ -145,7 +145,7 @@ export class SplitWallet extends BaseContract {
       amount?: null
     ): TypedEventFilter<
       [string, BigNumber],
-      { split: string; amount: BigNumber }
+      {split: string; amount: BigNumber}
     >;
   };
 
@@ -153,12 +153,12 @@ export class SplitWallet extends BaseContract {
     sendERC20ToMain(
       token: string,
       amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     sendETHToMain(
       amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     splitMain(overrides?: CallOverrides): Promise<BigNumber>;
@@ -168,12 +168,12 @@ export class SplitWallet extends BaseContract {
     sendERC20ToMain(
       token: string,
       amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     sendETHToMain(
       amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     splitMain(overrides?: CallOverrides): Promise<PopulatedTransaction>;

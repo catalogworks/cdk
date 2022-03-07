@@ -13,29 +13,29 @@ import {
   ContractTransaction,
   Overrides,
   CallOverrides,
-} from "ethers";
-import { BytesLike } from "@ethersproject/bytes";
-import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+} from 'ethers';
+import {BytesLike} from '@ethersproject/bytes';
+import {Listener, Provider} from '@ethersproject/providers';
+import {FunctionFragment, EventFragment, Result} from '@ethersproject/abi';
+import {TypedEventFilter, TypedEvent, TypedListener} from './commons';
 
 interface TestInternalTxnInterface extends ethers.utils.Interface {
   functions: {
-    "create(address[],uint32[],uint32,address)": FunctionFragment;
-    "update(address,address[],uint32[],uint32)": FunctionFragment;
+    'create(address[],uint32[],uint32,address)': FunctionFragment;
+    'update(address,address[],uint32[],uint32)': FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "create",
+    functionFragment: 'create',
     values: [string[], BigNumberish[], BigNumberish, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "update",
+    functionFragment: 'update',
     values: [string, string[], BigNumberish[], BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: "create", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "update", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'create', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'update', data: BytesLike): Result;
 
   events: {};
 }
@@ -89,7 +89,7 @@ export class TestInternalTxn extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
 
     update(
@@ -97,7 +97,7 @@ export class TestInternalTxn extends BaseContract {
       accounts: string[],
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<ContractTransaction>;
   };
 
@@ -106,7 +106,7 @@ export class TestInternalTxn extends BaseContract {
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
     controller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   update(
@@ -114,7 +114,7 @@ export class TestInternalTxn extends BaseContract {
     accounts: string[],
     percentAllocations: BigNumberish[],
     distributorFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & {from?: string | Promise<string>}
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -143,7 +143,7 @@ export class TestInternalTxn extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
 
     update(
@@ -151,7 +151,7 @@ export class TestInternalTxn extends BaseContract {
       accounts: string[],
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<BigNumber>;
   };
 
@@ -161,7 +161,7 @@ export class TestInternalTxn extends BaseContract {
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
       controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
 
     update(
@@ -169,7 +169,7 @@ export class TestInternalTxn extends BaseContract {
       accounts: string[],
       percentAllocations: BigNumberish[],
       distributorFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & {from?: string | Promise<string>}
     ): Promise<PopulatedTransaction>;
   };
 }
