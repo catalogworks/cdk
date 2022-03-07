@@ -3,22 +3,31 @@
     "type": "object",
     "title": "mnft-20220222",
     "description": "This schema defined version 20220222 of the Catalog Metadata Schema",
+    "required": [
+        "version",
+        "title",
+        "duration",
+        "mimeType",
+        "license",
+        "losslessAudio",
+        "image",
+        "name",
+        "external_url",
+        "animation_url"
+    ],
     "properties": {
         "version": {
             "type": "string",
             "description": "The version of the schema",
-            "const": "mnft-20220222",
-            "required": true
+            "const": "mnft-20220222"
         },
         "title": {
             "type": "string",
-            "description": "The title of the track",
-            "required": true
+            "description": "The title of the track"
         },
         "artist": {
             "type": "string",
-            "description": "The artist of the track",
-            "required": true
+            "description": "The artist of the track"
         },
         "description": {
             "type": "string",
@@ -26,18 +35,15 @@
         },
         "duration": {
             "type": "number",
-            "description": "The duration of the track in seconds",
-            "required": true
+            "description": "The duration of the track in seconds"
         },
         "mimeType": {
             "type": "string",
-            "description": "The mime type of the content file",
-            "required": true
+            "description": "The mime type of the content file"
         },
         "trackNumber": {
             "type": "integer",
             "description": "The track number of the track",
-            "required": true,
             "minimum": 1
         },
         "project": {
@@ -46,25 +52,29 @@
                 null
             ],
             "description": "The project that the track belongs to",
+            "required": [
+                "title"
+            ],
             "properties": {
                 "title": {
                     "type": "string",
-                    "description": "The title of the project",
-                    "required": true
+                    "description": "The title of the project"
                 },
                 "artwork": {
                     "type": "object",
                     "description": "The artwork of the project",
+                    "required": [
+                        "url",
+                        "mimeType"
+                    ],
                     "properties": {
                         "uri": {
                             "type": "string",
-                            "description": "The uri of the artwork (ipfs://<CID>)",
-                            "required": true
+                            "description": "The uri of the artwork (ipfs://<CID>)"
                         },
                         "mimeType": {
                             "type": "string",
-                            "description": "The mime type of the artwork",
-                            "required": true
+                            "description": "The mime type of the artwork"
                         },
                         "nft": {
                             "type": "string",
@@ -109,16 +119,18 @@
         "artwork": {
             "type": "object",
             "description": "The artwork of the track",
+            "required": [
+                "uri",
+                "mimeType"
+            ],
             "properties": {
                 "uri": {
                     "type": "string",
-                    "description": "The uri of the artwork (ipfs://<CID>)",
-                    "required": true
+                    "description": "The uri of the artwork (ipfs://<CID>)"
                 },
                 "mimeType": {
                     "type": "string",
-                    "description": "The mime type of the artwork",
-                    "required": true
+                    "description": "The mime type of the artwork"
                 },
                 "nft": {
                     "type": "string",
@@ -132,16 +144,18 @@
                 null
             ],
             "description": "The visualizer of the track",
+            "required": [
+                "uri",
+                "mimeType"
+            ],
             "properties": {
                 "uri": {
                     "type": "string",
-                    "description": "The uri of the visualizer (ipfs://<CID>)",
-                    "required": true
+                    "description": "The uri of the visualizer (ipfs://<CID>)"
                 },
                 "mimeType": {
                     "type": "string",
-                    "description": "The mime type of the visualizer",
-                    "required": true
+                    "description": "The mime type of the visualizer"
                 },
                 "nft": {
                     "type": "string",
@@ -178,11 +192,13 @@
                 null
             ],
             "description": "The lyrics of the track",
+            "required": [
+                "text"
+            ],
             "properties": {
                 "text": {
                     "type": "string",
-                    "description": "The text of the lyrics",
-                    "required": true
+                    "description": "The text of the lyrics"
                 },
                 "nft": {
                     "type": "string",
@@ -218,8 +234,7 @@
                 "CC0",
                 "PD",
                 "Other"
-            ],
-            "required": true
+            ]
         },
         "isrc": {
             "type": "string",
@@ -227,7 +242,7 @@
         },
         "locationCreated": {
             "type": "string",
-            "description": "The location where the track was created",
+            "description": "The location where the track was created"
         },
         "originalReleaseDate": {
             "type": "string",
@@ -250,11 +265,14 @@
             "description": "The credits of the track",
             "items": {
                 "type": "object",
+                "required": [
+                    "name",
+                    "role"
+                ],
                 "properties": {
                     "name": {
                         "type": "string",
-                        "description": "The name of the credit",
-                        "required": true
+                        "description": "The name of the credit"
                     },
                     "collaboratorType": {
                         "type": "string",
@@ -266,49 +284,45 @@
                             "Arranger",
                             "Mixer",
                             "Other"
-                        ],
-                        "required": true
+                        ]
                     }
                 }
             }
         },
         "losslessAudio": {
             "type": "string",
-            "description": "The lossless audio URI of the track",
-            "required": true
+            "description": "The lossless audio URI of the track"
         },
         "image": {
             "type": "string",
-            "description": "The image URI of the track",
-            "required": true
+            "description": "The image URI of the track"
         },
         "name": {
             "type": "string",
-            "description": "The name of the track (<artist> - <title>)",
-            "required": true
+            "description": "The name of the track (<artist> - <title>)"
         },
         "external_url": {
             "type": "string",
-            "description": "The external url of the track",
-            "required": true
+            "description": "The external url of the track"
         },
         "animation_url": {
             "type": "string",
-            "description": "The animation url of the track",
-            "required": true
+            "description": "The animation url of the track"
         },
         "attributes": {
             "type": "object",
             "description": "OpenSea NFT Metadata standard attribute tags",
+            "required": [
+                "artist"
+            ],
             "properties": {
                 "artist": {
                     "type": "string",
-                    "description": "The artist of the track",
-                    "required": true
+                    "description": "The artist of the track"
                 },
                 "project": {
                     "type": "string",
-                    "description": "The project of the track",
+                    "description": "The project of the track"
                 },
                 "bpm": {
                     "type": "number",
