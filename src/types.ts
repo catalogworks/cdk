@@ -5,6 +5,7 @@ import {BigNumberish} from '@ethersproject/bignumber';
 import {BytesLike} from '@ethersproject/bytes';
 import {Catalog20210202} from './schemas/types/catalog/20210202';
 import {Catalog20220000} from './schemas/types/catalog/20220000';
+import {Mnft20220222} from './schemas/types/catalog/20220222';
 
 // Catalog cNFT Data Type
 // @param {string} metadataURI - URI of IPFS hash
@@ -45,6 +46,7 @@ export type MetadataLike = Catalog20210202 | Catalog20220000;
 // Export schema typing
 export {Catalog20210202};
 export {Catalog20220000};
+export {Mnft20220222};
 
 // Zora V3 Ask Type
 export type Ask = {
