@@ -10,43 +10,48 @@
  */
 export interface Mnft20220222 {
   /**
-   * The version of the schema
+   * Calendar version of the schema so that consumers can correctly parse the json
    */
-  version: "mnft-20220222";
+  version: 'mnft-20220222';
   /**
    * The title of the track
    */
   title: string;
   /**
-   * The artist of the track
+   * The artist who created the track
    */
   artist?: string;
   /**
-   * The description of the track
+   * An optional property for describing the track
    */
   description?: string;
   /**
-   * The duration of the track in seconds
+   * Length of the audio file in seconds (must be > 1ms)
    */
   duration: number;
   /**
-   * The mime type of the content file
+   * MimeType of the audio file. Only lossless formats (aif, wav, flac) are supported.
    */
-  mimeType: string;
+  mimeType:
+    | 'audio/x-aiff'
+    | 'audio/aiff'
+    | 'audio/wav'
+    | 'audio/x-wav'
+    | 'audio/flac';
   /**
-   * The track number of the track
+   * The place which the track appears in its project (e.g. track 4 off an album)
    */
   trackNumber?: number;
   /**
-   * The project that the track belongs to
+   * Describes the body of work the record is a part of (e.g. an album, EP, or compilation)
    */
   project?: {
     /**
-     * The title of the project
+     * The name of the project this record is on
      */
     title: string;
     /**
-     * The artwork of the project
+     * Artwork for the project (e.g. an album cover)
      */
     artwork?: {
       /**
@@ -90,7 +95,7 @@ export interface Mnft20220222 {
     [k: string]: unknown;
   };
   /**
-   * The artwork of the track
+   * The artwork of the track (album cover, track art, etc.)
    */
   artwork?: {
     /**

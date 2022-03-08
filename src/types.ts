@@ -5,7 +5,7 @@ import {BigNumberish} from '@ethersproject/bignumber';
 import {BytesLike} from '@ethersproject/bytes';
 import {Catalog20210202} from './schemas/types/catalog/20210202';
 import {Catalog20220000} from './schemas/types/catalog/20220000';
-import {Mnft20220222} from './schemas/types/catalog/20220222';
+import {Mnft20220222} from './schemas/types/mnft/20220222';
 
 // Catalog cNFT Data Type
 // @param {string} metadataURI - URI of IPFS hash
