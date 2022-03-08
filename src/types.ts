@@ -41,7 +41,7 @@ export type RoyaltyInfo = {
 };
 
 // Metadata
-export type MetadataLike = Catalog20210202 | Catalog20220000;
+export type MetadataLike = Catalog20210202 | Catalog20220000 | Mnft20220222;
 
 // Export schema typing
 export {Catalog20210202};
