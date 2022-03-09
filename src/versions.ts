@@ -3,7 +3,8 @@
 
 export const supportedVersions: {[key: string]: Array<string>} = {
   // Schema versions for Catalog Contracts
-  catalog: ['20210202', '20220000'],
+  catalog: ['20210202', '20220000', '20220222'],
+  mnft: ['20220222'],
 };
 
 export const supportedVersionsTypeMapping: {
@@ -13,6 +14,10 @@ export const supportedVersionsTypeMapping: {
   catalog: {
     '20210202': 'Catalog20210202',
     '20220000': 'Catalog20220000',
+    '20220222': 'Mnft20220222',
+  },
+  mnft: {
+    '20220222': 'Mnft20220222',
   },
 };
 
