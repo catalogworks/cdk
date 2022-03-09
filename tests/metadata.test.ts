@@ -72,6 +72,7 @@ describe('Metadata tests', () => {
 
     it('parses the new mnft metadata format', () => {
       const inputJson = {
+        artist: 'COMPUTER DATA',
         version: 'mnft-20220222',
         title: 'pp100',
         duration: 363.696,
@@ -132,6 +133,7 @@ describe('Metadata tests', () => {
 
     it('validates the mnft metadata schema', () => {
       const inputJson = {
+        artist: 'COMPUTER DATA',
         version: 'mnft-20220222',
         title: 'pp100',
         duration: 363.696,

@@ -20,7 +20,7 @@ export interface Mnft20220222 {
   /**
    * The artist who created the track
    */
-  artist?: string;
+  artist: string;
   /**
    * An optional property for describing the track
    */
@@ -57,7 +57,7 @@ export interface Mnft20220222 {
       /**
        * The uri of the artwork (ipfs://<CID>)
        */
-      uri?: string;
+      uri: string;
       /**
        * The mime type of the artwork
        */
@@ -195,7 +195,7 @@ export interface Mnft20220222 {
     /**
      * The type of the collaborator
      */
-    collaboratorType?: string;
+    collaboratorType: string;
     [k: string]: unknown;
   }[];
   /**
