@@ -1,6 +1,6 @@
 {
   "name": "@catalogworks/cdk",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "SDK for using the Catalog protocol",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -16,7 +16,7 @@
     "format:fix": "prettier --write \"**/*.{ts,js}\"",
     "test": "jest",
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && tsc && mkdir dist/src/schemas/types/ && mkdir dist/src/schemas/types/mnft/ && cp src/schemas/types/mnft/20220222.d.ts dist/src/schemas/types/mnft/",
     "prepublish": "yarn build",
     "coverage": "jest --coverage",
     "chain": "ganache-cli --networkId 50 --accounts 20 -e 100 -l 10000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'",
