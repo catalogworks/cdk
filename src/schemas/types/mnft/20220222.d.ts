@@ -163,7 +163,7 @@ export interface Mnft20220222 {
   /**
    * The license of the track
    */
-  license: string;
+  license?: string;
   /**
    * The ISRC of the track
    */
