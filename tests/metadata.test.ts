@@ -138,7 +138,6 @@ describe('Metadata tests', () => {
         title: 'pp100',
         duration: 363.696,
         mimeType: 'audio/wav',
-        license: 'All Rights Reserved',
         losslessAudio: 'ipfs://QmfVHFpVpHgVoeQjSXp37KeFABpUNGB3ai2oMt3L8sFaxZ',
         image:
           'https://ipfs.io/ipfs/bafybeiblre5chsbifqtpsrq5akxsqc5wzvyrn6py2423a4hly4jibq3vgi',

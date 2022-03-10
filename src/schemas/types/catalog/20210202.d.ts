@@ -16,7 +16,7 @@ export interface Catalog20210202 {
     /**
      * Calendar version of the schema so that consumers can correctly parse the json
      */
-    version: 'catalog-20210202';
+    version: "catalog-20210202";
     /**
      * Title of the track
      */
@@ -36,12 +36,7 @@ export interface Catalog20210202 {
     /**
      * MimeType of the audio file. Only lossless formats (aif, wav, flac) are supported.
      */
-    mimeType:
-      | 'audio/x-aiff'
-      | 'audio/aiff'
-      | 'audio/wav'
-      | 'audio/x-wav'
-      | 'audio/flac';
+    mimeType: "audio/x-aiff" | "audio/aiff" | "audio/wav" | "audio/x-wav" | "audio/flac";
     /**
      * The place which the track appears in its project (e.g. track 4 off an album)
      */
@@ -79,7 +74,7 @@ export interface Catalog20210202 {
         /**
          * MimeType of the artwork
          */
-        mimeType: 'image/jpeg' | 'image/pjpeg' | 'image/png';
+        mimeType: "image/jpeg" | "image/pjpeg" | "image/png";
       } | null;
       /**
        * Information about how to find the NFT
@@ -176,7 +171,7 @@ export interface Artwork {
     /**
      * MimeType of the artwork
      */
-    mimeType: 'image/jpeg' | 'image/pjpeg' | 'image/png';
+    mimeType: "image/jpeg" | "image/pjpeg" | "image/png";
   } | null;
   /**
    * Information about how to find the NFT

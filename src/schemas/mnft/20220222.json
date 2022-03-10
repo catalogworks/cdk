@@ -9,7 +9,6 @@
         "artist",
         "duration",
         "mimeType",
-        "license",
         "losslessAudio",
         "image",
         "name",
