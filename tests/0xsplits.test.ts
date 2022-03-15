@@ -564,12 +564,9 @@ describe('0xSplits Test Suite', () => {
             defaultSplitData.distributorFee,
             mainWallet.address
           );
-
+          await createSplitTx.wait();
           splits.contract.on('CreateSplit', (emittedAddress: string) => {
             expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(
-              ethers.utils.hexStripZeros(createSplitTx.hash)
-            );
           });
 
           const txLogs = await createSplitTx.wait();
