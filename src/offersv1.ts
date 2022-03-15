@@ -1,10 +1,10 @@
 // offersv1.ts
 // Class for Zora V3 Offers Module (V1)
 
-import {BigNumberish} from 'ethers';
+import {BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from '@ethersproject/abstract-signer';
+import {Signer} from 'ethers';
 
 import {
   OffersV1 as OffersV1Type,
