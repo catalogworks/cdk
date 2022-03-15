@@ -323,16 +323,7 @@ describe('0xSplits Test Suite', () => {
           const txLogs = await createSplitTx.wait();
 
           const emittedData = txLogs.logs[0].topics[1];
-          const splitAddress = utils.getAddress(
-            ethers.utils.hexStripZeros(emittedData)
-          );
-
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(utils.getAddress(emittedAddress)).toBe(
-              utils.getAddress(splitAddress)
-            );
-          });
+          const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
@@ -367,7 +358,6 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('InitiateControlTransfer');
           splits.contract.removeAllListeners('CancelControlTransfer');
         });
