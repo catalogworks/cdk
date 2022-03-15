@@ -228,14 +228,9 @@ describe('0xSplits Test Suite', () => {
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(splitAddress);
-          });
-
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
-            splitAddress,
+            utils.getAddress(splitAddress),
             otherWallet.address
           );
           await transferTx.wait();
@@ -251,7 +246,9 @@ describe('0xSplits Test Suite', () => {
           );
 
           // Accept control of the split from the other wallet
-          const acceptTx = await otherSplits.acceptControl(splitAddress);
+          const acceptTx = await otherSplits.acceptControl(
+            utils.getAddress(splitAddress)
+          );
           await acceptTx.wait();
 
           otherSplits.contract.on(
@@ -270,7 +267,6 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('InitiateControlTransfer');
           otherSplits.contract.removeAllListeners('ControlTransfer');
         });
@@ -324,10 +320,11 @@ describe('0xSplits Test Suite', () => {
 
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
+          // const splitAddress = splitAddressTest;
 
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
-            splitAddress,
+            utils.getAddress(splitAddress),
             otherWallet.address
           );
           await transferTx.wait();
@@ -427,15 +424,8 @@ describe('0xSplits Test Suite', () => {
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(utils.getAddress(emittedAddress)).toBe(
-              utils.getAddress(splitAddress)
-            );
-          });
-
           const distTx = await splits.distributeETH(
-            splitAddress,
+            utils.getAddress(splitAddress),
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
             defaultSplitData.distributorFee,
@@ -461,7 +451,6 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('DistributeETH');
         });
       });
@@ -567,16 +556,13 @@ describe('0xSplits Test Suite', () => {
             mainWallet.address
           );
           await createSplitTx.wait();
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-          });
 
           const txLogs = await createSplitTx.wait();
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
           const distTx = await splits.distributeERC20(
-            splitAddress,
+            utils.getAddress(splitAddress),
             wethContract.address,
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
@@ -606,7 +592,6 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('DistributeERC20');
         });
       });
@@ -667,14 +652,9 @@ describe('0xSplits Test Suite', () => {
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(utils.getAddress(emittedAddress)).toBe(
-              utils.getAddress(splitAddress)
-            );
-          });
-
-          const makeImmutableTx = await splits.makeSplitImmutable(splitAddress);
+          const makeImmutableTx = await splits.makeSplitImmutable(
+            utils.getAddress(splitAddress)
+          );
           await makeImmutableTx.wait();
 
           splits.contract.on(
@@ -697,7 +677,6 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('ControlTransfer');
         });
       });
@@ -761,14 +740,9 @@ describe('0xSplits Test Suite', () => {
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(splitAddress);
-          });
-
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
-            splitAddress,
+            utils.getAddress(splitAddress),
             otherWallet.address
           );
           await transferTx.wait();
@@ -785,7 +759,6 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('InitiateControlTransfer');
         });
       });
@@ -891,19 +864,12 @@ describe('0xSplits Test Suite', () => {
             mainWallet.address
           );
 
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(
-              ethers.utils.hexStripZeros(createSplitTx.hash)
-            );
-          });
-
           const txLogs = await createSplitTx.wait();
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
           const distTx = await splits.updateAndDistributeERC20(
-            splitAddress,
+            utils.getAddress(splitAddress),
             wethContract.address,
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
@@ -940,7 +906,6 @@ describe('0xSplits Test Suite', () => {
             );
           });
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('DistributeERC20');
           splits.contract.removeAllListeners('UpdateSplit');
         });
