@@ -18,6 +18,7 @@ WIP Repo
 ## Info
 
 The Catalog Development Kit (**CDK**) is a small set of tools to easily and safely interact with Catalog contracts and protocols.
+
 The CDK is written in TS and can be used in any JS environment.
 
 This repository is based on the [Zora ZDK](https://github.com/ourzora/zdk).
@@ -48,7 +49,6 @@ The CDK has these primary exports plus some types:
 ```bash
 yarn add @catalogworks/cdk@0.2.2
 ```
-
 ---
 
 ### Examples

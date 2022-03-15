@@ -323,11 +323,15 @@ describe('0xSplits Test Suite', () => {
           const txLogs = await createSplitTx.wait();
 
           const emittedData = txLogs.logs[0].topics[1];
-          const splitAddress = ethers.utils.hexStripZeros(emittedData);
+          const splitAddress = utils.getAddress(
+            ethers.utils.hexStripZeros(emittedData)
+          );
 
           splits.contract.on('CreateSplit', (emittedAddress: string) => {
             expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(splitAddress);
+            expect(utils.getAddress(emittedAddress)).toBe(
+              utils.getAddress(splitAddress)
+            );
           });
 
           // Transfer control of the split to the other wallet
@@ -341,7 +345,9 @@ describe('0xSplits Test Suite', () => {
             'InitiateControlTransfer',
             (splitAddressEmitted: string, newController: string) => {
               expect(splitAddressEmitted).toBeDefined();
-              expect(splitAddressEmitted).toBe(splitAddress);
+              expect(utils.getAddress(splitAddressEmitted)).toBe(
+                utils.getAddress(splitAddress)
+              );
               expect(newController).toBeDefined();
               expect(newController).toBe(otherWallet.address);
             }
@@ -355,7 +361,9 @@ describe('0xSplits Test Suite', () => {
             'CancelControlTransfer',
             (splitAddressEmitted: string) => {
               expect(splitAddressEmitted).toBeDefined();
-              expect(splitAddressEmitted).toBe(splitAddress);
+              expect(utils.getAddress(splitAddressEmitted)).toBe(
+                utils.getAddress(splitAddress)
+              );
             }
           );
 
@@ -671,7 +679,9 @@ describe('0xSplits Test Suite', () => {
 
           splits.contract.on('CreateSplit', (emittedAddress: string) => {
             expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(splitAddress);
+            expect(utils.getAddress(emittedAddress)).toBe(
+              utils.getAddress(splitAddress)
+            );
           });
 
           const makeImmutableTx = await splits.makeSplitImmutable(splitAddress);
@@ -685,7 +695,9 @@ describe('0xSplits Test Suite', () => {
               newController: string
             ) => {
               expect(address).toBeDefined();
-              expect(address).toBe(splitAddress);
+              expect(utils.getAddress(address)).toBe(
+                utils.getAddress(splitAddress)
+              );
               expect(previousController).toBeDefined();
               expect(previousController).toBe(mainWallet.address);
               expect(newController).toBeDefined();
@@ -775,7 +787,9 @@ describe('0xSplits Test Suite', () => {
             'InitiateControlTransfer',
             (splitAddressEmitted: string, newController: string) => {
               expect(splitAddressEmitted).toBeDefined();
-              expect(splitAddressEmitted).toBe(splitAddress);
+              expect(utils.getAddress(splitAddressEmitted)).toBe(
+                utils.getAddress(splitAddress)
+              );
               expect(newController).toBeDefined();
               expect(newController).toBe(otherWallet.address);
             }
@@ -917,7 +931,9 @@ describe('0xSplits Test Suite', () => {
               distributorAddress: string
             ) => {
               expect(splitAddressEmitted).toBeDefined();
-              expect(splitAddressEmitted).toBe(splitAddress);
+              expect(utils.getAddress(splitAddressEmitted)).toBe(
+                utils.getAddress(splitAddress)
+              );
               expect(erc20Address).toBeDefined();
               expect(erc20Address).toBe(wethContract.address);
               expect(amount).toBeDefined();
@@ -929,7 +945,9 @@ describe('0xSplits Test Suite', () => {
 
           splits.contract.on('UpdateSplit', (splitAddressEmitted: string) => {
             expect(splitAddressEmitted).toBeDefined();
-            expect(splitAddressEmitted).toBe(splitAddress);
+            expect(utils.getAddress(splitAddressEmitted)).toBe(
+              utils.getAddress(splitAddress)
+            );
           });
 
           splits.contract.removeAllListeners('CreateSplit');
@@ -1045,12 +1063,14 @@ describe('0xSplits Test Suite', () => {
           splits.contract.on(
             'DistributeETH',
             (
-              splitAddress: string,
+              splitAddressEmitted: string,
               amount: BigNumberish,
               distributorAddress: string
             ) => {
-              expect(splitAddress).toBeDefined();
-              expect(splitAddress).toBe(splitAddress);
+              expect(splitAddressEmitted).toBeDefined();
+              expect(utils.getAddress(splitAddressEmitted)).toBe(
+                utils.getAddress(splitAddress)
+              );
               expect(amount).toBeDefined();
               expect(amount).toBe(defaultSplitData.distributorFee);
               expect(distributorAddress).toBeDefined();
@@ -1060,7 +1080,9 @@ describe('0xSplits Test Suite', () => {
 
           splits.contract.on('UpdateSplit', (splitAddressEmitted: string) => {
             expect(splitAddressEmitted).toBeDefined();
-            expect(splitAddressEmitted).toBe(splitAddress);
+            expect(utils.getAddress(splitAddressEmitted)).toBe(
+              utils.getAddress(splitAddress)
+            );
           });
 
           splits.contract.removeAllListeners('CreateSplit');
@@ -1149,7 +1171,9 @@ describe('0xSplits Test Suite', () => {
 
           splits.contract.on('UpdateSplit', (address: string) => {
             expect(address).toBeDefined();
-            expect(address).toBe(splitAddress);
+            expect(utils.getAddress(address)).toBe(
+              utils.getAddress(splitAddress)
+            );
           });
 
           splits.contract.removeAllListeners('CreateSplit');

@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - rework import for `Signer` type on all exported classes
 
+
 ## [0.1.6] - 2022-03-10
 
 - hotfix to include `Mnft20220222` type interface in package
