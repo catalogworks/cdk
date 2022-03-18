@@ -1,9 +1,9 @@
 //aksv11.ts
 // Class for Zora Asks V1.1 Module
-import {BigNumberish} from 'ethers';
+import {BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from '@ethersproject/abstract-signer';
+import {Signer} from 'ethers';
 import {
   AsksV11 as AsksV11Type,
   AsksV11__factory,

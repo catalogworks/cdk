@@ -1,11 +1,10 @@
 // zoramodule.ts
 // Class for Zora V3 Module Manager
 
-import {BigNumberish} from 'ethers';
+import {BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from '@ethersproject/abstract-signer';
-import {BytesLike} from 'ethers';
+import {Signer, BytesLike} from 'ethers';
 import {
   ZoraModuleManager as ZoraModuleManagerType,
   ZoraModuleManager__factory,

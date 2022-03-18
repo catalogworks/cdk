@@ -7,8 +7,7 @@ import {TokenData, ContentData, Proof, RoyaltyInfo} from './types';
 import {BigNumber, BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from '@ethersproject/abstract-signer';
-
+import {Signer} from 'ethers';
 import {Catalog as CatalogType} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typechain';
 import {addresses} from './addresses';
