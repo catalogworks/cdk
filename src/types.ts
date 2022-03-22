@@ -100,6 +100,15 @@ export type OfferStructOutput = [string, string, number, BigNumber] & {
   amount: BigNumber;
 };
 
+export type AuctionInputDataETH = {
+  tokenContractAddress: string;
+  tokenId: BigNumberish;
+  duration: BigNumberish;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  startTime: BigNumberish;
+};
+
 export type AuctionStructETH = {
   seller: string;
   reservePrice: BigNumberish;
