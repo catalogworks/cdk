@@ -106,13 +106,13 @@ describe('Zora V3 ReserveAuctionETH', () => {
           tokenContractAddress: reserveAuctionConfig.erc721Test.address,
           tokenId: 1,
           duration: 6000,
-          reservePrice: 420,
+          reservePrice: '1',
           sellerFundsRecipient: mainWallet.address,
           startTime: 2,
         };
 
         defaultBidData = {
-          amount: '420',
+          amount: '1',
           tokenContractAddress: reserveAuctionConfig.erc721Test.address,
           tokenId: 1,
         };
@@ -312,25 +312,6 @@ describe('Zora V3 ReserveAuctionETH', () => {
           );
         });
 
-        // 03
-        it('throws an error if the input token id is not valid', async () => {
-          const reserveAuction = new ReserveAuctionETH(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          await expect(
-            reserveAuction.cancelAuction(
-              defaultAuctionData.tokenContractAddress,
-              'pee pee poo poo'
-            )
-          ).rejects.toThrowError(
-            'Invariant failed: pee pee poo poo is not a valid address'
-          );
-        });
-
         // 04
         it('cancels an auction', async () => {
           const reserveAuction = new ReserveAuctionETH(
@@ -497,6 +478,14 @@ describe('Zora V3 ReserveAuctionETH', () => {
             reserveAuctionConfig.reserveAuctionETH
           );
           await registerModuleTx.wait();
+
+          const approveModuleManagerTx =
+            await moduleManager.setApprovalForModule(
+              reserveAuctionConfig.reserveAuctionETH,
+              true
+            );
+          await approveModuleManagerTx.wait();
+
           blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
@@ -746,6 +735,12 @@ describe('Zora V3 ReserveAuctionETH', () => {
             reserveAuctionConfig.reserveAuctionETH
           );
           await registerModuleTx.wait();
+          const approveModuleManagerTx =
+            await moduleManager.setApprovalForModule(
+              reserveAuctionConfig.reserveAuctionETH,
+              true
+            );
+          await approveModuleManagerTx.wait();
           blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
