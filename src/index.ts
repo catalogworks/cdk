@@ -9,3 +9,7 @@ export * from './asksv11';
 export * from './zoramodulemanager';
 export * from './addresses';
 export * from './offersv1';
+export * from './reserveAuctionETH';
+export * from './reserveAuctionERC20';
+export * from './reserveAuctionFindersETH';
+export * from './reserveAuctionFindersERC20';
