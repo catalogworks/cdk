@@ -1,7 +1,7 @@
 // types.ts
 // Data types to suppot Catalog Contracts
 
-import {BigNumberish} from '@ethersproject/bignumber';
+import {BigNumber, BigNumberish} from '@ethersproject/bignumber';
 import {BytesLike} from '@ethersproject/bytes';
 import {Catalog20210202} from './schemas/types/catalog/20210202';
 import {Catalog20220000} from './schemas/types/catalog/20220000';
@@ -67,6 +67,15 @@ export type AskData = {
   findersFeeBPS: BigNumberish;
 };
 
+// Ask Return Data Type
+export type AskStructOutput = [string, string, string, number, BigNumber] & {
+  seller: string;
+  sellerFundsRecipient: string;
+  askCurrency: string;
+  findersFeeBps: number;
+  askPrice: BigNumber;
+};
+
 // Zora V3 Offer Type
 export type Offer = {
   makerAddress: string;
@@ -82,4 +91,75 @@ export type OfferData = {
   currency: string;
   amount: BigNumberish;
   findersFeeBPS: BigNumberish;
+};
+// Offer Return Data Type
+export type OfferStructOutput = [string, string, number, BigNumber] & {
+  maker: string;
+  currency: string;
+  findersFeeBps: number;
+  amount: BigNumber;
+};
+
+export type AuctionStructETH = {
+  seller: string;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  highestBid: BigNumberish;
+  highestBidder: string;
+  duration: BigNumberish;
+  startTime: BigNumberish;
+  firstBidTime: BigNumberish;
+};
+
+export type AuctionStructOutputETH = [
+  string,
+  BigNumber,
+  string,
+  BigNumber,
+  string,
+  number,
+  number,
+  number
+] & {
+  seller: string;
+  reservePrice: BigNumber;
+  sellerFundsRecipient: string;
+  highestBid: BigNumber;
+  highestBidder: string;
+  duration: number;
+  startTime: number;
+  firstBidTime: number;
+};
+
+export type AuctionStructERC20 = {
+  seller: string;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  highestBid: BigNumberish;
+  highestBidder: string;
+  duration: BigNumberish;
+  startTime: BigNumberish;
+  currency: string;
+  firstBidTime: BigNumberish;
+};
+export type AuctionStructOutputERC20 = [
+  string,
+  BigNumber,
+  string,
+  BigNumber,
+  string,
+  number,
+  number,
+  string,
+  BigNumber
+] & {
+  seller: string;
+  reservePrice: BigNumber;
+  sellerFundsRecipient: string;
+  highestBid: BigNumber;
+  highestBidder: string;
+  duration: number;
+  startTime: number;
+  currency: string;
+  firstBidTime: BigNumber;
 };

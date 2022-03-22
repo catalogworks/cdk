@@ -1,22 +1,24 @@
-//aksv11.ts
-// Class for Zora Asks V1.1 Module
+//reserveAuctionETH.ts
+// Class for Zora V3 Reserve Auction Modules
+
 import {BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from 'ethers';
+import {Signer, utils} from 'ethers';
+
 import {
-  AsksV11 as AsksV11Type,
-  AsksV11__factory,
+  ReserveAuctionCoreEth as ReserveAuctionCoreEthType,
+  ReserveAuctionCoreEth__factory,
 } from '@zoralabs/v3/dist/typechain';
+
 import {zoraAddresses} from './addresses';
 import {chainIdToNetwork, validateAndParseAddress} from './utils';
-import type {AskStructOutput} from './types';
-
-export class AsksV11 {
+import type {AuctionStructOutputETH} from './types';
+export class ReserveAuctionETH {
   public chainId: number;
   public contractAddress: string;
   public signerOrProvider: Signer | Provider;
-  public contract: AsksV11Type;
+  public contract: ReserveAuctionCoreEthType;
   public readOnly: boolean;
 
   // Constructor
@@ -38,10 +40,10 @@ export class AsksV11 {
     } else {
       // Get contract address from chainId
       const network = chainIdToNetwork(this.chainId);
-      this.contractAddress = zoraAddresses[network].asks;
+      this.contractAddress = zoraAddresses[network].reserveAuction;
     }
 
-    this.contract = AsksV11__factory.connect(
+    this.contract = ReserveAuctionCoreEth__factory.connect(
       this.contractAddress,
       this.signerOrProvider
     );
@@ -49,15 +51,14 @@ export class AsksV11 {
 
   // View Methods [Getters]
 
-  // askForNFT
+  // auctionForNFT
   // @param {string} inputAddress - Address of the token contract
   // @param {BigNumberish} inputTokenId - Token ID
-  // @returns {Promise<AskStruct>} - Ask data for the NFT
-  public async fetchAskForNFT(
+  public async fetchAuctionForNFT(
     inputAddress: string,
-    tokenId: BigNumberish
-  ): Promise<AskStructOutput> {
-    return this.contract.askForNFT(inputAddress, tokenId);
+    inputTokenId: BigNumberish
+  ): Promise<AuctionStructOutputETH> {
+    return this.contract.auctionForNFT(inputAddress, inputTokenId);
   }
 
   // erc721TransferHelper
@@ -69,74 +70,45 @@ export class AsksV11 {
 
   // Write Methods [Transactions]
 
-  // Create Ask
-  // @param {string} inputAddress - Address of the token contract
-  // @param {BigNumberish} inputTokenId - Token ID
-  // @param {BigNumberish} askPrice - Ask price
-  // @param {string} askCurrency - Ask currency contract address
+  // createAuction
+  // @param {string} tokenContractAddress - Address of the token contract
+  // @param {BigNumberish} tokenId - Token ID
+  // @param {BigNumberish} duration - Auction duration (unspecified units in natspec)
+  // @param {BigNumberish} reservePrice - Auction reserve price
   // @param {string} sellerFundsRecipient - Address of the funds recipient
-  // @param {BigNumberish} findersFeeBPS - Finders fee BPS
-  // @returns {Promise<ContractTransaction>} - Transaction object
-  public async createAsk(
+  // @param {BigNumberish} startTime - Auction start time
+  // @returns {Promise<ContractTransaction>}
+  public async createAuction(
     tokenContractAddress: string,
     tokenId: BigNumberish,
-    askPrice: BigNumberish,
-    askCurrency: string,
+    duration: BigNumberish,
+    reservePrice: BigNumberish,
     sellerFundsRecipient: string,
-    findersFeeBPS: BigNumberish
+    startTime: BigNumberish
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
       validateAndParseAddress(tokenContractAddress);
       validateAndParseAddress(sellerFundsRecipient);
-      validateAndParseAddress(askCurrency);
     } catch (err) {
       return Promise.reject(err);
     }
 
-    return this.contract.createAsk(
+    return this.contract.createAuction(
       tokenContractAddress,
       tokenId,
-      askPrice,
-      askCurrency,
+      duration,
+      reservePrice,
       sellerFundsRecipient,
-      findersFeeBPS
+      startTime
     );
   }
 
-  // setAskPrice
-  // @param {string} inputAddress - Address of the token contract
-  // @param {BigNumberish} inputTokenId - Token ID
-  // @param {BigNumberish} askPrice - Ask price
-  // @param {string} askCurrency - Ask currency contract address
-  // @returns {Promise<ContractTransaction>} - Transaction object
-  public async setAskPrice(
-    tokenContractAddress: string,
-    tokenId: BigNumberish,
-    askPrice: BigNumberish,
-    askCurrency: string
-  ): Promise<ContractTransaction> {
-    try {
-      this.ensureNotReadOnly();
-      validateAndParseAddress(tokenContractAddress);
-      validateAndParseAddress(askCurrency);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-
-    return this.contract.setAskPrice(
-      tokenContractAddress,
-      tokenId,
-      askPrice,
-      askCurrency
-    );
-  }
-
-  // cancelAsk
-  // @param {string} inputAddress - Address of the token contract
-  // @param {BigNumberish} inputTokenId - Token ID
-  // @returns {Promise<ContractTransaction>} - Transaction object
-  public async cancelAsk(
+  // cancelAuction
+  // @param {string} tokenContractAddress - Address of the token contract
+  // @param {BigNumberish} tokenId - Token ID
+  // @returns {Promise<ContractTransaction>}
+  public async cancelAuction(
     tokenContractAddress: string,
     tokenId: BigNumberish
   ): Promise<ContractTransaction> {
@@ -147,39 +119,71 @@ export class AsksV11 {
       return Promise.reject(err);
     }
 
-    return this.contract.cancelAsk(tokenContractAddress, tokenId);
+    return this.contract.cancelAuction(tokenContractAddress, tokenId);
   }
 
-  // fillAsk
-  // @param {string} inputAddress - Address of the token contract
-  // @param {BigNumberish} inputTokenId - Token ID
-  // @param {string} fillCurrency - Fill currency contract address
-  // @param {BigNumberish} fillAmount - Fill amount
-  // @param {string} finder - Address of the finder
-  // @returns {Promise<ContractTransaction>} - Transaction object
-  public async fillAsk(
+  // createBid
+  // @param {string} amount - Amount of ETH to send (payable function)
+  // @param {string} tokenContractAddress - Address of the token contract
+  // @param {BigNumberish} tokenId - Token ID
+  // @returns {Promise<ContractTransaction>}
+  public async createBid(
+    amount: string,
     tokenContractAddress: string,
-    tokenId: BigNumberish,
-    fillCurrency: string,
-    fillAmount: BigNumberish,
-    finder: string
+    tokenId: BigNumberish
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
       validateAndParseAddress(tokenContractAddress);
-      validateAndParseAddress(fillCurrency);
-      validateAndParseAddress(finder);
     } catch (err) {
       return Promise.reject(err);
     }
 
-    return this.contract.fillAsk(
+    return this.contract.createBid(tokenContractAddress, tokenId, {
+      value: utils.parseEther(amount),
+    });
+  }
+
+  // setAuctionReservePrice
+  // @param {string} tokenContractAddress - Address of the token contract
+  // @param {BigNumberish} tokenId - Token ID
+  // @param {BigNumberish} reservePrice - Auction reserve price
+  // @returns {Promise<ContractTransaction>}
+  public async setAuctionReservePrice(
+    tokenContractAddress: string,
+    tokenId: BigNumberish,
+    reservePrice: BigNumberish
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+      validateAndParseAddress(tokenContractAddress);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+
+    return this.contract.setAuctionReservePrice(
       tokenContractAddress,
       tokenId,
-      fillCurrency,
-      fillAmount,
-      finder
+      reservePrice
     );
+  }
+
+  // settleAuction
+  // @param {string} tokenContractAddress - Address of the token contract
+  // @param {BigNumberish} tokenId - Token ID
+  // @returns {Promise<ContractTransaction>}
+  public async settleAuction(
+    tokenContractAddress: string,
+    tokenId: BigNumberish
+  ): Promise<ContractTransaction> {
+    try {
+      this.ensureNotReadOnly();
+      validateAndParseAddress(tokenContractAddress);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+
+    return this.contract.settleAuction(tokenContractAddress, tokenId);
   }
 
   // Private methods

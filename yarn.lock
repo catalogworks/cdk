@@ -610,31 +610,6 @@
     bech32 "1.1.4"
     ws "7.4.6"
 
-"@ethersproject/providers@5.5.3":
-  version "5.5.3"
-  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.5.3.tgz#56c2b070542ac44eb5de2ed3cf6784acd60a3130"
-  integrity sha512-ZHXxXXXWHuwCQKrgdpIkbzMNJMvs+9YWemanwp1fA7XZEv7QlilseysPvQe0D7Q7DlkJX/w/bGA1MdgK2TbGvA==
-  dependencies:
-    "@ethersproject/abstract-provider" "^5.5.0"
-    "@ethersproject/abstract-signer" "^5.5.0"
-    "@ethersproject/address" "^5.5.0"
-    "@ethersproject/basex" "^5.5.0"
-    "@ethersproject/bignumber" "^5.5.0"
-    "@ethersproject/bytes" "^5.5.0"
-    "@ethersproject/constants" "^5.5.0"
-    "@ethersproject/hash" "^5.5.0"
-    "@ethersproject/logger" "^5.5.0"
-    "@ethersproject/networks" "^5.5.0"
-    "@ethersproject/properties" "^5.5.0"
-    "@ethersproject/random" "^5.5.0"
-    "@ethersproject/rlp" "^5.5.0"
-    "@ethersproject/sha2" "^5.5.0"
-    "@ethersproject/strings" "^5.5.0"
-    "@ethersproject/transactions" "^5.5.0"
-    "@ethersproject/web" "^5.5.0"
-    bech32 "1.1.4"
-    ws "7.4.6"
-
 "@ethersproject/random@5.5.1", "@ethersproject/random@^5.5.0":
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/@ethersproject/random/-/random-5.5.1.tgz#7cdf38ea93dc0b1ed1d8e480ccdaf3535c555415"
@@ -1125,10 +1100,10 @@
     "@openzeppelin/contracts" "^4.2.0"
     "@openzeppelin/contracts-upgradeable" "^4.2.0"
 
-"@manifoldxyz/royalty-registry-solidity@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@manifoldxyz/royalty-registry-solidity/-/royalty-registry-solidity-1.0.4.tgz#ac6d1a1d4331ef1eeca9ffd26100d0346996e689"
-  integrity sha512-6ttcxRT4EDsihLYuRn/qmtJjm/FVfj9nzmy4wQX8RuIs0y68KtDEK9cURY8umgmPCcKBDCrjM3w7dcMzjTqQbw==
+"@manifoldxyz/royalty-registry-solidity@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@manifoldxyz/royalty-registry-solidity/-/royalty-registry-solidity-1.0.9.tgz#4d3516338c8b351e1e61d5a597ec532574beed6d"
+  integrity sha512-Cv38ROezkl6J8lizyPlEmPoAvLiRcO31OnWe/Jept0mNk7oygrPZrfG07OMfwphn+dOFxmszQTns7AJRQfxMBA==
   dependencies:
     "@manifoldxyz/libraries-solidity" "^1.0.2"
     "@openzeppelin/contracts" "^4.3.2"
@@ -1160,7 +1135,7 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.5.1.tgz#dc354082460eb34f5833afdecfab46538b208c4f"
   integrity sha512-xcKycsSyFauIGMhSeeTJW/Jzz9jZUJdiFNP9Wo/9VhMhw8t5X0M92RY6x176VfcIWsxURMHFWOJVTlFA78HI/w==
 
-"@openzeppelin/contracts@^4.2.0", "@openzeppelin/contracts@^4.3.2", "@openzeppelin/contracts@^4.4.2":
+"@openzeppelin/contracts@^4.2.0", "@openzeppelin/contracts@^4.3.2", "@openzeppelin/contracts@^4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.5.0.tgz#3fd75d57de172b3743cdfc1206883f56430409cc"
   integrity sha512-fdkzKPYMjrRiPK6K4y64e6GzULR7R7RwxSigHS8DDp7aWDeoReqsQI+cxHV1UuhAqX69L1lAaWDxenfP+xiqzA==
@@ -1475,22 +1450,14 @@
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@zoralabs/core@^1.0.5":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@zoralabs/core/-/core-1.0.7.tgz#c426b5d85cf1cb0c57d7e9dc0a3fd8519c78566d"
-  integrity sha512-BZ6/n/2YIOAXWU+VtxNo+O/1wy9mFb7Grfdg2EkJoaq/2UJjf7cpMZfdQHp2CRa+m3XYb1uVG3q6236i+Uz1MQ==
+"@zoralabs/v3@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.6.tgz#bbf6b37b4c79d6b7cbe222d0705d145ae177866f"
+  integrity sha512-/MzZuyTdpsI14hu2lDukh4QuQBbQNZ84C6H9MGPkmmnj906NQBgNSL8f+Uyf3Mo+7OlGy38e/YXDXYxpNWYVHw==
   dependencies:
-    ethers "^5.0.19"
-
-"@zoralabs/v3@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.4.tgz#97754203e8c29dacffd4fc2bbc3f513095827c20"
-  integrity sha512-ycfaGXVT/KEnWYTlPtFSzmORHoHZYjp1cPLMPQ+0OsbbyR1WBmz8q8Mwuyq110K8u8CFU3GmlSVqPHIjr3ftvA==
-  dependencies:
-    "@manifoldxyz/royalty-registry-solidity" "1.0.4"
-    "@openzeppelin/contracts" "^4.4.2"
+    "@manifoldxyz/royalty-registry-solidity" "^1.0.9"
+    "@openzeppelin/contracts" "^4.5.0"
     "@rari-capital/solmate" "^6.2.0"
-    "@zoralabs/core" "^1.0.5"
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
@@ -4150,42 +4117,6 @@ ethers@^5.0.0, ethers@^5.4.7, ethers@^5.5.2:
     "@ethersproject/pbkdf2" "5.5.0"
     "@ethersproject/properties" "5.5.0"
     "@ethersproject/providers" "5.5.2"
-    "@ethersproject/random" "5.5.1"
-    "@ethersproject/rlp" "5.5.0"
-    "@ethersproject/sha2" "5.5.0"
-    "@ethersproject/signing-key" "5.5.0"
-    "@ethersproject/solidity" "5.5.0"
-    "@ethersproject/strings" "5.5.0"
-    "@ethersproject/transactions" "5.5.0"
-    "@ethersproject/units" "5.5.0"
-    "@ethersproject/wallet" "5.5.0"
-    "@ethersproject/web" "5.5.1"
-    "@ethersproject/wordlists" "5.5.0"
-
-ethers@^5.0.19:
-  version "5.5.4"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.4.tgz#e1155b73376a2f5da448e4a33351b57a885f4352"
-  integrity sha512-N9IAXsF8iKhgHIC6pquzRgPBJEzc9auw3JoRkaKe+y4Wl/LFBtDDunNe7YmdomontECAcC5APaAgWZBiu1kirw==
-  dependencies:
-    "@ethersproject/abi" "5.5.0"
-    "@ethersproject/abstract-provider" "5.5.1"
-    "@ethersproject/abstract-signer" "5.5.0"
-    "@ethersproject/address" "5.5.0"
-    "@ethersproject/base64" "5.5.0"
-    "@ethersproject/basex" "5.5.0"
-    "@ethersproject/bignumber" "5.5.0"
-    "@ethersproject/bytes" "5.5.0"
-    "@ethersproject/constants" "5.5.0"
-    "@ethersproject/contracts" "5.5.0"
-    "@ethersproject/hash" "5.5.0"
-    "@ethersproject/hdnode" "5.5.0"
-    "@ethersproject/json-wallets" "5.5.0"
-    "@ethersproject/keccak256" "5.5.0"
-    "@ethersproject/logger" "5.5.0"
-    "@ethersproject/networks" "5.5.2"
-    "@ethersproject/pbkdf2" "5.5.0"
-    "@ethersproject/properties" "5.5.0"
-    "@ethersproject/providers" "5.5.3"
     "@ethersproject/random" "5.5.1"
     "@ethersproject/rlp" "5.5.0"
     "@ethersproject/sha2" "5.5.0"

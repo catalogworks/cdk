@@ -12,7 +12,7 @@ import {
 } from '@zoralabs/v3/dist/typechain';
 import {zoraAddresses} from './addresses';
 import {chainIdToNetwork, validateAndParseAddress} from './utils';
-import {OfferStruct} from '@zoralabs/v3/dist/typechain/OffersV1';
+import type {OfferStructOutput} from './types';
 
 export class OffersV1 {
   public chainId: number;
@@ -60,7 +60,7 @@ export class OffersV1 {
     inputAddress: string,
     inputTokenId: BigNumberish,
     inputOfferId: BigNumberish
-  ): Promise<OfferStruct> {
+  ): Promise<OfferStructOutput> {
     return this.contract.offers(inputAddress, inputTokenId, inputOfferId);
   }
 
