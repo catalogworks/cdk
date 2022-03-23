@@ -109,6 +109,16 @@ export type AuctionInputDataETH = {
   startTime: BigNumberish;
 };
 
+export type AuctionInputDataERC20 = {
+  tokenContractAddress: string;
+  tokenId: BigNumberish;
+  duration: BigNumberish;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  startTime: BigNumberish;
+  bidCurrency: string;
+};
+
 export type AuctionStructETH = {
   seller: string;
   reservePrice: BigNumberish;
