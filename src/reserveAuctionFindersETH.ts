@@ -40,7 +40,7 @@ export class ReserveAuctionFindersETH {
     } else {
       // Get contract address from chainId
       const network = chainIdToNetwork(this.chainId);
-      this.contractAddress = zoraAddresses[network].reserveAuctionFindersEth;
+      this.contractAddress = zoraAddresses[network].reserveAuctionsFindersEth;
     }
 
     this.contract = ReserveAuctionFindersEth__factory.connect(
