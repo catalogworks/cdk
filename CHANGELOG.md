@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2022-03-23
+
+- hotfix, fixes name mismatch in exported zora addresses
+
+## [0.2.0] - 2022-03-22
+
+- hotfix for address in auction classes, this version number is better anyways
+
+## [0.1.9] - 2022-03-22
+
+- hotfix for address in auction classes
+
+## [0.1.8] - 2022-03-22
+
+- Added exported classes for Zora V3 Reserve Auction modules
+
 ## [0.1.7] - 2022-03-15
 
 - rework import for `Signer` type on all exported classes
@@ -113,6 +129,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[0.2.1]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.1
+[0.2.0]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.0
+[0.1.9]: https://github.com/catalogworks/cdk/packages/1173720?version=0.1.9
+[0.1.8]: https://github.com/catalogworks/cdk/packages/1173720?version=0.1.8
 [0.1.7]: https://github.com/catalogworks/cdk/packages/1173720?version=0.1.7
 [0.1.6]: https://github.com/catalogworks/cdk/packages/1173720?version=0.1.6
 [0.1.5]: https://github.com/catalogworks/cdk/packages/1173720?version=0.1.5
