@@ -151,6 +151,7 @@ export class ReserveAuctionFindersERC20 {
     try {
       this.ensureNotReadOnly();
       validateAndParseAddress(tokenContractAddress);
+      validateAndParseAddress(finderAddress);
     } catch (err) {
       return Promise.reject(err);
     }
