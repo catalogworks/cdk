@@ -66,7 +66,7 @@ describe('Zora V3 ReserveAuctionETH', () => {
       const reserveAuction = new ReserveAuctionETH(
         provider,
         4,
-        zoraAddresses.rinkeby.reserveAuctionsCoreEth
+        zoraAddresses.rinkeby.reserveAuctionCoreEth
       );
 
       expect(reserveAuction.readOnly).toBe(true);
@@ -74,7 +74,7 @@ describe('Zora V3 ReserveAuctionETH', () => {
 
     it('initializes an instance with the checksummed address', () => {
       const wallet = Wallet.createRandom();
-      const rinkebyAddress = zoraAddresses.rinkeby.reserveAuctionsCoreEth;
+      const rinkebyAddress = zoraAddresses.rinkeby.reserveAuctionCoreEth;
       const reserveAuction = new ReserveAuctionETH(wallet, 4);
 
       expect(reserveAuction.contractAddress).toEqual(rinkebyAddress);

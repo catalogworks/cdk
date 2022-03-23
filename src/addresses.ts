@@ -25,11 +25,10 @@ export const zoraAddresses: AddressBook = {
     erc721TransferHelper: ZoraRinkebyAddresses.ERC721TransferHelper,
     erc20TransferHelper: ZoraRinkebyAddresses.ERC20TransferHelper,
     offers: ZoraRinkebyAddresses.OffersV1,
-    reserveAuctionsCoreEth: ZoraRinkebyAddresses.ReserveAuctionCoreEth,
-    reserveAuctionsCoreErc20: ZoraRinkebyAddresses.ReserveAuctionCoreErc20,
-    reserveAuctionsFindersEth: ZoraRinkebyAddresses.ReserveAuctionFindersEth,
-    reserveAuctionsFindersErc20:
-      ZoraRinkebyAddresses.ReserveAuctionFindersErc20,
+    reserveAuctionCoreEth: ZoraRinkebyAddresses.ReserveAuctionCoreEth,
+    reserveAuctionCoreErc20: ZoraRinkebyAddresses.ReserveAuctionCoreErc20,
+    reserveAuctionFindersEth: ZoraRinkebyAddresses.ReserveAuctionFindersEth,
+    reserveAuctionFindersErc20: ZoraRinkebyAddresses.ReserveAuctionFindersErc20,
   },
   mainnet: {
     moduleManager: ZoraMainnetAddresses.ZoraModuleManager,

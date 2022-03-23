@@ -41,7 +41,7 @@ export class ReserveAuctionERC20 {
     } else {
       // Get contract address from chainId
       const network = chainIdToNetwork(this.chainId);
-      this.contractAddress = zoraAddresses[network].reserveAuctionsCoreErc20;
+      this.contractAddress = zoraAddresses[network].reserveAuctionCoreErc20;
     }
 
     this.contract = ReserveAuctionCoreErc20__factory.connect(
