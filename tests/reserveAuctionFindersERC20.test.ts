@@ -66,7 +66,7 @@ describe('Zora V3 ReserveAuctionFindersERC20', () => {
       const reserveAuction = new ReserveAuctionFindersERC20(
         provider,
         4,
-        zoraAddresses.rinkeby.reserveAuctionFindersERC20
+        zoraAddresses.rinkeby.reserveAuctionsFindersErc20
       );
 
       expect(reserveAuction.readOnly).toBe(true);
@@ -74,7 +74,7 @@ describe('Zora V3 ReserveAuctionFindersERC20', () => {
 
     it('initializes an instance with the checksummed address', () => {
       const wallet = Wallet.createRandom();
-      const rinkebyAddress = zoraAddresses.rinkeby.reserveAuctionFindersERC20;
+      const rinkebyAddress = zoraAddresses.rinkeby.reserveAuctionsFindersErc20;
       const reserveAuction = new ReserveAuctionFindersERC20(wallet, 4);
 
       expect(reserveAuction.contractAddress).toEqual(rinkebyAddress);
