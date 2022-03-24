@@ -105,6 +105,7 @@ export class ReserveAuctionListingERC20 {
       this.ensureNotReadOnly();
       validateAndParseAddress(tokenContractAddress);
       validateAndParseAddress(sellerFundsRecipient);
+      validateAndParseAddress(bidCurrency);
       validateAndParseAddress(listingFeeRecipient);
     } catch (err) {
       return Promise.reject(err);

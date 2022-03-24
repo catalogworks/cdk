@@ -151,6 +151,18 @@ export type AuctionInputDataFindersERC20 = {
   findersFeeBPS: BigNumberish;
 };
 
+export type AuctionInputDataListingERC20 = {
+  tokenContractAddress: string;
+  tokenId: BigNumberish;
+  duration: BigNumberish;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  startTime: BigNumberish;
+  bidCurrency: string;
+  listingFeeBPS: BigNumberish;
+  listingFeeRecipient: string;
+};
+
 export type AuctionStructETH = {
   seller: string;
   reservePrice: BigNumberish;
