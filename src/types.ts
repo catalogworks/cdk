@@ -119,6 +119,17 @@ export type AuctionInputDataFindersETH = {
   findersFeeBPS: BigNumberish;
 };
 
+export type AuctionInputDataListingETH = {
+  tokenContractAddress: string;
+  tokenId: BigNumberish;
+  duration: BigNumberish;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  startTime: BigNumberish;
+  listingFeeBPS: BigNumberish;
+  listingFeeRecipient: string;
+};
+
 export type AuctionInputDataERC20 = {
   tokenContractAddress: string;
   tokenId: BigNumberish;
@@ -277,4 +288,41 @@ export type AuctionStructOutputFindersERC20 = [
   finder: string;
   duration: BigNumber;
   findersFeeBps: number;
+};
+
+export type AuctionStructListingETH = {
+  seller: string;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  highestBid: BigNumberish;
+  highestBidder: string;
+  duration: BigNumberish;
+  startTime: BigNumberish;
+  listingFeeRecipient: string;
+  firstBidTime: BigNumberish;
+  listingFeeBps: BigNumberish;
+};
+
+export type AuctionStructOutputListingETH = [
+  string,
+  BigNumber,
+  string,
+  BigNumber,
+  string,
+  number,
+  number,
+  string,
+  BigNumber,
+  number
+] & {
+  seller: string;
+  reservePrice: BigNumber;
+  sellerFundsRecipient: string;
+  highestBid: BigNumber;
+  highestBidder: string;
+  duration: number;
+  startTime: number;
+  listingFeeRecipient: string;
+  firstBidTime: BigNumber;
+  listingFeeBps: number;
 };

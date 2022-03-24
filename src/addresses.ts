@@ -29,6 +29,8 @@ export const zoraAddresses: AddressBook = {
     reserveAuctionCoreErc20: ZoraRinkebyAddresses.ReserveAuctionCoreErc20,
     reserveAuctionFindersEth: ZoraRinkebyAddresses.ReserveAuctionFindersEth,
     reserveAuctionFindersErc20: ZoraRinkebyAddresses.ReserveAuctionFindersErc20,
+    reserveAuctionListingEth: ZoraRinkebyAddresses.ReserveAuctionListingEth,
+    reserveAuctionListingErc20: ZoraRinkebyAddresses.ReserveAuctionListingErc20,
   },
   mainnet: {
     moduleManager: ZoraMainnetAddresses.ZoraModuleManager,
@@ -40,5 +42,7 @@ export const zoraAddresses: AddressBook = {
     reserveAuctionCoreErc20: ZoraMainnetAddresses.ReserveAuctionCoreErc20,
     reserveAuctionFindersEth: ZoraMainnetAddresses.ReserveAuctionFindersEth,
     reserveAuctionFindersErc20: ZoraMainnetAddresses.ReserveAuctionFindersErc20,
+    reserveAuctionListingEth: ZoraMainnetAddresses.ReserveAuctionListingEth,
+    reserveAuctionListingErc20: ZoraMainnetAddresses.ReserveAuctionListingErc20,
   },
 };
