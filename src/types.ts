@@ -326,3 +326,43 @@ export type AuctionStructOutputListingETH = [
   firstBidTime: BigNumber;
   listingFeeBps: number;
 };
+
+export type AuctionStructListingERC20 = {
+  seller: string;
+  reservePrice: BigNumberish;
+  sellerFundsRecipient: string;
+  highestBid: BigNumberish;
+  highestBidder: string;
+  startTime: BigNumberish;
+  currency: string;
+  firstBidTime: BigNumberish;
+  listingFeeRecipient: string;
+  duration: BigNumberish;
+  listingFeeBps: BigNumberish;
+};
+
+export type AuctionStructOutputListingERC20 = [
+  string,
+  BigNumber,
+  string,
+  BigNumber,
+  string,
+  BigNumber,
+  string,
+  BigNumber,
+  string,
+  BigNumber,
+  number
+] & {
+  seller: string;
+  reservePrice: BigNumber;
+  sellerFundsRecipient: string;
+  highestBid: BigNumber;
+  highestBidder: string;
+  startTime: BigNumber;
+  currency: string;
+  firstBidTime: BigNumber;
+  listingFeeRecipient: string;
+  duration: BigNumber;
+  listingFeeBps: number;
+};
