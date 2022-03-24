@@ -14,6 +14,8 @@ import {
   ReserveAuctionCoreErc20__factory,
   ReserveAuctionFindersEth__factory,
   ReserveAuctionFindersErc20__factory,
+  ReserveAuctionListingEth__factory,
+  ReserveAuctionListingErc20__factory,
 } from '@zoralabs/v3/dist/typechain';
 import {Contract} from 'ethers';
 
@@ -59,6 +61,8 @@ export type ZoraReserveAuctionConfiguredAddresses = {
   reserveAuctionERC20: string;
   reserveAuctionFindersETH: string;
   reserveAuctionFindersERC20: string;
+  reserveAuctionListingETH: string;
+  reserveAuctionListingERC20: string;
 };
 
 export async function setupCatalog(
@@ -183,6 +187,29 @@ export async function setupZoraAuctions(
   await reserveAuctionFindersERC20.deployTransaction.wait();
   const reserveAuctionFindersERC20Address = reserveAuctionFindersERC20.address;
 
+  const reserveAuctionListingETH = await (
+    await new ReserveAuctionListingEth__factory(wallet).deploy(
+      erc721TransferHelperAddress,
+      royaltyEngineV1Address,
+      zoraProtocolFeeSettingsAddress,
+      wethAddress
+    )
+  )._deployed();
+  await reserveAuctionListingETH.deployTransaction.wait();
+  const reserveAuctionListingETHAddress = reserveAuctionListingETH.address;
+
+  const reserveAuctionListingERC20 = await (
+    await new ReserveAuctionListingErc20__factory(wallet).deploy(
+      erc20TransferHelperAddress,
+      erc721TransferHelperAddress,
+      royaltyEngineV1Address,
+      zoraProtocolFeeSettingsAddress,
+      wethAddress
+    )
+  )._deployed();
+  await reserveAuctionListingERC20.deployTransaction.wait();
+  const reserveAuctionListingERC20Address = reserveAuctionListingERC20.address;
+
   return {
     moduleManager: moduleManagerAddress,
     weth: wethAddress,
@@ -198,6 +225,8 @@ export async function setupZoraAuctions(
     reserveAuctionERC20: reserveAuctionERC20Address,
     reserveAuctionFindersETH: reserveAuctionFindersETHAddress,
     reserveAuctionFindersERC20: reserveAuctionFindersERC20Address,
+    reserveAuctionListingETH: reserveAuctionListingETHAddress,
+    reserveAuctionListingERC20: reserveAuctionListingERC20Address,
   };
 }
 
