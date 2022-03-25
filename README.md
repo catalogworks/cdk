@@ -31,6 +31,12 @@ The CDK has these primary exports plus some types:
 - [AsksV11](src/asksv11.ts)
 - [ZoraModuleManager](src/zoramodulemanager.ts)
 - [OffersV1](src/offersv1.ts)
+- [ReserveAuctionETH](src/reserveAuctionETH.ts)
+- [ReserveAuctionFindersETH](src/reserveAuctionFindersETH.ts)
+- [ReserveAuctionListingETH](src/reserveAuctionListingETH.ts)
+- [ReserveAuctionERC20](src/reserveAuctionERC20.ts)
+- [ReserveAuctionFindersERC20](src/reserveAuctionFindersERC20.ts)
+- [ReserveAuctionListingERC20](src/reserveAuctionListingERC20.ts)
 
 ---
 
@@ -39,7 +45,7 @@ The CDK has these primary exports plus some types:
 [Package](https://github.com/catalogworks/cdk/packages/1173720)
 
 ```bash
-yarn add @catalogworks/cdk@0.2.1
+yarn add @catalogworks/cdk@0.2.2
 ```
 
 ---

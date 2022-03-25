@@ -13,3 +13,5 @@ export * from './reserveAuctionETH';
 export * from './reserveAuctionERC20';
 export * from './reserveAuctionFindersETH';
 export * from './reserveAuctionFindersERC20';
+export * from './reserveAuctionListingETH';
+export * from './reserveAuctionListingERC20';
