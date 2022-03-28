@@ -379,7 +379,7 @@ export type AuctionStructOutputListingERC20 = [
   duration: BigNumber;
   listingFeeBps: number;
 };
-  
+
 // 0x Split Input Data Type
 export type SplitData = {
   accounts: string[];

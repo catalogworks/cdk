@@ -899,10 +899,12 @@ describe('0xSplits Test Suite', () => {
             defaultSplitData.distributorFee,
             mainWallet.address
           );
-          const txLogs = await createSplitTx.wait();
+          const receipt = await (await createSplitTx).wait();
+          const splitAddress =
+            receipt.events?.[0]?.args?.split &&
+            ethers.utils.getAddress(receipt.events[0]?.args?.split);
+
           blockchain.waitBlocksAsync(4);
-          const emittedData = txLogs.logs[0].topics[1];
-          const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
           const checkedInput = utils.getAddress(splitAddress);
           const distTx = await splits.updateAndDistributeERC20(

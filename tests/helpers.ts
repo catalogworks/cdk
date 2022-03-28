@@ -51,7 +51,6 @@ export type ZoraConfiguredAddresses = {
   offersV1: string;
 };
 
-
 export type ZoraReserveAuctionConfiguredAddresses = {
   moduleManager: string;
   weth: string;
