@@ -158,8 +158,8 @@ describe('0xSplits Test Suite', () => {
             defaultSplitData.distributorFee,
             defaultSplitData.controller
           );
-
           await tx.wait();
+          blockchain.waitBlocksAsync(1);
 
           splits.contract.on('CreateSplit', (splitAddress: string) => {
             expect(splitAddress).toBeDefined();
@@ -224,26 +224,21 @@ describe('0xSplits Test Suite', () => {
             mainWallet.address
           );
           const txLogs = await createSplitTx.wait();
+          blockchain.waitBlocksAsync(4);
 
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
+          const checkedInput = utils.getAddress(splitAddress);
+
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
-            utils.getAddress(splitAddress),
+            checkedInput,
             otherWallet.address
           );
           await transferTx.wait();
 
-          splits.contract.on(
-            'InitiateControlTransfer',
-            (splitAddressEmitted: string, newController: string) => {
-              expect(splitAddressEmitted).toBeDefined();
-              expect(splitAddressEmitted).toBe(splitAddress);
-              expect(newController).toBeDefined();
-              expect(newController).toBe(otherWallet.address);
-            }
-          );
+          blockchain.waitBlocksAsync(4);
 
           // Accept control of the split from the other wallet
           const acceptTx = await otherSplits.acceptControl(
@@ -267,7 +262,7 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('InitiateControlTransfer');
+          // splits.contract.removeAllListeners('InitiateControlTransfer');
           otherSplits.contract.removeAllListeners('ControlTransfer');
         });
       });
@@ -317,6 +312,8 @@ describe('0xSplits Test Suite', () => {
             mainWallet.address
           );
           const txLogs = await createSplitTx.wait();
+          const log = splits.contract.interface.parseLog(txLogs.logs[0]);
+          const {split} = log.args;
 
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
@@ -324,25 +321,27 @@ describe('0xSplits Test Suite', () => {
 
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
-            splitAddress,
+            split,
             otherWallet.address
           );
           await transferTx.wait();
+          // blockchain.waitBlocksAsync(4);
 
-          splits.contract.on(
-            'InitiateControlTransfer',
-            (splitAddressEmitted: string, newController: string) => {
-              expect(splitAddressEmitted).toBeDefined();
-              expect(utils.getAddress(splitAddressEmitted)).toBe(
-                utils.getAddress(splitAddress)
-              );
-              expect(newController).toBeDefined();
-              expect(newController).toBe(otherWallet.address);
-            }
-          );
+          // splits.contract.on(
+          //   'InitiateControlTransfer',
+          //   (splitAddressEmitted: string, newController: string) => {
+          //     expect(splitAddressEmitted).toBeDefined();
+          //     expect(utils.getAddress(splitAddressEmitted)).toBe(
+          //       utils.getAddress(splitAddress)
+          //     );
+          //     expect(newController).toBeDefined();
+          //     expect(newController).toBe(otherWallet.address);
+          //   }
+          // );
 
           // Cancel the control transfer
-          const cancelTx = await splits.cancelControlTransfer(splitAddress);
+          // const inputAddress = utils.getAddress(splitAddress);
+          const cancelTx = await splits.cancelControlTransfer(split);
           await cancelTx.wait();
 
           splits.contract.on(
@@ -355,7 +354,7 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          splits.contract.removeAllListeners('InitiateControlTransfer');
+          // splits.contract.removeAllListeners('InitiateControlTransfer');
           splits.contract.removeAllListeners('CancelControlTransfer');
         });
       });
@@ -417,15 +416,24 @@ describe('0xSplits Test Suite', () => {
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
             defaultSplitData.distributorFee,
-            mainWallet.address
+            defaultSplitData.controller
           );
+          await createSplitTx.wait();
+
+          const getSplitAddress = await splits.fetchPredictedSplitAddress(
+            defaultSplitData.accounts,
+            defaultSplitData.percentAllocations,
+            defaultSplitData.distributorFee
+          );
+
           const txLogs = await createSplitTx.wait();
+          blockchain.waitBlocksAsync(4);
 
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
           const distTx = await splits.distributeETH(
-            utils.getAddress(splitAddress),
+            getSplitAddress,
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
             defaultSplitData.distributorFee,
@@ -647,13 +655,20 @@ describe('0xSplits Test Suite', () => {
             mainWallet.address
           );
 
-          await createSplitTx.wait();
-          const txLogs = await createSplitTx.wait();
+          const txLogs: ethers.ContractReceipt = await createSplitTx.wait();
+          // const poop = txLogs.transactionHash;
+
+          // const recipeit = new ethers.utils.Interface(
+          //   splits.contract.a
+          // );
+
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
+          const checkedInput = utils.getAddress(splitAddress);
 
-          const makeImmutableTx = await splits.makeSplitImmutable(splitAddress);
+          const makeImmutableTx = await splits.makeSplitImmutable(checkedInput);
           await makeImmutableTx.wait();
+          blockchain.waitBlocksAsync(4);
 
           splits.contract.on(
             'ControlTransfer',
@@ -718,6 +733,26 @@ describe('0xSplits Test Suite', () => {
         });
 
         // 03
+        it('throws an error if the input controller adddress is not valid', async () => {
+          const splits = new ZeroXSplits(
+            mainWallet,
+            50,
+            splitsConfig.splitMain
+          );
+
+          expect(splits.readOnly).toBe(false);
+
+          await expect(
+            splits.transferControl(
+              '0x0000000000000000000000000000000000000000',
+              'pee pee poo poo'
+            )
+          ).rejects.toThrowError(
+            'Invariant failed: pee pee poo poo is not a valid address'
+          );
+        });
+
+        // 04
         it('succesfully begins transfer control request', async () => {
           const splits = new ZeroXSplits(
             mainWallet,
@@ -733,17 +768,20 @@ describe('0xSplits Test Suite', () => {
             defaultSplitData.distributorFee,
             mainWallet.address
           );
-          const txLogs = await createSplitTx.wait();
+          const receipt = await (await createSplitTx).wait();
+          const splitAddress =
+            receipt.events?.[0]?.args?.split &&
+            ethers.utils.getAddress(receipt.events[0]?.args?.split);
+          blockchain.waitBlocksAsync(4);
 
-          const emittedData = txLogs.logs[0].topics[1];
-          const splitAddress = ethers.utils.hexStripZeros(emittedData);
-
+          const checkedInput = utils.getAddress(splitAddress);
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
-            utils.getAddress(splitAddress),
+            checkedInput,
             otherWallet.address
           );
           await transferTx.wait();
+          blockchain.waitBlocksAsync(4);
 
           splits.contract.on(
             'InitiateControlTransfer',
@@ -861,13 +899,14 @@ describe('0xSplits Test Suite', () => {
             defaultSplitData.distributorFee,
             mainWallet.address
           );
-
           const txLogs = await createSplitTx.wait();
+          blockchain.waitBlocksAsync(4);
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
+          const checkedInput = utils.getAddress(splitAddress);
           const distTx = await splits.updateAndDistributeERC20(
-            utils.getAddress(splitAddress),
+            checkedInput,
             wethContract.address,
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
@@ -875,6 +914,7 @@ describe('0xSplits Test Suite', () => {
             mainWallet.address
           );
           await distTx.wait();
+          blockchain.waitBlocksAsync(4);
 
           splits.contract.on(
             'DistributeERC20',
@@ -977,7 +1017,7 @@ describe('0xSplits Test Suite', () => {
         });
 
         // 04
-        it('updated and distributes ETH to the split', async () => {
+        it('updates and distributes ETH to the split', async () => {
           const splits = new ZeroXSplits(
             mainWallet,
             50,
@@ -992,20 +1032,18 @@ describe('0xSplits Test Suite', () => {
             defaultSplitData.distributorFee,
             mainWallet.address
           );
+          blockchain.waitBlocksAsync(4);
 
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(
-              ethers.utils.hexStripZeros(createSplitTx.hash)
-            );
-          });
+          const receipt = await (await createSplitTx).wait();
+          const splitAddress =
+            receipt.events?.[0]?.args?.split &&
+            ethers.utils.getAddress(receipt.events[0]?.args?.split);
 
-          const txLogs = await createSplitTx.wait();
-          const emittedData = txLogs.logs[0].topics[1];
-          const splitAddress = ethers.utils.hexStripZeros(emittedData);
-
+          // const emittedData = txLogs.logs[0].topics[1];
+          // const splitAddress = ethers.utils.hexStripZeros(emittedData);
+          const checkedInput = utils.getAddress(splitAddress);
           const distTx = await splits.updateAndDistributeETH(
-            splitAddress,
+            checkedInput,
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
             defaultSplitData.distributorFee,
@@ -1038,7 +1076,6 @@ describe('0xSplits Test Suite', () => {
             );
           });
 
-          splits.contract.removeAllListeners('CreateSplit');
           splits.contract.removeAllListeners('DistributeETH');
           splits.contract.removeAllListeners('UpdateSplit');
         });
@@ -1103,24 +1140,24 @@ describe('0xSplits Test Suite', () => {
             mainWallet.address
           );
 
-          splits.contract.on('CreateSplit', (emittedAddress: string) => {
-            expect(emittedAddress).toBeDefined();
-            expect(emittedAddress).toBe(
-              ethers.utils.hexStripZeros(createSplitTx.hash)
-            );
-          });
+          const receipt = await (await createSplitTx).wait();
+          const splitAddress =
+            receipt.events?.[0]?.args?.split &&
+            ethers.utils.getAddress(receipt.events[0]?.args?.split);
 
-          const txLogs = await createSplitTx.wait();
-          const emittedData = txLogs.logs[0].topics[1];
-          const splitAddress = ethers.utils.hexStripZeros(emittedData);
-
+          const checkedInput = utils.getAddress(splitAddress);
           const updateSplitTx = await splits.updateSplit(
-            splitAddress,
+            checkedInput,
             defaultSplitData.accounts,
             defaultSplitData.percentAllocations,
             defaultSplitData.distributorFee
           );
           await updateSplitTx.wait();
+
+          splits.contract.on('CreateSplit', (emittedAddress: string) => {
+            expect(emittedAddress).toBeDefined();
+            expect(emittedAddress).toBe(utils.getAddress(splitAddress));
+          });
 
           splits.contract.on('UpdateSplit', (address: string) => {
             expect(address).toBeDefined();
