@@ -5,7 +5,6 @@ import {
   AuctionInputDataListingETH,
   AuctionStructListingETH,
   ReserveAuctionListingETH,
-  wrapETH,
   ZoraModuleManager,
 } from '../src';
 

@@ -262,7 +262,6 @@ describe('0xSplits Test Suite', () => {
             }
           );
 
-          // splits.contract.removeAllListeners('InitiateControlTransfer');
           otherSplits.contract.removeAllListeners('ControlTransfer');
         });
       });
@@ -317,7 +316,6 @@ describe('0xSplits Test Suite', () => {
 
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
-          // const splitAddress = splitAddressTest;
 
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
@@ -325,22 +323,8 @@ describe('0xSplits Test Suite', () => {
             otherWallet.address
           );
           await transferTx.wait();
-          // blockchain.waitBlocksAsync(4);
-
-          // splits.contract.on(
-          //   'InitiateControlTransfer',
-          //   (splitAddressEmitted: string, newController: string) => {
-          //     expect(splitAddressEmitted).toBeDefined();
-          //     expect(utils.getAddress(splitAddressEmitted)).toBe(
-          //       utils.getAddress(splitAddress)
-          //     );
-          //     expect(newController).toBeDefined();
-          //     expect(newController).toBe(otherWallet.address);
-          //   }
-          // );
 
           // Cancel the control transfer
-          // const inputAddress = utils.getAddress(splitAddress);
           const cancelTx = await splits.cancelControlTransfer(split);
           await cancelTx.wait();
 
@@ -656,11 +640,6 @@ describe('0xSplits Test Suite', () => {
           );
 
           const txLogs: ethers.ContractReceipt = await createSplitTx.wait();
-          // const poop = txLogs.transactionHash;
-
-          // const recipeit = new ethers.utils.Interface(
-          //   splits.contract.a
-          // );
 
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
@@ -1041,8 +1020,6 @@ describe('0xSplits Test Suite', () => {
             receipt.events?.[0]?.args?.split &&
             ethers.utils.getAddress(receipt.events[0]?.args?.split);
 
-          // const emittedData = txLogs.logs[0].topics[1];
-          // const splitAddress = ethers.utils.hexStripZeros(emittedData);
           const checkedInput = utils.getAddress(splitAddress);
           const distTx = await splits.updateAndDistributeETH(
             checkedInput,
