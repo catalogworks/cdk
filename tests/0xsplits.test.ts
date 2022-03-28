@@ -4,12 +4,12 @@
 import {ZeroXSplits, SplitData, wrapETH} from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import {JsonRpcProvider} from '@ethersproject/providers';
-import {waffleJest} from '@ethereum-waffle/jest';
 import {splitsAddresses} from '../src/addresses';
 import {Blockchain} from './utils/blockchain';
 import {generatedWallets} from './utils/wallets';
 import {setupSplits, SplitConfiguredAddresses} from './helpers';
 import {BigNumber, BigNumberish, Contract, ethers, utils} from 'ethers';
+import {waffleJest} from '@ethereum-waffle/jest';
 
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
@@ -324,7 +324,7 @@ describe('0xSplits Test Suite', () => {
 
           // Transfer control of the split to the other wallet
           const transferTx = await splits.transferControl(
-            utils.getAddress(splitAddress),
+            splitAddress,
             otherWallet.address
           );
           await transferTx.wait();
@@ -652,9 +652,7 @@ describe('0xSplits Test Suite', () => {
           const emittedData = txLogs.logs[0].topics[1];
           const splitAddress = ethers.utils.hexStripZeros(emittedData);
 
-          const makeImmutableTx = await splits.makeSplitImmutable(
-            utils.getAddress(splitAddress)
-          );
+          const makeImmutableTx = await splits.makeSplitImmutable(splitAddress);
           await makeImmutableTx.wait();
 
           splits.contract.on(
