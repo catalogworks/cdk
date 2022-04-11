@@ -296,10 +296,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@catalogworks/catalog-contracts@0.1.4":
-  version "0.1.4"
-  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.1.4/46b016594c49122f599048c2740f4b0826dfb445832cdab04f3703b0d26bbe01#6e6db3d61c59adaeb22273abbfa31f0db27d8885"
-  integrity sha512-nrcW1RWz7mKhErYRWAEkJDXWhXhNkIpULEIuM3vlWxT4CGvp7tvvjfYHWrk/d6S2ScD4K0wX9Bnb5oDyC6wsNQ==
+"@catalogworks/catalog-contracts@0.1.5":
+  version "0.1.5"
+  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.1.5/877e86685e0531d442272e8a4554e480e28e7c0b56c0776d8441c8d72ee63e32#7ea49fe04a26824e2f5a9ac7131c07e1bc8ef3ab"
+  integrity sha512-Tf0Y4SZvSIu9Qb7GQIm9QxUx48xb7+W81spWYYnwG7BlUzVoZvlp/0uJ80TU2M2PU7h45k4OuVTLxz0toPaCXQ==
   dependencies:
     ethers "^5.4.7"
 
@@ -9085,10 +9085,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.5.4:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
-  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+typescript@^4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.3.tgz#eefeafa6afdd31d725584c67a0eaba80f6fc6c6c"
+  integrity sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==
 
 typewise-core@^1.2, typewise-core@^1.2.0:
   version "1.2.0"

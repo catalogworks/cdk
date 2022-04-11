@@ -24,7 +24,6 @@ export class Catalog {
   public chainId: number;
   public contractAddress: string;
   public signerOrProvider: Signer | Provider;
-  // public cnft: CNFT
   public contract: CatalogType;
   public readOnly: boolean;
 
