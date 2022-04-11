@@ -2,6 +2,7 @@
 // Utility File to store deployed addresses relative to SDK
 
 import rinkebyAddresses from '@catalogworks/catalog-contracts/dist/addresses/4.json';
+import mainnetAddresses from '@catalogworks/catalog-contracts/dist/addresses/1.json';
 
 import ZoraRinkebyAddresses from '@zoralabs/v3/dist/addresses/4.json';
 import ZoraMainnetAddresses from '@zoralabs/v3/dist/addresses/1.json';
@@ -16,6 +17,7 @@ export interface AddressBook {
 // Mapping of network names to addresses
 export const addresses: AddressBook = {
   rinkeby: rinkebyAddresses,
+  mainnet: mainnetAddresses,
 };
 
 export const zoraAddresses: AddressBook = {
