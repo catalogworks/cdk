@@ -6,7 +6,7 @@ import {
   parseMetadata,
   validateMetadata,
 } from '../src/metadata';
-import {Catalog20210202, Mnft20220222} from '../src';
+import {Catalog20210202, Mnft20220222, Catalog20220222} from '../src';
 
 describe('Metadata tests', () => {
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -20,7 +20,7 @@ describe('Metadata tests', () => {
     );
   }
   // eslint-disable-next-line @typescript-eslint/ban-types
-  function isMnftSchema(json: Object): json is Mnft20220222 {
+  function isMnftSchema(json: Object): json is Catalog20220222 {
     return (
       'name' in json &&
       'mimeType' in json &&
@@ -70,10 +70,10 @@ describe('Metadata tests', () => {
       expect(result).toMatchObject(json);
     });
 
-    it('parses the new mnft metadata format', () => {
+    it('parses the new catalog metadata format', () => {
       const inputJson = {
         artist: 'COMPUTER DATA',
-        version: 'mnft-20220222',
+        version: 'catalog-20220222',
         title: 'pp100',
         duration: 363.696,
         mimeType: 'audio/wav',
@@ -87,7 +87,10 @@ describe('Metadata tests', () => {
           'https://ipfs.io/ipfs/QmUY3er2YV372dbv9PTdLGGjudHWrSJefBu54FEXELMjfh',
       };
 
-      const result = parseMetadata('mnft-20220222', JSON.stringify(inputJson));
+      const result = parseMetadata(
+        'catalog-20220222',
+        JSON.stringify(inputJson)
+      );
       console.log('RESULTY', result);
       expect(isMnftSchema(result)).toBe(true);
       expect(result).toMatchObject(inputJson);
@@ -134,7 +137,7 @@ describe('Metadata tests', () => {
     it('validates the mnft metadata schema', () => {
       const inputJson = {
         artist: 'COMPUTER DATA',
-        version: 'mnft-20220222',
+        version: 'catalog-20220222',
         title: 'pp100',
         duration: 363.696,
         mimeType: 'audio/wav',
@@ -146,7 +149,7 @@ describe('Metadata tests', () => {
         animation_url:
           'https://ipfs.io/ipfs/QmUY3er2YV372dbv9PTdLGGjudHWrSJefBu54FEXELMjfh',
       };
-      const validateResult = validateMetadata('mnft-20220222', inputJson);
+      const validateResult = validateMetadata('catalog-20220222', inputJson);
       expect(validateResult).toBe(true);
     });
   });
