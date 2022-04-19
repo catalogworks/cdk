@@ -10,7 +10,7 @@ import {Generator} from './generator';
 import {Parser} from './parser';
 import {Validator} from './validator';
 
-import {Mnft20220222 as MetadataTypes} from './types';
+import {Catalog20220222 as MetadataTypes} from './types';
 
 // Type  & function exports to contain to Metadata
 export {validateVersion, supportedVersions, supportedVersionsTypeMapping};

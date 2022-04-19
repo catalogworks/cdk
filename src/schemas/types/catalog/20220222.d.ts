@@ -8,11 +8,11 @@
 /**
  * This schema defined version 20220222 of the Catalog Metadata Schema
  */
-export interface Mnft20220222 {
+export interface Catalog20220222 {
   /**
    * Calendar version of the schema so that consumers can correctly parse the json
    */
-  version: "mnft-20220222";
+  version: "catalog-20220222";
   /**
    * The title of the track
    */
