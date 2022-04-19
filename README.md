@@ -45,7 +45,7 @@ The CDK has these primary exports plus some types:
 [Package](https://github.com/catalogworks/cdk/packages/1173720)
 
 ```bash
-yarn add @catalogworks/cdk@0.2.5
+yarn add @catalogworks/cdk@0.2.6
 ```
 
 ---
