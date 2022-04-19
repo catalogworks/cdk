@@ -14,7 +14,7 @@ export const supportedVersionsTypeMapping: {
   catalog: {
     '20210202': 'Catalog20210202',
     '20220000': 'Catalog20220000',
-    '20220222': 'Mnft20220222',
+    '20220222': 'Catalog20220222',
   },
   mnft: {
     '20220222': 'Mnft20220222',
