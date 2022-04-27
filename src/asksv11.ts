@@ -3,7 +3,7 @@
 import {BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from 'ethers';
+import {Signer, utils} from 'ethers';
 import {
   AsksV11 as AsksV11Type,
   AsksV11__factory,
@@ -162,7 +162,8 @@ export class AsksV11 {
     tokenId: BigNumberish,
     fillCurrency: string,
     fillAmount: BigNumberish,
-    finder: string
+    finder: string,
+    amount?: string
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
@@ -173,13 +174,26 @@ export class AsksV11 {
       return Promise.reject(err);
     }
 
-    return this.contract.fillAsk(
-      tokenContractAddress,
-      tokenId,
-      fillCurrency,
-      fillAmount,
-      finder
-    );
+    if (amount) {
+      return this.contract.fillAsk(
+        tokenContractAddress,
+        tokenId,
+        fillCurrency,
+        fillAmount,
+        finder,
+        {
+          value: utils.parseEther(amount),
+        }
+      );
+    } else {
+      return this.contract.fillAsk(
+        tokenContractAddress,
+        tokenId,
+        fillCurrency,
+        fillAmount,
+        finder
+      );
+    }
   }
 
   // Private methods
