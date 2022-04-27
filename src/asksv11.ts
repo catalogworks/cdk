@@ -156,6 +156,7 @@ export class AsksV11 {
   // @param {string} fillCurrency - Fill currency contract address
   // @param {BigNumberish} fillAmount - Fill amount
   // @param {string} finder - Address of the finder
+  // @param {string} amount - optional amount in ETH (payable)
   // @returns {Promise<ContractTransaction>} - Transaction object
   public async fillAsk(
     tokenContractAddress: string,

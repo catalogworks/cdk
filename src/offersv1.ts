@@ -4,7 +4,7 @@
 import {BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from 'ethers';
+import {Signer, utils} from 'ethers';
 
 import {
   OffersV1 as OffersV1Type,
@@ -85,13 +85,15 @@ export class OffersV1 {
   // @param {string} offerCurrency - Address of the ERC20/ETH contract
   // @param {BigNumberish} offerAmount - Amount of the offer
   // @param {BigNumberish} findersFeeBPS - Finders fee in BPS
+  // @param {string} amount - optional payable amount in ETH
   // @returns {Promise<ContractTransaction>} - Contract transaction object
   public async createOffer(
     tokenContractAddress: string,
     tokenId: BigNumberish,
     offerCurrency: string,
     offerAmount: BigNumberish,
-    findersFeeBPS: BigNumberish
+    findersFeeBPS: BigNumberish,
+    amount?: string
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
@@ -101,13 +103,26 @@ export class OffersV1 {
       return Promise.reject(err);
     }
 
-    return this.contract.createOffer(
-      tokenContractAddress,
-      tokenId,
-      offerCurrency,
-      offerAmount,
-      findersFeeBPS
-    );
+    if (amount) {
+      return this.contract.createOffer(
+        tokenContractAddress,
+        tokenId,
+        offerCurrency,
+        offerAmount,
+        findersFeeBPS,
+        {
+          value: utils.parseEther(amount),
+        }
+      );
+    } else {
+      return this.contract.createOffer(
+        tokenContractAddress,
+        tokenId,
+        offerCurrency,
+        offerAmount,
+        findersFeeBPS
+      );
+    }
   }
 
   // setOfferAmount
@@ -116,13 +131,15 @@ export class OffersV1 {
   // @param {BigNumberish} offerId - Offer ID
   // @param {string} offerCurrency - Address of the ERC20/ETH contract
   // @param {BigNumberish} offerAmount - Amount of the offer
+  // @param {string} amount - optional payable amount in ETH
   // @returns {Promise<ContractTransaction>} - Contract transaction object
   public async setOfferAmount(
     tokenContractAddress: string,
     tokenId: BigNumberish,
     offerId: BigNumberish,
     offerCurrency: string,
-    offerAmount: BigNumberish
+    offerAmount: BigNumberish,
+    amount?: string
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
@@ -132,13 +149,26 @@ export class OffersV1 {
       return Promise.reject(err);
     }
 
-    return this.contract.setOfferAmount(
-      tokenContractAddress,
-      tokenId,
-      offerId,
-      offerCurrency,
-      offerAmount
-    );
+    if (amount) {
+      return this.contract.setOfferAmount(
+        tokenContractAddress,
+        tokenId,
+        offerId,
+        offerCurrency,
+        offerAmount,
+        {
+          value: utils.parseEther(amount),
+        }
+      );
+    } else {
+      return this.contract.setOfferAmount(
+        tokenContractAddress,
+        tokenId,
+        offerId,
+        offerCurrency,
+        offerAmount
+      );
+    }
   }
 
   // cancelOffer
