@@ -145,6 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[0.2.7]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.7
 [0.2.6]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.6
 [0.2.5]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.5
 [0.2.4]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.4
