@@ -4,7 +4,12 @@ on: [push, pull_request]
 
 jobs:
   test:
+    name: Test (${{ matrix.shard }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['1/2', '2/2']
 
     steps:
       - uses: actions/checkout@v3
@@ -39,6 +44,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - name: Get number of CPU cores
+        id: cpu-cores
+        uses: SimenB/github-actions-cpu-cores@v1
+
       - name: Installing dependencies
         run: yarn install --frozen-lockfile
 
@@ -53,4 +62,4 @@ jobs:
       #     name: wait for chain and override shell
 
       - name: Running tests
-        run: yarn test
+        run: yarn test --shard ${{ matrix.shard }}  --max-workers ${{ steps.cpu-cores.outputs.count }}
