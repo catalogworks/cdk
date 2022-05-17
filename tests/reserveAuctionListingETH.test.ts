@@ -260,7 +260,7 @@ describe('Zora V3 ReserveAuctionListingETH', () => {
             reserveAuctionConfig.reserveAuctionListingETH
           );
           await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -390,7 +390,7 @@ describe('Zora V3 ReserveAuctionListingETH', () => {
             reserveAuctionConfig.reserveAuctionListingETH
           );
           await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -537,7 +537,7 @@ describe('Zora V3 ReserveAuctionListingETH', () => {
             );
           await approveModuleManagerTx.wait();
 
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -668,7 +668,7 @@ describe('Zora V3 ReserveAuctionListingETH', () => {
             reserveAuctionConfig.reserveAuctionListingETH
           );
           await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -799,7 +799,7 @@ describe('Zora V3 ReserveAuctionListingETH', () => {
               true
             );
           await approveModuleManagerTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -822,8 +822,8 @@ describe('Zora V3 ReserveAuctionListingETH', () => {
           await bidTx.wait();
           expect(bidTx.hash).toBeDefined();
 
-          blockchain.increaseTimeAsync(40);
-          blockchain.waitBlocksAsync(4);
+          // blockchain.increaseTimeAsync(40);
+          // blockchain.waitBlocksAsync(4);
 
           const settleTx = await reserveAuction.settleAuction(
             defaultAuctionData.tokenContractAddress,

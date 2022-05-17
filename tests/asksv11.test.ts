@@ -199,7 +199,7 @@ describe('Zora V3 Asks', () => {
             }
           );
 
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await asks.createAsk(
             asksConfig.erc721,
@@ -307,7 +307,7 @@ describe('Zora V3 Asks', () => {
             await moduleManager.setApprovalForModule(asksConfig.asksV11, true);
           await approveModuleManagerTx.wait();
 
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await asks.createAsk(
             asksConfig.erc721,
@@ -413,7 +413,7 @@ describe('Zora V3 Asks', () => {
             await moduleManager.setApprovalForModule(asksConfig.asksV11, true);
           await approveModuleManagerTx.wait();
 
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await asks.createAsk(
             asksConfig.erc721,
@@ -579,7 +579,7 @@ describe('Zora V3 Asks', () => {
             await moduleManager.setApprovalForModule(asksConfig.asksV11, true);
           await approveModuleManagerTx.wait();
 
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await asks.createAsk(
             asksConfig.erc721,
@@ -595,7 +595,7 @@ describe('Zora V3 Asks', () => {
           const getAsk = await asks.fetchAskForNFT(asksConfig.erc721, 3);
 
           const askPrice = getAsk.askPrice;
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
           console.log('ask price', askPrice.toString());
 
           expect(askPrice.toString()).toBe('1');
