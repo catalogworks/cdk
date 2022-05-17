@@ -14,7 +14,7 @@
     "lint:fix": "eslint --fix \"**/*.{js,ts}\"",
     "format": "prettier --check \"**/*.{ts,js}\"",
     "format:fix": "prettier --write \"**/*.{ts,js}\"",
-    "test": "jest",
+    "test": "jest --runInBand",
     "clean": "rm -rf dist",
     "build": "yarn clean && tsc && mkdir dist/src/schemas/types/ && mkdir dist/src/schemas/types/mnft/ && cp src/schemas/types/mnft/20220222.d.ts dist/src/schemas/types/mnft/",
     "prepublish": "yarn build",

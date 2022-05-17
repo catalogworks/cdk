@@ -799,7 +799,6 @@ describe('Zora V3 ReserveAuctionListingETH', () => {
               true
             );
           await approveModuleManagerTx.wait();
-          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,

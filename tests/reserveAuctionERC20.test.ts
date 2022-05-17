@@ -253,7 +253,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             reserveAuctionConfig.reserveAuctionERC20
           );
           await registerModuleTx.wait();
-          // blockchain.waitBlocksAsync(4);
+          blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -377,7 +377,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             reserveAuctionConfig.reserveAuctionERC20
           );
           await registerModuleTx.wait();
-          // blockchain.waitBlocksAsync(4);
+          blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -536,7 +536,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           );
           await wethApproval.wait();
 
-          // blockchain.waitBlocksAsync(4);
+          blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -553,7 +553,8 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           const bidTx = await reserveAuction.createBid(
             defaultBidData.tokenContractAddress,
             defaultBidData.tokenId,
-            defaultBidData.amount
+            defaultBidData.amount,
+            '0'
           );
           await bidTx.wait();
           expect(bidTx.hash).toBeDefined();
@@ -664,7 +665,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             reserveAuctionConfig.reserveAuctionERC20
           );
           await registerModuleTx.wait();
-          // blockchain.waitBlocksAsync(4);
+          blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -816,7 +817,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           );
           await wethApproval.wait();
 
-          // blockchain.waitBlocksAsync(4);
+          blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
