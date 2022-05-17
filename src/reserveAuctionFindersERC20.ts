@@ -4,7 +4,7 @@
 import {BigNumberish} from '@ethersproject/bignumber';
 import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
-import {Signer} from 'ethers';
+import {Signer, utils} from 'ethers';
 
 import {
   ReserveAuctionFindersErc20 as ReserveAuctionFindersErc20Type,
@@ -141,12 +141,15 @@ export class ReserveAuctionFindersERC20 {
   // @param {string} tokenContractAddress - Address of the token contract
   // @param {BigNumberish} tokenId - Token ID
   // @param {BigNumberish} amount - Amount of bid
+  // @param {string} finderAddress - Address of finder
+  // @param {string} payableAmount - Amount of bid (payable, ether)
   // @returns {Promise<ContractTransaction>}
   public async createBid(
     tokenContractAddress: string,
     tokenId: BigNumberish,
     amount: BigNumberish,
-    finderAddress: string
+    finderAddress: string,
+    payableAmount?: string
   ): Promise<ContractTransaction> {
     try {
       this.ensureNotReadOnly();
@@ -156,12 +159,24 @@ export class ReserveAuctionFindersERC20 {
       return Promise.reject(err);
     }
 
-    return this.contract.createBid(
-      tokenContractAddress,
-      tokenId,
-      amount,
-      finderAddress
-    );
+    if (payableAmount) {
+      return this.contract.createBid(
+        tokenContractAddress,
+        tokenId,
+        amount,
+        finderAddress,
+        {
+          value: utils.parseEther(payableAmount),
+        }
+      );
+    } else {
+      return this.contract.createBid(
+        tokenContractAddress,
+        tokenId,
+        amount,
+        finderAddress
+      );
+    }
   }
 
   // setAuctionReservePrice

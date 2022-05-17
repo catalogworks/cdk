@@ -21,6 +21,7 @@ import {
 
 import {waffleJest} from '@ethereum-waffle/jest';
 import {BigNumber, BigNumberish, Contract} from 'ethers';
+import {hexlify} from '@ethersproject/bytes';
 
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
@@ -837,8 +838,8 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           await bidTx.wait();
           expect(bidTx.hash).toBeDefined();
 
-          // blockchain.increaseTimeAsync(40);
-          // blockchain.waitBlocksAsync(4);
+          blockchain.increaseTimeAsync(hexlify(40));
+          blockchain.waitBlocksAsync(4);
 
           const settleTx = await reserveAuction.settleAuction(
             defaultAuctionData.tokenContractAddress,

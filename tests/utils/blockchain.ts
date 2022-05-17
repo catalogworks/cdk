@@ -24,13 +24,13 @@ export class Blockchain {
     await this.sendJSONRpcRequestAsync('evm_revert', ['0x1']);
   }
 
-  public async increaseTimeAsync(duration: number): Promise<any> {
+  public async increaseTimeAsync(duration: any): Promise<any> {
     await this.sendJSONRpcRequestAsync('evm_increaseTime', [duration]);
   }
 
   public async waitBlocksAsync(count: number) {
     for (let i = 0; i < count; i++) {
-      await this.sendJSONRpcRequestAsync('evm_mine', []);
+      await this.sendJSONRpcRequestAsync('evm_mine', [1]);
     }
   }
 
