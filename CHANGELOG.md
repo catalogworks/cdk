@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.9] - 2022-05-18
+
+- added optional `payableAmount` to v3 auction `createBid` functions marked payable.
+
 ## [0.2.8] - 2022-04-26
 
 - hotfix: added payable `amount` to offers module related functions
@@ -153,6 +157,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[0.2.9]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.9
 [0.2.8]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.8
 [0.2.7]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.7
 [0.2.6]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.6
