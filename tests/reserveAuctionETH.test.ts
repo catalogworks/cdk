@@ -118,6 +118,64 @@ describe('Zora V3 ReserveAuctionETH', () => {
         };
       });
 
+      const setupTestActions = async (): Promise<{
+        reserveAuction: ReserveAuctionETH;
+        erc721: Contract;
+        moduleManager: ZoraModuleManager;
+      }> => {
+        try {
+          const reserveAuction = new ReserveAuctionETH(
+            mainWallet,
+            50,
+            reserveAuctionConfig.reserveAuctionETH
+          );
+          expect(reserveAuction.readOnly).toBe(false);
+
+          // Setup ERC721 and mint
+          const erc721 = new Contract(
+            reserveAuctionConfig.erc721,
+            reserveAuctionConfig.erc721Test.interface,
+            mainWallet
+          );
+          const nftTx = await erc721.mint(mainWallet.address, 1);
+          await nftTx.wait();
+
+          // Approve Transfer Helper
+          const approveTransferTx = await erc721.setApprovalForAll(
+            reserveAuctionConfig.erc721TransferHelper,
+            true
+          );
+          await approveTransferTx.wait();
+          expect(approveTransferTx.hash).toBeDefined();
+
+          const moduleManager = new ZoraModuleManager(
+            mainWallet,
+            50,
+            reserveAuctionConfig.moduleManagerTest.address
+          );
+          const registerModuleTx = await moduleManager.registerModule(
+            reserveAuctionConfig.reserveAuctionETH
+          );
+          await registerModuleTx.wait();
+
+          const approveModuleManagerTx =
+            await moduleManager.setApprovalForModule(
+              reserveAuctionConfig.reserveAuctionETH,
+              true
+            );
+          await approveModuleManagerTx.wait();
+
+          return {
+            reserveAuction,
+            erc721,
+            moduleManager,
+          };
+        } catch (error) {
+          console.log(error);
+          throw error;
+        }
+      };
+
       describe('createAuction', () => {
         // 01
         it('throws an error on a read only instance', async () => {
@@ -192,40 +250,9 @@ describe('Zora V3 ReserveAuctionETH', () => {
 
         // 04
         it('creates an auction', async () => {
-          const reserveAuction = new ReserveAuctionETH(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          expect(reserveAuction.readOnly).toBe(false);
+          const {reserveAuction, erc721} = await setupTestActions();
 
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -314,40 +341,7 @@ describe('Zora V3 ReserveAuctionETH', () => {
 
         // 04
         it('cancels an auction', async () => {
-          const reserveAuction = new ReserveAuctionETH(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActions();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -445,48 +439,7 @@ describe('Zora V3 ReserveAuctionETH', () => {
 
         // 03
         it('creates a bid', async () => {
-          const reserveAuction = new ReserveAuctionETH(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          await registerModuleTx.wait();
-
-          const approveModuleManagerTx =
-            await moduleManager.setApprovalForModule(
-              reserveAuctionConfig.reserveAuctionETH,
-              true
-            );
-          await approveModuleManagerTx.wait();
-
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActions();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -579,40 +532,7 @@ describe('Zora V3 ReserveAuctionETH', () => {
         // 03
 
         it('sets the auction reservePrice', async () => {
-          const reserveAuction = new ReserveAuctionETH(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActions();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -702,46 +622,7 @@ describe('Zora V3 ReserveAuctionETH', () => {
 
         // 03
         it('settles an auction', async () => {
-          const reserveAuction = new ReserveAuctionETH(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionETH
-          );
-          await registerModuleTx.wait();
-          const approveModuleManagerTx =
-            await moduleManager.setApprovalForModule(
-              reserveAuctionConfig.reserveAuctionETH,
-              true
-            );
-          await approveModuleManagerTx.wait();
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActions();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,

@@ -121,6 +121,136 @@ describe('Zora V3 ReserveAuctionListingERC20', () => {
         };
       });
 
+      const setupTestActions = async (): Promise<{
+        reserveAuction: ReserveAuctionListingERC20;
+        erc721: Contract;
+        moduleManager: ZoraModuleManager;
+      }> => {
+        try {
+          const reserveAuction = new ReserveAuctionListingERC20(
+            mainWallet,
+            50,
+            reserveAuctionConfig.reserveAuctionListingERC20
+          );
+          expect(reserveAuction.readOnly).toBe(false);
+
+          // Setup ERC721 and mint
+          const erc721 = new Contract(
+            reserveAuctionConfig.erc721,
+            reserveAuctionConfig.erc721Test.interface,
+            mainWallet
+          );
+          const nftTx = await erc721.mint(mainWallet.address, 1);
+          await nftTx.wait();
+
+          // Approve Transfer Helper
+          const approveTransferTx = await erc721.setApprovalForAll(
+            reserveAuctionConfig.erc721TransferHelper,
+            true
+          );
+          await approveTransferTx.wait();
+          expect(approveTransferTx.hash).toBeDefined();
+
+          const moduleManager = new ZoraModuleManager(
+            mainWallet,
+            50,
+            reserveAuctionConfig.moduleManagerTest.address
+          );
+          const registerModuleTx = await moduleManager.registerModule(
+            reserveAuctionConfig.reserveAuctionListingERC20
+          );
+          await registerModuleTx.wait();
+
+          return {
+            reserveAuction,
+            erc721,
+            moduleManager,
+          };
+        } catch (err) {
+          console.log(err);
+          throw err;
+        }
+      };
+
+      const setupTestActionsBid = async (): Promise<{
+        reserveAuction: ReserveAuctionListingERC20;
+        erc721: Contract;
+        moduleManager: ZoraModuleManager;
+        wethContract: Contract;
+      }> => {
+        try {
+          // Wrap some eth first
+          const wethTx = await wrapETH(
+            mainWallet,
+            reserveAuctionConfig.weth,
+            BigNumber.from(50)
+          );
+          await wethTx.wait();
+          const reserveAuction = new ReserveAuctionListingERC20(
+            mainWallet,
+            50,
+            reserveAuctionConfig.reserveAuctionListingERC20
+          );
+          expect(reserveAuction.readOnly).toBe(false);
+
+          // Setup ERC721 and mint
+          const erc721 = new Contract(
+            reserveAuctionConfig.erc721,
+            reserveAuctionConfig.erc721Test.interface,
+            mainWallet
+          );
+          const nftTx = await erc721.mint(mainWallet.address, 1);
+          await nftTx.wait();
+
+          // Approve Transfer Helper
+          const approveTransferTx = await erc721.setApprovalForAll(
+            reserveAuctionConfig.erc721TransferHelper,
+            true
+          );
+          await approveTransferTx.wait();
+          expect(approveTransferTx.hash).toBeDefined();
+
+          const moduleManager = new ZoraModuleManager(
+            mainWallet,
+            50,
+            reserveAuctionConfig.moduleManagerTest.address
+          );
+          const registerModuleTx = await moduleManager.registerModule(
+            reserveAuctionConfig.reserveAuctionListingERC20
+          );
+          await registerModuleTx.wait();
+
+          const approveModuleManagerTx =
+            await moduleManager.setApprovalForModule(
+              reserveAuctionConfig.reserveAuctionListingERC20,
+              true
+            );
+          await approveModuleManagerTx.wait();
+
+          // Approve ERC20 Transfer Helper
+          const wethContract = new Contract(
+            reserveAuctionConfig.weth,
+            reserveAuctionConfig.wethTest.interface,
+            mainWallet
+          );
+          const wethApproval = await wethContract.approve(
+            reserveAuctionConfig.erc20TransferHelper,
+            5000000
+          );
+          await wethApproval.wait();
+
+          return {
+            reserveAuction,
+            erc721,
+            moduleManager,
+            wethContract,
+          };
+        } catch (err) {
+          console.log(err);
+          throw err;
+        }
+      };
+
       describe('createAuction', () => {
         // 01
         it('throws an error on a read only instance', async () => {
@@ -255,40 +385,7 @@ describe('Zora V3 ReserveAuctionListingERC20', () => {
 
         // 06
         it('creates an auction', async () => {
-          const reserveAuction = new ReserveAuctionListingERC20(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActions();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -387,40 +484,7 @@ describe('Zora V3 ReserveAuctionListingERC20', () => {
 
         // 04
         it('cancels an auction', async () => {
-          const reserveAuction = new ReserveAuctionListingERC20(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActions();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -525,68 +589,7 @@ describe('Zora V3 ReserveAuctionListingERC20', () => {
 
         // 03
         it('creates a bid', async () => {
-          // Wrap some eth first
-          const wethTx = await wrapETH(
-            mainWallet,
-            reserveAuctionConfig.weth,
-            BigNumber.from(50)
-          );
-          await wethTx.wait();
-          const reserveAuction = new ReserveAuctionListingERC20(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          await registerModuleTx.wait();
-
-          const approveModuleManagerTx =
-            await moduleManager.setApprovalForModule(
-              reserveAuctionConfig.reserveAuctionListingERC20,
-              true
-            );
-          await approveModuleManagerTx.wait();
-
-          // Approve ERC20 Transfer Helper
-          const wethContract = new Contract(
-            reserveAuctionConfig.weth,
-            reserveAuctionConfig.wethTest.interface,
-            mainWallet
-          );
-          const wethApproval = await wethContract.approve(
-            reserveAuctionConfig.erc20TransferHelper,
-            5000000
-          );
-          await wethApproval.wait();
-
-          blockchain.waitBlocksAsync(4);
-
+          const {reserveAuction, erc721} = await setupTestActionsBid();
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
             defaultAuctionData.tokenId,
@@ -685,40 +688,7 @@ describe('Zora V3 ReserveAuctionListingERC20', () => {
         // 03
 
         it('sets the auction reservePrice', async () => {
-          const reserveAuction = new ReserveAuctionListingERC20(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActions();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -815,67 +785,7 @@ describe('Zora V3 ReserveAuctionListingERC20', () => {
 
         // 03
         it('settles an auction', async () => {
-          // Wrap some eth first
-          const wethTx = await wrapETH(
-            mainWallet,
-            reserveAuctionConfig.weth,
-            BigNumber.from(50)
-          );
-          await wethTx.wait();
-
-          const reserveAuction = new ReserveAuctionListingERC20(
-            mainWallet,
-            50,
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          expect(reserveAuction.readOnly).toBe(false);
-
-          // Setup ERC721 and mint
-          const erc721 = new Contract(
-            reserveAuctionConfig.erc721,
-            reserveAuctionConfig.erc721Test.interface,
-            mainWallet
-          );
-          const nftTx = await erc721.mint(mainWallet.address, 1);
-          await nftTx.wait();
-
-          // Approve Transfer Helper
-          const approveTransferTx = await erc721.setApprovalForAll(
-            reserveAuctionConfig.erc721TransferHelper,
-            true
-          );
-          await approveTransferTx.wait();
-          expect(approveTransferTx.hash).toBeDefined();
-
-          const moduleManager = new ZoraModuleManager(
-            mainWallet,
-            50,
-            reserveAuctionConfig.moduleManagerTest.address
-          );
-          const registerModuleTx = await moduleManager.registerModule(
-            reserveAuctionConfig.reserveAuctionListingERC20
-          );
-          await registerModuleTx.wait();
-          const approveModuleManagerTx =
-            await moduleManager.setApprovalForModule(
-              reserveAuctionConfig.reserveAuctionListingERC20,
-              true
-            );
-          await approveModuleManagerTx.wait();
-
-          // Approve ERC20 Transfer Helper
-          const wethContract = new Contract(
-            reserveAuctionConfig.weth,
-            reserveAuctionConfig.wethTest.interface,
-            mainWallet
-          );
-          const wethApproval = await wethContract.approve(
-            reserveAuctionConfig.erc20TransferHelper,
-            5000000
-          );
-          await wethApproval.wait();
-
-          blockchain.waitBlocksAsync(4);
+          const {reserveAuction, erc721} = await setupTestActionsBid();
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
