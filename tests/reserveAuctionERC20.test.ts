@@ -21,7 +21,7 @@ import {
 
 import {waffleJest} from '@ethereum-waffle/jest';
 import {BigNumber, BigNumberish, Contract} from 'ethers';
-import {hexlify} from '@ethersproject/bytes';
+import {debug} from 'console';
 
 const provider = new JsonRpcProvider();
 const blockchain = new Blockchain(provider);
@@ -88,8 +88,11 @@ describe('Zora V3 ReserveAuctionERC20', () => {
     let reserveAuctionConfig: ZoraReserveAuctionConfiguredAddresses;
     const provider = new JsonRpcProvider();
     const [mainWallet, otherWallet] = generatedWallets(provider);
+    // blockchain.saveSnapshotAsync();
 
     beforeEach(async () => {
+      // resets blockchain to snapshot
+      // await blockchain.revertAsync();
       await blockchain.resetAsync();
       reserveAuctionConfig = await setupZoraAuctions(mainWallet);
     });
@@ -103,13 +106,20 @@ describe('Zora V3 ReserveAuctionERC20', () => {
       };
 
       beforeEach(async () => {
+        const getBlockInfo = await provider.send('eth_getBlockByNumber', [
+          'latest',
+          false,
+        ]);
+
+        const currentBlockTimestamp = Number(getBlockInfo.timestamp);
+
         defaultAuctionData = {
           tokenContractAddress: reserveAuctionConfig.erc721Test.address,
           tokenId: 1,
-          duration: 6000,
+          duration: 36,
           reservePrice: '1',
           sellerFundsRecipient: mainWallet.address,
-          startTime: 2,
+          startTime: currentBlockTimestamp,
           bidCurrency: reserveAuctionConfig.weth,
         };
 
@@ -253,7 +263,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             reserveAuctionConfig.reserveAuctionERC20
           );
           await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -377,7 +387,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             reserveAuctionConfig.reserveAuctionERC20
           );
           await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -536,7 +546,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           );
           await wethApproval.wait();
 
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -553,8 +563,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           const bidTx = await reserveAuction.createBid(
             defaultBidData.tokenContractAddress,
             defaultBidData.tokenId,
-            defaultBidData.amount,
-            '0'
+            defaultBidData.amount
           );
           await bidTx.wait();
           expect(bidTx.hash).toBeDefined();
@@ -583,6 +592,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
 
           // clear listeners
           reserveAuction.contract.removeAllListeners('AuctionBid');
+          // debug;
         });
       });
 
@@ -665,7 +675,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             reserveAuctionConfig.reserveAuctionERC20
           );
           await registerModuleTx.wait();
-          blockchain.waitBlocksAsync(4);
+          // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
@@ -759,7 +769,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
         it('settles an auction', async () => {
           // Wrap some eth first
           const wethTx = await wrapETH(
-            mainWallet,
+            otherWallet,
             reserveAuctionConfig.weth,
             BigNumber.from(50)
           );
@@ -770,7 +780,15 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             50,
             reserveAuctionConfig.reserveAuctionERC20
           );
+
+          const reserveAuctionOther = new ReserveAuctionERC20(
+            otherWallet,
+            50,
+            reserveAuctionConfig.reserveAuctionERC20
+          );
+
           expect(reserveAuction.readOnly).toBe(false);
+          expect(reserveAuctionOther.readOnly).toBe(false);
 
           // Setup ERC721 and mint
           const erc721 = new Contract(
@@ -794,6 +812,11 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             50,
             reserveAuctionConfig.moduleManagerTest.address
           );
+          const moduleManagerOther = new ZoraModuleManager(
+            otherWallet,
+            50,
+            reserveAuctionConfig.moduleManagerTest.address
+          );
           const registerModuleTx = await moduleManager.registerModule(
             reserveAuctionConfig.reserveAuctionERC20
           );
@@ -805,11 +828,18 @@ describe('Zora V3 ReserveAuctionERC20', () => {
             );
           await approveModuleManagerTx.wait();
 
+          const approveModuleManagerOtherTx =
+            await moduleManagerOther.setApprovalForModule(
+              reserveAuctionConfig.reserveAuctionERC20,
+              true
+            );
+          await approveModuleManagerOtherTx.wait();
+
           // Approve ERC20 Transfer Helper
           const wethContract = new Contract(
             reserveAuctionConfig.weth,
             reserveAuctionConfig.wethTest.interface,
-            mainWallet
+            otherWallet
           );
           const wethApproval = await wethContract.approve(
             reserveAuctionConfig.erc20TransferHelper,
@@ -817,12 +847,10 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           );
           await wethApproval.wait();
 
-          blockchain.waitBlocksAsync(4);
-
           const tx = await reserveAuction.createAuction(
             defaultAuctionData.tokenContractAddress,
             defaultAuctionData.tokenId,
-            1,
+            defaultAuctionData.duration,
             defaultAuctionData.reservePrice,
             defaultAuctionData.sellerFundsRecipient,
             defaultAuctionData.startTime,
@@ -831,7 +859,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           await tx.wait();
           expect(tx.hash).toBeDefined();
 
-          const bidTx = await reserveAuction.createBid(
+          const bidTx = await reserveAuctionOther.createBid(
             defaultBidData.tokenContractAddress,
             defaultBidData.tokenId,
             defaultBidData.amount
@@ -839,15 +867,58 @@ describe('Zora V3 ReserveAuctionERC20', () => {
           await bidTx.wait();
           expect(bidTx.hash).toBeDefined();
 
-          blockchain.increaseTimeAsync(hexlify(40));
-          blockchain.waitBlocksAsync(4);
+          const timestamp = Math.floor(Date.now() / 1000);
+          await blockchain.waitBlocksAsyncTime(timestamp + 6000000);
 
-          const settleTx = await reserveAuction.settleAuction(
-            defaultAuctionData.tokenContractAddress,
-            defaultAuctionData.tokenId
+          const auctiondata = await reserveAuction.fetchAuctionForNFT(
+            erc721.address,
+            1
           );
-          await settleTx.wait();
-          expect(settleTx.hash).toBeDefined();
+          console.log(auctiondata);
+
+          // blockchain.increaseTimeAsync(hexlify(40));
+          // blockchain.waitBlocksAsync(4);
+          reserveAuction.contract.on(
+            'AuctionBid',
+            (
+              tokenContractAddress: string,
+              tokenId: BigNumber,
+              firstBid: boolean,
+              extended: boolean,
+              auction: AuctionStructERC20
+            ) => {
+              expect(tokenContractAddress).toEqual(
+                defaultAuctionData.tokenContractAddress
+              );
+              expect(tokenId).toEqual(
+                BigNumber.from(defaultAuctionData.tokenId)
+              );
+              expect(firstBid).toEqual(true);
+              expect(extended).toEqual(false);
+              expect(auction.reservePrice).toEqual(
+                BigNumber.from(defaultAuctionData.reservePrice)
+              );
+              expect(auction.currency).toEqual(defaultAuctionData.bidCurrency);
+            }
+          );
+          // remove listeners
+          reserveAuction.contract.removeAllListeners('AuctionBid');
+
+          try {
+            const settleTx = await reserveAuction.settleAuction(
+              defaultAuctionData.tokenContractAddress,
+              defaultAuctionData.tokenId
+            );
+            await settleTx.wait();
+            expect(settleTx.hash).toBeDefined();
+          } catch (e) {
+            console.log(e);
+            const settleTx = await reserveAuctionOther.settleAuction(
+              defaultAuctionData.tokenContractAddress,
+              defaultAuctionData.tokenId
+            );
+            await settleTx.wait();
+          }
         });
       });
     });

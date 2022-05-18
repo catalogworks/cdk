@@ -102,13 +102,19 @@ describe('Zora V3 ReserveAuctionETH', () => {
       };
 
       beforeEach(async () => {
+        const getBlockInfo = await provider.send('eth_getBlockByNumber', [
+          'latest',
+          false,
+        ]);
+        const currentBlockTimestamp = Number(getBlockInfo.timestamp);
+
         defaultAuctionData = {
           tokenContractAddress: reserveAuctionConfig.erc721Test.address,
           tokenId: 1,
-          duration: 6000,
+          duration: 36,
           reservePrice: '1',
           sellerFundsRecipient: mainWallet.address,
-          startTime: 2,
+          startTime: currentBlockTimestamp,
         };
 
         defaultBidData = {
@@ -707,7 +713,13 @@ describe('Zora V3 ReserveAuctionETH', () => {
             50,
             reserveAuctionConfig.reserveAuctionETH
           );
+          const reserveAuctionOther = new ReserveAuctionETH(
+            otherWallet,
+            50,
+            reserveAuctionConfig.reserveAuctionETH
+          );
           expect(reserveAuction.readOnly).toBe(false);
+          expect(reserveAuctionOther.readOnly).toBe(false);
 
           // Setup ERC721 and mint
           const erc721 = new Contract(
@@ -731,6 +743,11 @@ describe('Zora V3 ReserveAuctionETH', () => {
             50,
             reserveAuctionConfig.moduleManagerTest.address
           );
+          const moduleManagerOther = new ZoraModuleManager(
+            otherWallet,
+            50,
+            reserveAuctionConfig.moduleManagerTest.address
+          );
           const registerModuleTx = await moduleManager.registerModule(
             reserveAuctionConfig.reserveAuctionETH
           );
@@ -741,6 +758,14 @@ describe('Zora V3 ReserveAuctionETH', () => {
               true
             );
           await approveModuleManagerTx.wait();
+
+          const approveModuleManagerOtherTx =
+            await moduleManagerOther.setApprovalForModule(
+              reserveAuctionConfig.reserveAuctionETH,
+              true
+            );
+          await approveModuleManagerOtherTx.wait();
+
           // blockchain.waitBlocksAsync(4);
 
           const tx = await reserveAuction.createAuction(
@@ -754,7 +779,7 @@ describe('Zora V3 ReserveAuctionETH', () => {
           await tx.wait();
           expect(tx.hash).toBeDefined();
 
-          const bidTx = await reserveAuction.createBid(
+          const bidTx = await reserveAuctionOther.createBid(
             defaultBidData.amount,
             defaultBidData.tokenContractAddress,
             defaultBidData.tokenId

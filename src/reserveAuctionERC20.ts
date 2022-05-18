@@ -201,7 +201,15 @@ export class ReserveAuctionERC20 {
       return Promise.reject(err);
     }
 
-    return this.contract.settleAuction(tokenContractAddress, tokenId);
+    const gasEstimate = await this.contract.estimateGas.settleAuction(
+      tokenContractAddress,
+      tokenId
+    );
+    const paddedEstimate = gasEstimate.mul(110).div(100);
+
+    return this.contract.settleAuction(tokenContractAddress, tokenId, {
+      gasLimit: paddedEstimate.toString(),
+    });
   }
 
   // Private methods

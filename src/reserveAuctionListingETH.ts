@@ -135,7 +135,7 @@ export class ReserveAuctionListingETH {
   // @param {string} tokenContractAddress - Address of the token contract
   // @param {BigNumberish} tokenId - Token ID
   // @returns {Promise<ContractTransaction>}
-  public createBid(
+  public async createBid(
     amount: string,
     tokenContractAddress: string,
     tokenId: BigNumberish
@@ -157,7 +157,7 @@ export class ReserveAuctionListingETH {
   // @param {BigNumberish} tokenId - Token ID
   // @param {BigNumberish} reservePrice - Auction reserve price
   // @returns {Promise<ContractTransaction>}
-  public setAuctionReservePrice(
+  public async setAuctionReservePrice(
     tokenContractAddress: string,
     tokenId: BigNumberish,
     reservePrice: BigNumberish
@@ -180,7 +180,7 @@ export class ReserveAuctionListingETH {
   // @param {string} tokenContractAddress - Address of the token contract
   // @param {BigNumberish} tokenId - Token ID
   // @returns {Promise<ContractTransaction>}
-  public settleAuction(
+  public async settleAuction(
     tokenContractAddress: string,
     tokenId: BigNumberish
   ): Promise<ContractTransaction> {
@@ -191,7 +191,15 @@ export class ReserveAuctionListingETH {
       return Promise.reject(err);
     }
 
-    return this.contract.settleAuction(tokenContractAddress, tokenId);
+    const gasEstimate = await this.contract.estimateGas.settleAuction(
+      tokenContractAddress,
+      tokenId
+    );
+    const paddedEstimate = gasEstimate.mul(110).div(100);
+
+    return this.contract.settleAuction(tokenContractAddress, tokenId, {
+      gasLimit: paddedEstimate.toString(),
+    });
   }
 
   // Private methods
