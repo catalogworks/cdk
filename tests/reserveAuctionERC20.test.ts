@@ -161,7 +161,7 @@ describe('Zora V3 ReserveAuctionERC20', () => {
 
           const approveModuleManagerTx =
             await moduleManager.setApprovalForModule(
-              reserveAuctionConfig.reserveAuctionFindersETH,
+              reserveAuctionConfig.reserveAuctionERC20,
               true
             );
           await approveModuleManagerTx.wait();
