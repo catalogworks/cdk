@@ -59,6 +59,9 @@ export function chainIdToNetwork(chainId: number): string {
     case 4: {
       return 'rinkeby';
     }
+    case 5: {
+      return 'goerli';
+    }
   }
 
   invariant(false, `chainId: ${chainId} is not currently supported`);

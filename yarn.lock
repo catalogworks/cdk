@@ -295,10 +295,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@catalogworks/catalog-contracts@0.1.5":
-  version "0.1.5"
-  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.1.5/877e86685e0531d442272e8a4554e480e28e7c0b56c0776d8441c8d72ee63e32#7ea49fe04a26824e2f5a9ac7131c07e1bc8ef3ab"
-  integrity sha512-Tf0Y4SZvSIu9Qb7GQIm9QxUx48xb7+W81spWYYnwG7BlUzVoZvlp/0uJ80TU2M2PU7h45k4OuVTLxz0toPaCXQ==
+"@catalogworks/catalog-contracts@0.1.6":
+  version "0.1.6"
+  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.1.6/32c476de936a3cbb0c6f178d4e93e1435bc2ba92#32c476de936a3cbb0c6f178d4e93e1435bc2ba92"
+  integrity sha512-btUK3VR44dYocdoUF5r2pssWztkVYgOj1TpEGanZLkiQMw+s1OXciuSlnkxhKyaiXZZawne8OmoLI5rVgk1BIA==
   dependencies:
     ethers "^5.4.7"
 
@@ -1386,10 +1386,10 @@
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@zoralabs/v3@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.8.tgz#cde67ebe882736b064c5e229ded95339eebc5925"
-  integrity sha512-w3hfVs/5rAxt6NkmHdILeejgCMrp8NcfRn0sA4BsP1eavRnS3ZjyP3KrZqzbGsK56LcNSBLFdA0MjtDBcFj5Zg==
+"@zoralabs/v3@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.9.tgz#e08bf633731d6d9a8f8fc393483b71e3154915c3"
+  integrity sha512-Lyu19jLfjp0X2MAsxMRPTW0WJCjWt8PI9gMM2ja+xSo2Jz2w6B/ec6LrwF7QOo5hs5apCwSh4AZhotNvr+rPXA==
   dependencies:
     "@manifoldxyz/royalty-registry-solidity" "^1.0.9"
     "@openzeppelin/contracts" "^4.5.0"
