@@ -3,9 +3,11 @@
 
 import rinkebyAddresses from '@catalogworks/catalog-contracts/dist/addresses/4.json';
 import mainnetAddresses from '@catalogworks/catalog-contracts/dist/addresses/1.json';
+import goerliAddresses from '@catalogworks/catalog-contracts/dist/addresses/5.json';
 
 import ZoraRinkebyAddresses from '@zoralabs/v3/dist/addresses/4.json';
 import ZoraMainnetAddresses from '@zoralabs/v3/dist/addresses/1.json';
+import ZoraGoerliAddresses from '@zoralabs/v3/dist/addresses/5.json';
 
 // AddressBook Interface for Catalog Contracts
 export interface AddressBook {
@@ -18,6 +20,7 @@ export interface AddressBook {
 export const addresses: AddressBook = {
   rinkeby: rinkebyAddresses,
   mainnet: mainnetAddresses,
+  goerli: goerliAddresses,
 };
 
 export const zoraAddresses: AddressBook = {
@@ -33,6 +36,11 @@ export const zoraAddresses: AddressBook = {
     reserveAuctionFindersErc20: ZoraRinkebyAddresses.ReserveAuctionFindersErc20,
     reserveAuctionListingEth: ZoraRinkebyAddresses.ReserveAuctionListingEth,
     reserveAuctionListingErc20: ZoraRinkebyAddresses.ReserveAuctionListingErc20,
+  },
+  goerli: {
+    moduleManager: ZoraGoerliAddresses.ZoraModuleManager,
+    erc20TransferHelper: ZoraGoerliAddresses.ERC20TransferHelper,
+    erc721TransferHelper: ZoraGoerliAddresses.ERC721TransferHelper,
   },
   mainnet: {
     moduleManager: ZoraMainnetAddresses.ZoraModuleManager,
