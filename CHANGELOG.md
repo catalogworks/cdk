@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.0] - 2022-08-10
 
 - added initial support for goerli test network. (zora modules not deployed)
+- bumped `zoralabs/v3` dependency, updated `AsksV1_1` imports.
 
 ## [0.2.9] - 2022-05-18
 
@@ -161,6 +162,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[0.3.0]: https://github.com/catalogworks/cdk/packages/1173720?version=0.3.0
 [0.2.9]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.9
 [0.2.8]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.8
 [0.2.7]: https://github.com/catalogworks/cdk/packages/1173720?version=0.2.7
