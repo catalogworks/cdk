@@ -1386,10 +1386,10 @@
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@zoralabs/v3@1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.9.tgz#e08bf633731d6d9a8f8fc393483b71e3154915c3"
-  integrity sha512-Lyu19jLfjp0X2MAsxMRPTW0WJCjWt8PI9gMM2ja+xSo2Jz2w6B/ec6LrwF7QOo5hs5apCwSh4AZhotNvr+rPXA==
+"@zoralabs/v3@1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@zoralabs/v3/-/v3-1.0.10.tgz#6b72db68dd50a5b03d0a6b1c16924ac67432db09"
+  integrity sha512-l6WibZXlACs4SWTrHf8LRnpkq9yomLdQWGlCAcDsXCFjf2YJr0PDK5p5oLxgTxeeFq3uWiLdc5HTE1WyXy7q2A==
   dependencies:
     "@manifoldxyz/royalty-registry-solidity" "^1.0.9"
     "@openzeppelin/contracts" "^4.5.0"
