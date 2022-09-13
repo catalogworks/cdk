@@ -213,8 +213,8 @@ export type AuctionStructERC20 = {
 };
 export type AuctionStructOutputERC20 = [
   string,
-  BigNumber,
   string,
+  BigNumber,
   BigNumber,
   string,
   number,
@@ -223,8 +223,8 @@ export type AuctionStructOutputERC20 = [
   BigNumber
 ] & {
   seller: string;
-  reservePrice: BigNumber;
   sellerFundsRecipient: string;
+  reservePrice: BigNumber;
   highestBid: BigNumber;
   highestBidder: string;
   duration: number;
