@@ -9,7 +9,7 @@ import {Signer, utils} from 'ethers';
 import {
   OffersV1 as OffersV1Type,
   OffersV1__factory,
-} from '@zoralabs/v3/dist/typechain';
+} from '@catalogworks/zorav3-with-types/dist/';
 import {zoraAddresses} from './addresses';
 import {chainIdToNetwork, validateAndParseAddress} from './utils';
 import type {OfferStructOutput} from './types';

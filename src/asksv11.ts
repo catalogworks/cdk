@@ -7,7 +7,7 @@ import {Signer, utils} from 'ethers';
 import {
   AsksV1_1 as AsksV11Type,
   AsksV1_1__factory,
-} from '@zoralabs/v3/dist/typechain';
+} from '@catalogworks/zorav3-with-types/dist/';
 import {zoraAddresses} from './addresses';
 import {chainIdToNetwork, validateAndParseAddress} from './utils';
 import type {AskStructOutput} from './types';

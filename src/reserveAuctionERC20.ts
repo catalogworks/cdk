@@ -9,7 +9,7 @@ import {Signer, utils} from 'ethers';
 import {
   ReserveAuctionCoreErc20 as ReserveAuctionCoreErc20Type,
   ReserveAuctionCoreErc20__factory,
-} from '@zoralabs/v3/dist/typechain';
+} from '@catalogworks/zorav3-with-types/dist/';
 
 import {zoraAddresses} from './addresses';
 import {chainIdToNetwork, validateAndParseAddress} from './utils';
