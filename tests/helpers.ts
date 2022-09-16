@@ -5,7 +5,7 @@ import {Catalog__factory} from '@catalogworks/catalog-contracts/dist/types/typec
 import {Wallet} from '@ethersproject/wallet';
 import {
   ZoraModuleManager__factory,
-  AsksV11__factory,
+  AsksV1_1__factory as AsksV11__factory,
   ERC20TransferHelper__factory,
   ERC721TransferHelper__factory,
   ZoraProtocolFeeSettings__factory,
@@ -16,7 +16,8 @@ import {
   ReserveAuctionFindersErc20__factory,
   ReserveAuctionListingEth__factory,
   ReserveAuctionListingErc20__factory,
-} from '@zoralabs/v3/dist/typechain';
+} from '@catalogworks/zorav3-with-types/dist';
+
 import {Contract} from 'ethers';
 
 // smh - manually copied helper types/contracts from previous version of '@zoralabs/v3'

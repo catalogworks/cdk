@@ -8,7 +8,7 @@ import {Signer, BytesLike} from 'ethers';
 import {
   ZoraModuleManager as ZoraModuleManagerType,
   ZoraModuleManager__factory,
-} from '@zoralabs/v3/dist/typechain';
+} from '@catalogworks/zorav3-with-types/dist/';
 import {zoraAddresses} from './addresses';
 import {
   chainIdToNetwork,

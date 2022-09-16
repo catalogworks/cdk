@@ -5,9 +5,9 @@ import {ContractTransaction} from '@ethersproject/contracts';
 import {Provider} from '@ethersproject/providers';
 import {Signer, utils} from 'ethers';
 import {
-  AsksV11 as AsksV11Type,
-  AsksV11__factory,
-} from '@zoralabs/v3/dist/typechain';
+  AsksV1_1 as AsksV11Type,
+  AsksV1_1__factory,
+} from '@catalogworks/zorav3-with-types/dist/';
 import {zoraAddresses} from './addresses';
 import {chainIdToNetwork, validateAndParseAddress} from './utils';
 import type {AskStructOutput} from './types';
@@ -41,7 +41,7 @@ export class AsksV11 {
       this.contractAddress = zoraAddresses[network].asks;
     }
 
-    this.contract = AsksV11__factory.connect(
+    this.contract = AsksV1_1__factory.connect(
       this.contractAddress,
       this.signerOrProvider
     );
