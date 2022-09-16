@@ -5,6 +5,5 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  // transformIgnorepatterns: ['/node_modules/'],
   runner: '@codejedi365/jest-serial-runner'
 };

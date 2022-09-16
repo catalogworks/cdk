@@ -37,7 +37,6 @@ export const zoraAddresses: AddressBook = {
     reserveAuctionListingEth: ZoraRinkebyAddresses.ReserveAuctionListingEth,
     reserveAuctionListingErc20: ZoraRinkebyAddresses.ReserveAuctionListingErc20,
   },
-  /// NOTE: I am hardcoding these due to inconsitent package support from Zora
   goerli: {
     moduleManager: ZoraGoerliAddresses.ZoraModuleManager,
     erc20TransferHelper: ZoraGoerliAddresses.ERC20TransferHelper,
