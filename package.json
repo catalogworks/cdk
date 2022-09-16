@@ -1,6 +1,6 @@
 {
   "name": "@catalogworks/cdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "SDK for using the Catalog protocol",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
