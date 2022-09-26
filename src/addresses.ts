@@ -49,6 +49,11 @@ export const zoraAddresses: AddressBook = {
     reserveAuctionFindersErc20: ZoraGoerliAddresses.ReserveAuctionFindersErc20,
     reserveAuctionListingEth: ZoraGoerliAddresses.ReserveAuctionListingEth,
     reserveAuctionListingErc20: ZoraGoerliAddresses.ReserveAuctionListingErc20,
+    // V1 Contracts (Deprecated)
+    v1Market: '0xf21ec35b3143611eFF8318D686DE0d5Efd14b7A5',
+    v1Media: '0x3F012C2e7c35fE523c8B70d6268dB72d3B4D77EC',
+    auctionHouse: '0x5089Ce87993c4D8EE48745800570C1e4bc6889Ed',
+    weth: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
   },
   mainnet: {
     moduleManager: ZoraMainnetAddresses.ZoraModuleManager,
