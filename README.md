@@ -11,16 +11,14 @@
 
 ```
 
-WIP Repo
-
 ---
 
 ## Info
 
-The Catalog Development Kit (**CDK**) is a small set of tools to easily and safely interact with Catalog contracts and protocols.
+The Catalog Development Kit (**CDK**) is a small set of tools to easily and safely interact with Catalog contracts and related Zora market contracts.
 The CDK is written in TS and can be used in any JS environment.
 
-This repository is based on the [Zora ZDK](https://github.com/ourzora/zdk).
+This repository is based on the [Zora ZDK (original version)](https://github.com/ourzora/zdk).
 
 The CDK has these primary exports plus some types:
 
@@ -45,17 +43,8 @@ The CDK has these primary exports plus some types:
 [Package](https://github.com/catalogworks/cdk/packages/1173720)
 
 ```bash
-yarn add @catalogworks/cdk@0.3.2
+yarn add @catalogworks/cdk
 ```
-
----
-
-### Examples
-
-Example usage of the CDK in a NodeJS environment can be found in the [examples](./examples) directory.
-
-- [tree+proofs+root](./examples/scripts/treeproofdb.ts)
-- [gnosissafe](./examples/scripts/connectsafe.ts)
 
 ---
 
@@ -68,12 +57,6 @@ git clone https://github.com/catalogworks/cdk.git
 ```bash
 cd cdk
 ```
-
-_Note: you may need to do the following before being able to install packages_
-
-- In GitHub, go to settings > developer settings > personal access tokens
-- Generate new access token with permission `read:packages`
-- Add the following line to bottom of .npmrc `//npm.pkg.github.com/:_authToken=<Your Access Token>`
 
 ```bash
 yarn
@@ -126,6 +109,8 @@ Reports are located in the `./coverage` directory.
 
 View: [LICENSE](./LICENSE)
 
+Zora related code is licensed under [MIT](https://github.com/ourzora/zdk/blob/v1-archive/LICENSE)
+
 ---
 
 ### Changelog
@@ -134,9 +119,16 @@ View: [LICENSE](./LICENSE)
 
 ---
 
+### Contributing
+
+This package is designed specifically for usage at Catalog, and development for this package is handled internally. Creating an issue is welcome for any security related contributions from developers outside of our organization.
+
+Please create a fork of this repository for your own personal needs.
+
 ### Dependencies
 
-- [@catalogworks/catalog-contracts@0.1.4](https://github.com/catalogworks/catalog-contracts/packages/1165811)
+- [@catalogworks/catalog-contracts](https://www.npmjs.com/package/@catalogworks/catalog-contracts)
+- [@catalogworks/zorav3-with-types](https://www.npmjs.com/package/@catalogworks/zorav3-with-types)
 - Ethers
 - sjcl
 - tiny-invariant
