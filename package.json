@@ -1,7 +1,7 @@
 {
   "name": "@catalogworks/cdk",
   "version": "0.3.2",
-  "description": "SDK for using the Catalog protocol",
+  "description": "A javascript/typescript SDK for interacting with Catalog related contracts",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "files": [
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@catalogworks/catalog-contracts": "0.1.7",
-    "@catalogworks/zorav3-with-types": "^1.0.14",
+    "@catalogworks/zorav3-with-types": "1.0.14",
     "@zoralabs/v3": "1.0.12",
     "ethers": "^5.5.2",
     "jsonschema": "^1.4.0",
