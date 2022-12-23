@@ -502,7 +502,7 @@
   dependencies:
     ethers "^5.4.7"
 
-"@catalogworks/zorav3-with-types@^1.0.14":
+"@catalogworks/zorav3-with-types@1.0.14":
   version "1.0.14"
   resolved "https://registry.yarnpkg.com/@catalogworks/zorav3-with-types/-/zorav3-with-types-1.0.14.tgz#5f0d67cadfa1711f8ef5a83465751a666a93bfa3"
   integrity sha512-sDIm5pOgYedutAEV/eIAiYHfO2F3xhLxcbhnO6x1pk9Jemey5cZQHJGdEsOGGDegr3eMhX0ofIczuolzfYjO0g==
