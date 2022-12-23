@@ -495,17 +495,17 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@catalogworks/catalog-contracts@0.1.6":
-  version "0.1.6"
-  resolved "https://npm.pkg.github.com/download/@catalogworks/catalog-contracts/0.1.6/32c476de936a3cbb0c6f178d4e93e1435bc2ba92#32c476de936a3cbb0c6f178d4e93e1435bc2ba92"
-  integrity sha512-btUK3VR44dYocdoUF5r2pssWztkVYgOj1TpEGanZLkiQMw+s1OXciuSlnkxhKyaiXZZawne8OmoLI5rVgk1BIA==
+"@catalogworks/catalog-contracts@0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@catalogworks/catalog-contracts/-/catalog-contracts-0.1.7.tgz#acbca183915982d250394122ee6ce10a8c117b2e"
+  integrity sha512-AAsR1oSusagV6diWTIW02y6WFVN2plMtHodrrmXkC9P1sShka78vvpIlMeyme3kaYr4wJz2a8xOiT5JyA8zztg==
   dependencies:
     ethers "^5.4.7"
 
 "@catalogworks/zorav3-with-types@^1.0.14":
   version "1.0.14"
-  resolved "https://npm.pkg.github.com/download/@catalogworks/zorav3-with-types/1.0.14/15bf5472573c16233ddae9766ba2d6369c2919f9#15bf5472573c16233ddae9766ba2d6369c2919f9"
-  integrity sha512-IVQO86KcPbeJ43HTMjNauuK/BKCjzZsiErKIfT/Bp5+3OCSCBqdzu4JGS8woUp7Jzpdn87uUIsnjtgiETNXTpA==
+  resolved "https://registry.yarnpkg.com/@catalogworks/zorav3-with-types/-/zorav3-with-types-1.0.14.tgz#5f0d67cadfa1711f8ef5a83465751a666a93bfa3"
+  integrity sha512-sDIm5pOgYedutAEV/eIAiYHfO2F3xhLxcbhnO6x1pk9Jemey5cZQHJGdEsOGGDegr3eMhX0ofIczuolzfYjO0g==
   dependencies:
     "@manifoldxyz/royalty-registry-solidity" "^1.0.9"
     "@openzeppelin/contracts" "^4.5.0"
